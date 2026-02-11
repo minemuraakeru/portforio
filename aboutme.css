@@ -1,0 +1,268 @@
+/* デバッグ用スタイル */
+ /* * { outline: 1px solid red; } */
+
+/* ヘッダー全般のスタイル */
+.header {
+  padding: 20px 20px;
+  margin-bottom: 0px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-button {
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.nav-button:hover {
+  color: #ff4400;
+}
+
+/* メインコンテンツ */
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  text-align: center;
+}
+
+
+.title {
+  font-size: 1.4em;
+  text-align: left;
+  margin-bottom: 10px;
+  width: 100%;
+  margin-top: 0px;
+  margin-left: 0;
+}
+
+/* サブページのスタイル */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: 15px;/* !!!!!!!!!!!!!!! */
+  color: #333;
+  line-height: 1.2;
+}
+
+/* 縦1列の画像リスト */
+.vertical-image-list {
+  list-style: none;
+  padding: 0;
+  margin: 50px auto 20px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vertical-image-list li {
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+.vertical-image-list img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Aboutセクション */
+.about-section {
+  display: grid;
+  /* grid-template-columns: 1fr 1fr; */
+  gap: 0px;
+  margin-top: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 80%;
+  align-items: start;
+}
+
+.about-text {
+  margin-left: 0%;
+  width: 100%;
+  grid-column: 1;
+  font-size: 15px;/* !!!!!!!!!!!!!!! */
+  line-height: 1.5;/* 行間 */
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0%;
+
+}
+
+.about-images {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  padding-left:  10px;
+}
+
+.about-images img {
+  width: 100%;
+  margin-left: 0%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* MAPのAboutセクション */
+.about-section2 {
+  width: 80%;
+  margin: 30px auto;
+  text-align: center;
+}
+
+.about-section2 img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* <!-- お花ー --> */
+.about-section3 {
+  width: 40%;
+  margin-top: 100px;
+  margin-right: auto;
+  margin-left: auto;
+  /* margin-bottom: ; */
+  text-align: center;
+}
+
+.about-section3 img {
+  width: 10%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+
+
+
+.link-with-arrow {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #4b4b4b; /* ホバー時の色 */
+  font-weight: 900;
+}
+.link-with-arrow:hover{
+  display: inline-flex;
+  align-items: center;
+  text-decoration: underline;
+  color: #ff4400; /* ホバー時の色 */
+  font-weight: 900;
+}
+.link-with-arrow::after {
+  content: '↗';
+  margin-left: 4px;
+  font-size: 0.6em;
+  transform: translateY(1px);
+}
+/* フッター */
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+
+
+
+/* レスポンシブ対応 */
+@media (max-width: 900px) {
+  /* 必要に応じてスタイルを追加 */
+}
+
+@media (max-width: 600px) {
+  .vertical-image-list li {
+    width: 90%;
+  }
+  .hamburger-menu {
+    display: flex;
+  }
+
+  .nav-left {
+    display: none;
+  }
+
+  .nav-right {
+    justify-content: flex-start;
+    margin-left: -20px;
+  }
+
+  .about-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
+    padding: 0 20px; /* 固定値で余白を調整 */
+    width: calc(100% - 20px); /* 幅から余白を引く!!!!!!!!!!!!!!! */
+    box-sizing: border-box; /* 余白を含めたボックスサイズ計算 */
+  }
+ 
+
+  .title {
+    text-align: left;
+    margin-bottom: 7px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .about-text {
+    width: 100%; /* 子要素も幅を調整 */
+    padding: 0 10px; /* 子要素の内側に余白を追加 */
+    margin-bottom: 7px; /* 余白を追加 */
+  }
+  .about-images {
+    width: 100%; /* 子要素も幅を調整 */
+    margin-bottom: 7px; /* 余白を追加 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .about-images img {
+    width: 100%;
+    /* max-width: 300px; */
+    height: auto;
+    object-fit: cover;
+    margin-bottom: 30px;
+  }
+  /* 自分の画像 */
+   .about-section2 {
+    width: 100%;
+    text-align: center;
+  } 
+
+  /* <!-- お花ー --> */
+  .about-section3 {
+    width: 40%;
+    margin-top: 100px;
+    margin-right: auto;
+    margin-left: auto;
+    /* margin-bottom: ; */
+    text-align: center;
+  }
+  .about-section3 img {
+    width: 20%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+}
+
+
+
+
+
+
