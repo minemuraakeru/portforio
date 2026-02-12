@@ -58,6 +58,9 @@ body {
   margin: 0;
   padding: 0;
   color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   line-height: 1.2; /* 行間を詰める */
   /* margin-top: 80px; ヘッダーの高さ分だけ余白を追加 */
 }
@@ -100,6 +103,7 @@ body {
 main {
   width: 100%;
   box-sizing: border-box;
+  flex-grow: 1;
 }
 
 /* 写真コンテナ - ヘッダーと同じ左右マージン */
@@ -126,16 +130,15 @@ main {
   list-style: none;
   margin: 0;
   padding: 0;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
 }
 
 .image-grid .image-link {
   display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   cursor: cell;
+  position: relative;
 }
 
 .image-grid .image-link img {
@@ -144,6 +147,19 @@ main {
   object-fit: cover;
   object-position: center;
   display: block;
+}
+
+/* 画像ホバー時のテキスト表示 */
+.image-hover-text {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 80px;
+  color: #333;
+  text-align: left;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* 共通の画像リストスタイル */
@@ -213,7 +229,7 @@ object-fit: cover;
 }
 
 .about-text {
-  font-size: 15px;/* !!!!!!!!!!!!!!! */
+  font-size: 12px;/* !!!!!!!!!!!!!!! */
   line-height: 1.5;/* 行間 */
   text-align: left;
   display: flex;
@@ -227,16 +243,16 @@ object-fit: cover;
 /* 日本語テキスト用のフォント */
 .japanese-text {
   font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.6;
 }
 /* 共通フッタースタイル */
 .footer {
   text-align: left; /* テキストを左揃え */
-  /* padding: 40px 0; 上下の余白 */
   margin: 0;
-  margin-bottom: 0;
+  margin-top: auto; /* フッターを下に押し下げる */
+  margin-bottom: 40px; /* 下から40px */
   padding-left: 5%; /* 画像グリッドと同じ左右マージン */
   padding-right: 5%;
   padding-bottom: 0;
@@ -328,6 +344,11 @@ object-fit: cover;
   }
   
   @media (max-width: 600px) {
+    .navbar {
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+    
     .hamburger-menu {
       display: flex; /* 画面幅が小さいときに表示 */
     }
@@ -337,15 +358,22 @@ object-fit: cover;
     .nav-right {
       justify-content: flex-start; /* 左寄せ */
       margin-right: 0; /* 右側の余白をリセット */
-      padding-left: 0px; /* 必要なら左に余白を追加 */
+      margin-left: 0;
+      padding-left: 0; /* 必要なら左に余白を追加 */
       text-align: left; /* 文字の左揃え */
       display: flex;
-      /* margin-left: -20px; ヘッダーの高さ分だけ余白を追加 ？？？？？？？？？*/
     }
     .nav-right .nav-button {
       text-align: left; /* 各リンクの文字を左揃え */
+      padding: 0 !important;
+      margin: 0 !important;
     }
 
+    /* 画像グリッドを縦一列に */
+    .image-grid {
+      grid-template-columns: 1fr; /* 1列表示 */
+    }
+    
     .image-list {
       margin-top: 20px; /* 上部余白を減らして隙間を縮める */
     }
@@ -355,6 +383,10 @@ object-fit: cover;
       width: 100%; 
       max-width: 1200px; /* 必要に応じて最大幅を設定 */
       /* width: 80%; 1列表示に変更 */
+    }
+    
+    .image-list2 li {
+      width: 100%; /* 1列表示 */
     }
     .footer {
       text-align: left; /* テキストを左揃え */

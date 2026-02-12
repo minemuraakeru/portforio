@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
       menuContent.classList.remove("active");
     }
   });
+
+  // 画像ホバー時のテキスト変更は text-animation.js で処理
 });
 
 

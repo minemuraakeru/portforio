@@ -17,6 +17,7 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
+    padding-top: 2%;
     padding-left: 5%;
     padding-right: 5%;
     margin: 0;
@@ -37,8 +38,21 @@
   color:#ff4400; /* ホバー時の色 */
 }
 
+/* 右側ナビゲーション専用のスタイル */
+.nav-right {
+  display: flex;
+  justify-content: flex-end; /* 右端に揃える */
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: auto;
+}
 
-
+.nav-right .nav-button {
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: right;
+}
 
 /* メインコンテンツを上下左右中央に配置 */
 main {
@@ -48,8 +62,102 @@ main {
     align-items: center;
     min-height: 50vh;
     text-align: center;
-    margin-top: 130px;
+    margin: 0;
+    padding: 0;
+    padding-top: 20%; /* homeと同じ開始位置 */
 /*     margin-top: 40px; */
+}
+
+/* プロジェクトページ用：2/3と1/3に分割 */
+.project-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px; /* homeの写真の間と同じ感覚 */
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  padding-left: 5%;
+  padding-right: 5%;
+  align-items: start;
+}
+
+.project-images {
+  width: 100%;
+}
+
+.project-images .vertical-image-list {
+  width: 100%;
+  margin: 0;
+}
+
+.project-images .vertical-image-list li {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.project-text {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: left; /* 左揃え */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.3; /* 行間を少し小さく */
+  color: #333;
+}
+
+.project-text .title {
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+.project-text p {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.project-details {
+  margin-top: 30px;
+  font-size: 15px;
+  line-height: 1.3; /* 行間を少し小さく */
+  text-align: left;
+}
+
+.project-details p {
+  margin: 6px 0; /* 行間を少し小さく */
+  padding: 0;
+  text-align: left;
+}
+
+/* 日本語の説明文セクション */
+.project-details-japanese {
+  margin-top: 30px;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: left;
+  color: #333;
+}
+
+.project-details-japanese p {
+  margin: 6px 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* プロジェクトテキスト内の日本語 */
+.project-text .japanese-text,
+.project-details .japanese-text {
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
   
@@ -187,6 +295,22 @@ main {
 
   
   @media (max-width: 600px) {
+    .navbar {
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+    
+    /* プロジェクトページを縦一列に */
+    .project-container {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding-top: 20%;
+    }
+    
+    .project-text {
+      order: -1; /* テキストを上に */
+    }
+    
     .vertical-image-list li {
       width: 90%; /* 幅を90%に拡大 */
     }
@@ -205,13 +329,15 @@ main {
     .nav-right {
       justify-content: flex-start; /* 左寄せ */
       margin-right: 0; /* 右側の余白をリセット */
-      padding-left: 0px; /* 必要なら左に余白を追加 */
+      margin-left: 0;
+      padding-left: 0; /* 必要なら左に余白を追加 */
       text-align: left; /* 文字の左揃え */
       display: flex;
-      margin-left: -20px; /* ヘッダーの高さ分だけ余白を追加 */
     }
     .nav-right .nav-button {
       text-align: left; /* 各リンクの文字を左揃え */
+      padding: 0 !important;
+      margin: 0 !important;
     }
     .image-list li {
       width: 100%; 
