@@ -4,18 +4,26 @@
   
 } */
 
-
+/* html要素のリセット */
+html {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
 
 /* ヘッダー全体のスタイル */
 .header {
   /* background-color: #f8f8f8; */
-  padding: 20px 20px;
+  padding: 0;
   margin-bottom: 80px; /* ヘッダーの下に20pxの隙間 */
   /* border-bottom: 1px solid #ddd; */
   position: fixed; /* 画面上部に固定 */
   top: 0; /* 上部からの距離を0に設定 */
-  left: 20px; /* 左端からの距離を0に設定 */
-  right: 20px; /* 左端からの距離を0に設定 */
+  left: 0; /* 左端からの距離を0に設定 */
+  right: 0; /* 右端からの距離を0に設定 */
   width: 100%; /* ヘッダーの幅を画面全体に広げる */
   z-index: 1000; /* 他の要素の上に配置する */
 }
@@ -24,6 +32,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 2%;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin: 0;
 }
 /* 左右のリンクグループ */
 .nav-left,
@@ -41,8 +55,8 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: 1.6;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0;
+  padding: 0;
   color: #333;
   line-height: 1.2; /* 行間を詰める */
   /* margin-top: 80px; ヘッダーの高さ分だけ余白を追加 */
@@ -56,6 +70,7 @@ body {
   text-decoration: none; /* 下線を消す */
   margin-right: 20px;
   margin-left: 0px;
+  cursor: cell;
 }
 
 .nav-button:hover {
@@ -67,24 +82,69 @@ body {
 .nav-right {
   display: flex;
   justify-content: flex-end; /* 右端に揃える */
-  flex-grow: 1; /* 左右に余白を作るためにflex-growを追加 */
-  margin-right: 60px; /* 必要なら右マージンを設定 */
-  margin-left: -20px; /* ヘッダーの高さ分だけ余白を追加 */
-
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: auto;
 }
 
 .nav-right .nav-button {
-  font-size: 23px; /* タイトルのフォントサイズを大きく */
-  font-weight: 550;
+  font-size: 16px; /* PHOTOGRAPHYと同じサイズ */
+  font-weight: 400;
   text-align: right; /* 文字を右揃いに */
-  margin: 0; /* 他のリンクとマージンが干渉しないように調整 */
-  padding-right: 20px; /* 右側に余白を追加 */
-
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-/* #photo{
-  width:90%;
-} */
+/* メインコンテンツエリア */
+main {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 写真コンテナ - ヘッダーと同じ左右マージン */
+#photo {
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 20%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+/* 画像グリッド - 3列、画像間10px、ヘッダーと右端を揃える */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.image-grid li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.image-grid .image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: cell;
+}
+
+.image-grid .image-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
 
 /* 共通の画像リストスタイル */
 .image-list {
@@ -140,12 +200,18 @@ object-fit: cover;
 }
 
 .title {
-  font-size: 20px;/* !!!!!!!!!!!!!!!!! */
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%; /* 通常時は幅70% */
-  /* margin-left: 20%; */
+  font-size: 16px;/* !!!!!!!!!!!!!!!!! */
+  margin: 0;
+  padding: 0;
+  width: 100%; /* 画像グリッドと同じ幅に揃える */
+  box-sizing: border-box;
 }
+
+.title p {
+  margin: 0;
+  padding: 0;
+}
+
 .about-text {
   font-size: 15px;/* !!!!!!!!!!!!!!! */
   line-height: 1.5;/* 行間 */
@@ -153,17 +219,35 @@ object-fit: cover;
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin-left: auto;
-  margin-right: auto;
-  width: 80%; /* 通常時は幅70% */
+  margin: 0;
+  width: 100%; /* 画像グリッドと同じ幅に揃える */
+  box-sizing: border-box;
+}
+
+/* 日本語テキスト用のフォント */
+.japanese-text {
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
 }
 /* 共通フッタースタイル */
 .footer {
-  text-align: center; /* テキストを中央揃え */
+  text-align: left; /* テキストを左揃え */
   /* padding: 40px 0; 上下の余白 */
-  margin-top: 100px; /* コンテンツとの距離 */
-  font-size: 14px; /* フォントサイズを少し小さく */
+  margin: 0;
+  margin-bottom: 0;
+  padding-left: 5%; /* 画像グリッドと同じ左右マージン */
+  padding-right: 5%;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  font-size: 10px; /* フォントサイズを少し小さく */
   color: #666; /* フォント色 */
+}
+
+.footer p {
+  margin: 0;
+  padding: 0;
 }
 
 /* ____________________________________________________________________________________ */
@@ -217,7 +301,7 @@ object-fit: cover;
   margin-bottom: 14px; /* 選択肢間に余白 */
   border-bottom: none; /* 下線をなくす */
   font-weight: 500;
-
+  cursor: cell;
 }
 
 .menu-content .menu-link:last-child {
@@ -273,8 +357,8 @@ object-fit: cover;
       /* width: 80%; 1列表示に変更 */
     }
     .footer {
-      text-align: center; /* テキストを中央揃え */
-      margin-top: 100px; /* コンテンツとの距離 */
+      text-align: left; /* テキストを左揃え */
+      margin: 10px 0; /* 上下に10pxのマージン */
       font-size: 10px; /* フォントサイズを少し小さく */
       color: #666; /* フォント色 */
     }
@@ -305,47 +389,42 @@ object-fit: cover;
   align-items: center;
   opacity: 1;
   z-index: 9999;
-  animation: fadeIn 10s ease-out forwards;
+  animation: fadeOut 3s ease-out forwards;
+  overflow: hidden;
 }
 
-.opening-animation h1 {
-  color: rgb(0, 0, 0);
-  font-size: 1.2em;
-  font-weight: bold;
-  opacity: 0;
-  animation: fadeInText 2s ease-out forwards;
+.opening-animation .opening-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px);
+  animation: focusIn 3s ease-out forwards;
 }
 
-/* 背景が白に変わってフェードアウト */
-@keyframes fadeIn {
+/* 画像がぼかしからクリアになるアニメーション */
+@keyframes focusIn {
   0% {
-    opacity: 1;
-    background-color: #ffffff; /* 初期は黒 */
-  }
-  50% {
-    opacity: 0.7;
-    background-color: #fff; /* 中間で白に変わる */
+    filter: blur(20px);
+    transform: scale(1.1);
   }
   100% {
-    opacity: 0;
-    background-color: #fff; /* 最終的に白のままで完全に消える */
-    display: none; /* アニメーション終了後に非表示 */
+    filter: blur(0px);
+    transform: scale(1);
   }
 }
 
-/* テキストのフェードイン */
-@keyframes fadeInText {
+/* オーバーレイがフェードアウト */
+@keyframes fadeOut {
   0% {
     opacity: 1;
   }
-  50% {
-    opacity: 1;
-  }
-  90% {
+  70% {
     opacity: 1;
   }
   100% {
     opacity: 0;
+    display: none;
+    pointer-events: none;
   }
 }
 
