@@ -249,7 +249,7 @@ object-fit: cover;
 }
 /* 共通フッタースタイル */
 .footer {
-  text-align: left; /* テキストを左揃え */
+  text-align: right; /* テキストを右揃え */
   margin: 0;
   margin-top: auto; /* フッターを下に押し下げる */
   margin-bottom: 40px; /* 下から40px */
@@ -257,7 +257,7 @@ object-fit: cover;
   padding-right: 5%;
   padding-bottom: 0;
   box-sizing: border-box;
-  font-size: 10px; /* フォントサイズを少し小さく */
+  font-size: 12px; /* フォントサイズを少し小さく */
   color: #666; /* フォント色 */
 }
 
@@ -389,7 +389,7 @@ object-fit: cover;
       width: 100%; /* 1列表示 */
     }
     .footer {
-      text-align: left; /* テキストを左揃え */
+      text-align: right; /* テキストを右揃え */
       margin: 10px 0; /* 上下に10pxのマージン */
       font-size: 10px; /* フォントサイズを少し小さく */
       color: #666; /* フォント色 */

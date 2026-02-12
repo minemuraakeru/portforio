@@ -58,7 +58,7 @@
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* 上から開始 */
     align-items: center;
     min-height: 50vh;
     text-align: center;
@@ -76,6 +76,7 @@ main {
   width: 100%;
   box-sizing: border-box;
   margin: 0;
+  margin-top: 20px; /* homeの画像グリッドと同じ開始位置 */
   padding: 0;
   padding-left: 5%;
   padding-right: 5%;
@@ -116,7 +117,8 @@ main {
 
 .project-text .title {
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 14px; /* タイトルは14px */
+  font-weight: 400; /* boldを解除 */
   text-align: left;
   margin: 0;
   padding: 0;
