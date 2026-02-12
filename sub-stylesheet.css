@@ -3,7 +3,7 @@
   /* ヘッダー全般のスタイル（共通） */
   .header {
     /* background-color: #f8f8f8; */
-    padding: 20px 20px;
+    padding: 0;
     margin-bottom: 0px; /* ヘッダーとコンテンツとの間の距離を狭める */
     /* border-bottom: 1px solid #ddd; */
    
@@ -15,6 +15,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: 0;
   }
   
 
