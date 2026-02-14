@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koyart</title>
+  <link rel="stylesheet" href="stylesheet.css"> <!-- 共通CSS -->
+  <link rel="stylesheet" href="sub-stylesheet.css"> <!-- サブページ専用CSS -->
+  <script src="script.js" defer></script><!-- Javascript!!-->
+
+  <link rel="icon" href="images/favicon_orange.svg" type="image/png">
+
+</head>
+<body>
+
+  <script>
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+    });
+  </script>
+  
+    
+  <!-- ヘッダー -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="index.html" class="nav-button">WORK</a>
+        <a href="aboutme.html" class="nav-button">ABOUT&nbsp;ME</a>
+      </div>
+  
+
+
+      <div class="nav-right">
+        <a href="index.html" class="nav-button">AKERU MINEMURA PORTFOLIO</a>
+      </div>
+  
+      <div class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+
+      <div class="menu-content">
+        <a href="A.html" class="menu-link">THE STRAIT OF GIBRALTAR</a>
+        <a href="B.html" class="menu-link">SOUTH EAST ASIA</a>
+        <a href="C.html" class="menu-link">TOKYO JAPAN</a>
+        <a href="D.html" class="menu-link">CENTRAL EUROPE</a>
+        <a href="E.html" class="menu-link">WATER AND FLOWERS</a>
+        <a href="F.html" class="menu-link">LOVE FROM</a>
+        <a href="G.html" class="menu-link">HOKKAIDO</a>
+        <hr width="100">
+        <a href="index.html" class="menu-link">HOME</a>
+        <a href="aboutme.html" class="menu-link">ABOUT&nbsp;ME</a>
+      </div>
+    </nav>
+  </header>
+
+
+
+  <!-- メインコンテンツ -->
+  <main>
+    <div class="project-container">
+      <!-- 左側：画像（2/3） -->
+      <div class="project-images">
+        <ul class="vertical-image-list">
+          <li><img src="images/koyart/1.jpg" loading="lazy" alt="Koyart Image 1"></li>
+          <li><img src="images/koyart/スクリーンショット 2022-10-09 18.31.31.png" loading="lazy" alt="Koyart Image 2"></li>
+        </ul>
+      </div>
+
+      <!-- 右側：テキスト（1/3） -->
+      <div class="project-text">
+        <h1 class="title">Koyart</h1>
+        <p>2023</p>
+        <div class="project-details">
+          <hr style="width: 100%; border: 0; border-top: 1px solid #d3d3d3; margin-top: 50px;">
+          <!-- プロジェクト詳細をここに追加 -->
+        </div>
+        <div class="project-details-japanese">
+          <!-- 日本語の説明文をここに追加 -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <p>&copy; 2025 Akeru Minemura Photography. All Rights Reserved.</p>
+  </footer>
+</body>
+
+</html>
