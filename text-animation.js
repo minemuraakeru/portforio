@@ -340,58 +340,41 @@ document.addEventListener("DOMContentLoaded", () => {
     checkCenterImage();
 
     // 「→2019」の「2019」部分をクリックしたときにページの一番下までスクロール
-    hoverYear.style.cursor = 'pointer'; // クリック可能であることを示す
-    
-    // より確実な方法：hoverYear要素に直接イベントリスナーを追加
-    function setupYearClickHandler() {
-      // 既存のイベントリスナーを削除（重複を防ぐ）
-      const newHoverYear = document.querySelector('.hover-year');
-      if (newHoverYear && newHoverYear !== hoverYear) {
-        // 要素が更新された場合は新しい要素にイベントリスナーを追加
-        newHoverYear.style.cursor = 'pointer';
-        newHoverYear.addEventListener('click', handleYearClick);
-      } else {
-        hoverYear.addEventListener('click', handleYearClick);
-      }
-    }
-    
-    function handleYearClick(e) {
-      const text = hoverYear.textContent || '';
-      
-      // 「→」が含まれている場合のみ処理
-      if (text.includes('→')) {
-        // 要素の位置とサイズを取得
-        const rect = hoverYear.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const elementWidth = rect.width;
+    // よりシンプルで確実な方法：document全体にイベントリスナーを追加
+    document.addEventListener('click', function(e) {
+      // クリックされた要素が.hover-yearかどうかを確認
+      const clickedElement = e.target.closest('.hover-year');
+      if (clickedElement) {
+        const text = clickedElement.textContent || '';
         
-        // 要素の右側40%をクリック可能エリアとする（「→2019」部分をクリックしたとみなす）
-        const clickableAreaStart = elementWidth * 0.6;
-        
-        if (clickX > clickableAreaStart) {
-          e.preventDefault();
-          e.stopPropagation();
-          // ページの一番下までスクロール
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth'
-          });
-          return false;
+        // 「→」が含まれている場合のみ処理
+        if (text.includes('→')) {
+          // 要素の位置とサイズを取得
+          const rect = clickedElement.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const elementWidth = rect.width;
+          
+          // 要素の右側40%をクリック可能エリアとする
+          const clickableAreaStart = elementWidth * 0.6;
+          
+          if (clickX > clickableAreaStart) {
+            e.preventDefault();
+            e.stopPropagation();
+            // ページの一番下までスクロール
+            window.scrollTo({
+              top: document.documentElement.scrollHeight,
+              behavior: 'smooth'
+            });
+            return false;
+          }
         }
       }
+    });
+    
+    // カーソルスタイルを設定
+    if (hoverYear) {
+      hoverYear.style.cursor = 'pointer';
     }
-    
-    setupYearClickHandler();
-    
-    // 要素が更新される可能性があるため、定期的にチェック
-    setInterval(() => {
-      const currentYear = document.querySelector('.hover-year');
-      if (currentYear && !currentYear.hasAttribute('data-click-handler')) {
-        currentYear.setAttribute('data-click-handler', 'true');
-        currentYear.style.cursor = 'pointer';
-        currentYear.addEventListener('click', handleYearClick);
-      }
-    }, 1000);
 
     // ホバーイベントは削除（スクロールベースのみ）
   }
