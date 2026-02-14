@@ -123,7 +123,7 @@ main {
 #photo {
   width: 100%;
   box-sizing: border-box;
-  padding-top: 20%; /* ヘッダーの下の余白 */
+  padding-top: 140px; /* ヘッダーの下の余白 */
   padding-bottom: 50vh; /* 最後の画像が中央に来るように十分なスペースを確保 */
   padding-left: 12px;
   padding-right: 12px;
@@ -134,7 +134,7 @@ main {
   display: grid;
   grid-template-columns: 2fr 1fr; /* 左2/3、右1/3 */
   gap: 12px; /* 写真と文字間の距離 */
-  margin-top: 20px; /* #photoのpadding-top: 20%の後、さらに20px下に配置 */
+  margin-top: 20px; /* #photoのpadding-top: 140pxの後、さらに20px下に配置 */
   width: 100%;
   box-sizing: border-box;
   padding: 0;
@@ -193,9 +193,10 @@ main {
 /* 画像ホバー時のテキスト表示 - 絶対位置で固定 */
 .image-hover-text {
   position: fixed;
-  top: calc(20% + 20px); /* #photoのpadding-top: 20% + .content-gridのmargin-top: 20px */
+  top: calc(140px + 20px); /* #photoのpadding-top: 140px + .content-gridのmargin-top: 20px */
   right: 12px; /* 右端から12px */
   width: calc(33.33% - 12px); /* 右1/3の幅 - 右マージン */
+  height: 50vh; /* 画面の50%の高さ */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px;
   color: #333;
@@ -205,30 +206,34 @@ main {
   box-sizing: border-box;
   pointer-events: none; /* マウスイベントを無効化して、下の要素と干渉しないように */
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  flex-direction: row; /* 一列（横並び）に */
+  align-items: center; /* 縦方向の中央揃え */
+  gap: 10px; /* 要素間の間隔 */
   z-index: 100;
+  white-space: nowrap; /* 改行しない */
 }
 
 .image-hover-text .hover-title {
   font-size: 16px;
   margin: 0;
   padding: 0;
+  white-space: nowrap; /* 改行しない */
 }
 
 .image-hover-text .hover-year {
   font-size: 16px;
   margin: 0;
   padding: 0;
+  white-space: nowrap; /* 改行しない */
 }
 
 .image-hover-text .hover-description {
   font-size: 13px; /* 英語テキストと同じサイズ */
   margin: 0;
-  margin-top: 6px;
   padding: 0;
   line-height: 1.3;
   color: #666; /* 少し薄い色 */
+  white-space: nowrap; /* 改行しない */
 }
 
 /* 共通の画像リストスタイル */
