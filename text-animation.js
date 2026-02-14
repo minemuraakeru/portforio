@@ -295,15 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // すべての画像からアクティブクラスを削除
-      imageLinks.forEach((link) => {
-        link.classList.remove("image-active");
-      });
-
       if (centerImage) {
-        // 中央の画像にアクティブクラスを追加
-        centerImage.classList.add("image-active");
-        
         const title = centerImage.getAttribute("data-title");
         const year = centerImage.getAttribute("data-year");
         const description = centerImage.getAttribute("data-description") || ""; // 説明はオプション

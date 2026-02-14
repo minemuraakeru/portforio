@@ -38,6 +38,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 画像ホバー時のテキスト変更は text-animation.js で処理
+
+  // スクロール時に「AKERU MINEMURA PORTFOLIO」をフェードアウト
+  const portfolioButton = document.querySelector('.nav-right .nav-button');
+  if (portfolioButton) {
+    let lastScrollTop = 0;
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      // 60pxスクロールした時にフェードアウト
+      if (scrollTop > 60) {
+        portfolioButton.style.opacity = '0';
+      } else {
+        // 60px未満の場合は表示
+        portfolioButton.style.opacity = '1';
+      }
+      
+      lastScrollTop = scrollTop;
+    }, { passive: true });
+  }
 });
 
 
