@@ -506,7 +506,8 @@ object-fit: cover;
   
   }
   
-  @media (max-width: 640px) {
+  /* 640px + iOS対応のため768px / max-device-width も使用 */
+  @media (max-width: 768px), (max-device-width: 768px) {
     .navbar {
       display: flex; /* レスポンシブ時はflexに戻す */
       justify-content: space-between;
