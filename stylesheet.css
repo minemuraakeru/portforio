@@ -27,22 +27,33 @@ html {
   width: 100%; /* ヘッダーの幅を画面全体に広げる */
   z-index: 1000; /* 他の要素の上に配置する */
 }
-/* ナビゲーションバー */
+/* ナビゲーションバー - 左2/3、右1/3のレイアウト */
 .navbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 左2/3、右1/3 */
   align-items: center;
   width: 100%;
   box-sizing: border-box;
   padding-top: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 12px;
+  padding-right: 12px;
   margin: 0;
+  gap: 0;
 }
 /* 左右のリンクグループ */
-.nav-left,
+.nav-left {
+  display: flex;
+  grid-column: 1; /* 左2/3 */
+}
+
 .nav-right {
   display: flex;
+  grid-column: 2; /* 右1/3 */
+  justify-content: flex-start; /* 左揃え */
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
   
@@ -63,12 +74,23 @@ body {
   flex-direction: column;
   line-height: 1.2; /* 行間を詰める */
   /* margin-top: 80px; ヘッダーの高さ分だけ余白を追加 */
+  opacity: 0;
+  animation: fadeIn 0.4s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 
 /* ヘッダーリンクのスタイル */
 .nav-button {
-  font-size: 16px; /* 通常のフォントサイズ */
+  font-size: 16px; /* ヘッダーのフォントサイズ（14pxから+2px） */
   color: #333;
   text-decoration: none; /* 下線を消す */
   margin-right: 20px;
@@ -82,19 +104,10 @@ body {
   
 
 /* 右側ナビゲーション専用のスタイル */
-.nav-right {
-  display: flex;
-  justify-content: flex-end; /* 右端に揃える */
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  width: auto;
-}
-
 .nav-right .nav-button {
-  font-size: 16px; /* PHOTOGRAPHYと同じサイズ */
+  font-size: 16px; /* ヘッダーのフォントサイズ（14pxから+2px） */
   font-weight: 400;
-  text-align: right; /* 文字を右揃いに */
+  text-align: left; /* 文字を左揃えに */
   padding: 0 !important;
   margin: 0 !important;
 }
@@ -110,20 +123,48 @@ main {
 #photo {
   width: 100%;
   box-sizing: border-box;
-  padding-top: 20%;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-top: 140px; /* ヘッダーの下の余白 */
+  padding-bottom: 50vh; /* 最後の画像が中央に来るように十分なスペースを確保 */
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
-/* 画像グリッド - 3列、画像間10px、ヘッダーと右端を揃える */
-.image-grid {
+/* コンテンツグリッド - 左2/3画像、右1/3テキスト */
+.content-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 20px;
+  grid-template-columns: 2fr 1fr; /* 左2/3、右1/3 */
+  gap: 12px; /* 写真と文字間の距離 */
+  margin-top: 20px; /* #photoのpadding-top: 140pxの後、さらに20px下に配置 */
   width: 100%;
   box-sizing: border-box;
   padding: 0;
+  align-items: start; /* グリッドアイテムを上端に配置 */
+}
+
+.content-left {
+  grid-column: 1; /* 左2/3 - 画像 */
+  align-self: start; /* 上端で固定 */
+  height: fit-content; /* コンテンツの高さに合わせる */
+}
+
+.content-right {
+  grid-column: 2; /* 右1/3 - テキスト */
+  align-self: start; /* 上端で固定 */
+}
+
+/* 画像グリッド - 左2/3の1列 */
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  position: sticky;
+  top: 80px; /* ヘッダーの下で固定 */
+  align-self: start;
+  height: fit-content;
 }
 
 .image-grid li {
@@ -149,17 +190,50 @@ main {
   display: block;
 }
 
-/* 画像ホバー時のテキスト表示 */
+/* 画像ホバー時のテキスト表示 - 絶対位置で固定 */
 .image-hover-text {
+  position: fixed;
+  top: calc(140px + 20px); /* #photoのpadding-top: 140px + .content-gridのmargin-top: 20px */
+  right: 12px; /* 右端から12px */
+  width: calc(33.33% - 12px); /* 右1/3の幅 - 右マージン */
+  height: 50vh; /* 画面の50%の高さ */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px;
   color: #333;
   text-align: left;
   margin: 0;
-  margin-bottom: 20px;
   padding: 0;
   box-sizing: border-box;
-  width: 100%;
+  pointer-events: none; /* マウスイベントを無効化して、下の要素と干渉しないように */
+  display: flex;
+  flex-direction: row; /* 一列（横並び）に */
+  align-items: center; /* 縦方向の中央揃え */
+  gap: 10px; /* 要素間の間隔 */
+  z-index: 100;
+  white-space: nowrap; /* 改行しない */
+}
+
+.image-hover-text .hover-title {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap; /* 改行しない */
+}
+
+.image-hover-text .hover-year {
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap; /* 改行しない */
+}
+
+.image-hover-text .hover-description {
+  font-size: 13px; /* 英語テキストと同じサイズ */
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;
+  color: #666; /* 少し薄い色 */
+  white-space: nowrap; /* 改行しない */
 }
 
 /* 共通の画像リストスタイル */
@@ -243,7 +317,7 @@ object-fit: cover;
 /* 日本語テキスト用のフォント */
 .japanese-text {
   font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 12px;
+  font-size: 10px; /* 次の偶数（12pxの次は10px） */
   font-weight: 400;
   line-height: 1.6;
 }
@@ -253,11 +327,11 @@ object-fit: cover;
   margin: 0;
   margin-top: auto; /* フッターを下に押し下げる */
   margin-bottom: 40px; /* 下から40px */
-  padding-left: 5%; /* 画像グリッドと同じ左右マージン */
-  padding-right: 5%;
+  padding-left: 12px; /* 画像グリッドと同じ左右マージン */
+  padding-right: 12px;
   padding-bottom: 0;
   box-sizing: border-box;
-  font-size: 12px; /* フォントサイズを少し小さく */
+  font-size: 12px; /* 10pxから+2px */
   color: #666; /* フォント色 */
 }
 
@@ -343,10 +417,12 @@ object-fit: cover;
   
   }
   
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
     .navbar {
-      padding-left: 5%;
-      padding-right: 5%;
+      display: flex; /* レスポンシブ時はflexに戻す */
+      justify-content: space-between;
+      padding-left: 12px;
+      padding-right: 12px;
     }
     
     .hamburger-menu {
@@ -356,6 +432,7 @@ object-fit: cover;
       display: none; /* 通常ナビゲーションは非表示 */
     }
     .nav-right {
+      grid-column: auto; /* グリッドの列指定を解除 */
       justify-content: flex-start; /* 左寄せ */
       margin-right: 0; /* 右側の余白をリセット */
       margin-left: 0;
@@ -369,9 +446,37 @@ object-fit: cover;
       margin: 0 !important;
     }
 
+    /* コンテンツグリッドを縦一列に */
+    .content-grid {
+      grid-template-columns: 1fr; /* 1列表示 */
+    }
+    
+    .content-left {
+      grid-column: 1; /* すべて1列目に */
+      position: static; /* スティッキーを解除 */
+      top: auto;
+    }
+    
+    .content-right {
+      grid-column: 1; /* すべて1列目に */
+    }
+    
     /* 画像グリッドを縦一列に */
     .image-grid {
       grid-template-columns: 1fr; /* 1列表示 */
+      width: 100%; /* レスポンシブ時は全幅 */
+      margin-left: 0; /* 左に配置 */
+      position: static; /* スティッキーを解除 */
+      top: auto;
+    }
+    
+    /* レスポンシブ時はテキストも全幅に、絶対位置を解除 */
+    .image-hover-text {
+      position: static; /* 絶対位置を解除 */
+      top: auto;
+      right: auto;
+      width: 100%;
+      margin-left: 0;
     }
     
     .image-list {
@@ -391,7 +496,7 @@ object-fit: cover;
     .footer {
       text-align: right; /* テキストを右揃え */
       margin: 10px 0; /* 上下に10pxのマージン */
-      font-size: 10px; /* フォントサイズを少し小さく */
+      font-size: 12px; /* 10pxから+2px */
       color: #666; /* フォント色 */
     }
   }

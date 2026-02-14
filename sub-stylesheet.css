@@ -1,85 +1,27 @@
 
-  
-  /* ヘッダー全般のスタイル（共通） */
-  .header {
-    /* background-color: #f8f8f8; */
-    padding: 0;
-    margin-bottom: 0px; /* ヘッダーとコンテンツとの間の距離を狭める */
-    /* border-bottom: 1px solid #ddd; */
-   
-
-    
-  }
-  
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    padding-top: 2%;
-    padding-left: 5%;
-    padding-right: 5%;
-    margin: 0;
-  }
-  
 
 
-/* ヘッダーリンクのスタイル */
-.nav-button {
-    font-size: 16px; /* 通常のフォントサイズ */
-    color: #333;
-    text-decoration: none; /* 下線を消す */
-    margin-right: 20px;
-}
 
-
-.nav-button:hover {
-  color:#ff4400; /* ホバー時の色 */
-}
-
-/* 右側ナビゲーション専用のスタイル */
-.nav-right {
-  display: flex;
-  justify-content: flex-end; /* 右端に揃える */
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  width: auto;
-}
-
-.nav-right .nav-button {
-  padding: 0 !important;
-  margin: 0 !important;
-  text-align: right;
-}
 
 /* メインコンテンツを上下左右中央に配置 */
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* 上から開始 */
-    align-items: center;
-    min-height: 50vh;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    padding-top: 20%; /* homeと同じ開始位置 */
-/*     margin-top: 40px; */
-}
 
-/* プロジェクトページ用：2/3と1/3に分割 */
+  
+
+  
+  
+
+/* プロジェクトコンテナ - 2/3画像、1/3テキスト */
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 20px; /* homeの写真の間と同じ感覚 */
+  gap: 12px; /* 写真-文字間のmargin */
   width: 100%;
   box-sizing: border-box;
   margin: 0;
   margin-top: 20px; /* homeの画像グリッドと同じ開始位置 */
   padding: 0;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 12px;
+  padding-right: 12px;
   align-items: start;
 }
 
@@ -101,95 +43,49 @@ main {
 
 .project-images .vertical-image-list li {
   width: 100%;
-  margin-bottom: 4px;
+  margin-bottom: 12px; /* 写真-写真間のmargin */
+}
+
+.project-images .vertical-image-list img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .project-text {
   width: 100%;
-  padding: 0;
-  margin: 0;
-  text-align: left; /* 左揃え */
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.3; /* 行間を少し小さく */
-  color: #333;
+  text-align: left;
 }
 
 .project-text .title {
-  margin-bottom: 20px;
-  font-size: 14px; /* タイトルは14px */
-  font-weight: 400; /* boldを解除 */
-  text-align: left;
-  margin: 0;
-  padding: 0;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  margin-top: 0;
 }
 
-.project-text p {
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
-.project-details {
-  margin-top: 30px;
-  font-size: 15px;
-  line-height: 1.3; /* 行間を少し小さく */
-  text-align: left;
-}
-
+/* 英語テキスト - 統一スタイル（aboutme.html、0_temple.html、1.htmlなどすべてのページで使用） */
+.project-text p,
 .project-details p {
-  margin: 6px 0; /* 行間を少し小さく */
-  padding: 0;
-  text-align: left;
-}
-
-/* 日本語の説明文セクション */
-.project-details-japanese {
-  margin-top: 30px;
-  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.6;
-  text-align: left;
-  color: #333;
-}
-
-.project-details-japanese p {
   margin: 6px 0;
-  padding: 0;
-  text-align: left;
+  line-height: 1.3;
+  font-size: 13px; /* 16pxから3px小さく */
 }
 
-/* プロジェクトテキスト内の日本語 */
-.project-text .japanese-text,
-.project-details .japanese-text {
-  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 13px;
-  font-weight: 400;
+/* 日本語テキスト - 統一スタイル（aboutme.html、0_temple.html、1.htmlなどすべてのページで使用） */
+.project-details-japanese p,
+.japanese-text {
+  margin: 6px 0;
   line-height: 1.6;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
+  font-size: 10px; /* 次の偶数（12pxの次は10px） */
+  font-weight: 400;
 }
 
-  
-  /* タイトルの追加装飾（任意） */
-  .title {
-    font-size: 1.6em; /* タイトルのフォントサイズ調整 */
-    margin-bottom: 10px; /* タイトルと説明文の間の余白 */
-/*     margin-top: -10px; /* ネガティブ値でさらに上に移動 */ 
-    margin-top: 0px; /* ネガティブ値でさらに上に移動 */
-  }
-
-  
-  
-  /* サブページ全般のスタイル */
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 1.6;
-    color: #333;
-    line-height: 1.2; /* 行間を詰める */
-
-  }
+main {
+  justify-content: flex-start;
+  padding-top: 20%; /* homeの画像グリッドと同じ開始位置 */
+}
 
 
   
@@ -303,21 +199,11 @@ main {
 
 
   
-  @media (max-width: 600px) {
-    .navbar {
-      padding-left: 5%;
-      padding-right: 5%;
-    }
-    
-    /* プロジェクトページを縦一列に */
+  @media (max-width: 640px) {
     .project-container {
-      grid-template-columns: 1fr;
-      gap: 20px;
-      padding-top: 20%;
-    }
-    
-    .project-text {
-      order: -1; /* テキストを上に */
+      grid-template-columns: 1fr; /* レスポンシブ時は1列表示 */
+      padding-left: 12px;
+      padding-right: 12px;
     }
     
     .vertical-image-list li {
@@ -329,25 +215,7 @@ main {
     body {
       font-size: 14px;
     }
-    .hamburger-menu {
-      display: flex; /* 画面幅が小さいときに表示 */
-    }
-    .nav-left {
-      display: none; /* 通常ナビゲーションは非表示 */
-    }
-    .nav-right {
-      justify-content: flex-start; /* 左寄せ */
-      margin-right: 0; /* 右側の余白をリセット */
-      margin-left: 0;
-      padding-left: 0; /* 必要なら左に余白を追加 */
-      text-align: left; /* 文字の左揃え */
-      display: flex;
-    }
-    .nav-right .nav-button {
-      text-align: left; /* 各リンクの文字を左揃え */
-      padding: 0 !important;
-      margin: 0 !important;
-    }
+    /* ヘッダー関連のスタイルはstylesheet.cssで統一管理 */
     .image-list li {
       width: 100%; 
       max-width: 1200px; /* 必要に応じて最大幅を設定 */

@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Page</title>
+  <title>ABOUT ME</title>
   <link rel="stylesheet" href="stylesheet.css"> <!-- 共通CSS -->
-  <link rel="stylesheet" href="aboutme.css
-  "> <!-- サブページ専用CSS -->
+  <link rel="stylesheet" href="sub-stylesheet.css"> <!-- サブページ専用CSS -->
   <script src="script.js" defer></script><!-- Javascript!!-->
 
   <link rel="icon" href="images/favicon_orange.svg" type="image/png">
-
 
 </head>
 <body>
@@ -20,20 +18,20 @@
       e.preventDefault();
     });
   </script>
-
+  
     
   <!-- ヘッダー -->
   <header class="header">
     <nav class="navbar">
       <div class="nav-left">
-        <a href="index.html" class="nav-button">PHOTOGRAPHY</a>
+        <a href="index.html" class="nav-button">WORK</a>
         <a href="aboutme.html" class="nav-button">ABOUT&nbsp;ME</a>
       </div>
   
 
 
       <div class="nav-right">
-        <a href="index.html" class="nav-button">AKERU MINEMURA<br>PORTFOLIO</a>
+        <a href="index.html" class="nav-button">AKERU MINEMURA PORTFOLIO</a>
       </div>
   
       <div class="hamburger-menu">
@@ -58,95 +56,61 @@
   </header>
 
 
+
   <!-- メインコンテンツ -->
-  <main>  
-    <!-- <hr style="width: 80%; border: 0; border-top: 1px solid #d3d3d3; margin-top: 170px; margin-bottom: 1em;"> -->
-    <hr style="width: 80%; border: 0; border-top: 1px solid #d3d3d3; margin-top: 170px;">
+  <main>
+    <div class="project-container">
+      <!-- 左側：画像（2/3） -->
+      <div class="project-images">
+        <ul class="vertical-image-list">
+          <li><img src="images/aboutme/LINE_ALBUM_20220616_241205_1.jpeg" loading="lazy" alt="About me Image 1"></li>
+          <!-- <li><img src="images/aboutme/map2.png" loading="lazy" alt="About me Image 2"></li> -->
+        </ul>
+      </div>
 
-    <!-- 文章と画像を横並びに -->
-    <div class="about-section">
-      
-      <!-- 文章部分 -->
-      <div class="about-text">
-        <!-- <h2 class="title">
-          峰村 明瑠 | Akeru&nbsp;Minemura
-        </h2> -->
-        <div class="title">
-          <p style="margin-top:0px!important;">
-            峰村 明瑠 | Akeru&nbsp;Minemura
-          </p>  
-        </div>
-
-        <p>
-          2001年生まれ、板橋育ち<br/>
-          東京都立大学プロダクトデザイン修士<br/>
-          トランスポーテーションデザインスタジオ在籍<br/><br/>
-          
-          大学では、プロダクトデザイン、トランジションデザイン、人間中心設計を中心とした分野を横断しながらデザインを学んでいます。
+      <!-- 右側：テキスト（1/3） -->
+      <div class="project-text">
+        <h1 class="title">峰村 明瑠 | Akeru Minemura</h1>
+        <div class="project-details">
+          <p class="japanese-text">2001年生まれ、板橋育ち<br/>
+          東京都立大学プロダクトデザイン修士 トランスポーテーションデザインスタジオ在籍 (田中聡一郎研)
+          <br/><br/>
+          <br/>大学では、インダストリアルデザインを軸にデザイン思考、人間中心設計、トランジションデザイン等のデザイン分野を横断しながらデザインを学んでいます</span>
           <br/>
           バックパックが大好きで、大学では、バックパッカーとして、アジアからアフリカ、ヨーロッパまで各国を回りました。
           <br/>ライフワークの一環として、そして、旅の備忘録、日常に新たな視点を見つけるツールとして写真を撮ります。<br/>
-        </p>
-
-        <br/>
-        <a href="https://www.instagram.com/akeru.min/" class="link-with-arrow">
-          instagram
-        </a>
-        <a href="https://note.com/minrarara" class="link-with-arrow">
-          note
-        </a>
-        <hr style="width: 100%; border: 0; border-top: 1px solid #d3d3d3; margin-top: 30px;">
-        <p>
-          Born in 2001.  <br/>
-          Raised in Itabashi, Tokyo.  <br/>
-          Tokyo Metropolitan University Product design(MA) <br/><br/>
-          Influenced by my parents' love for traveling abroad, 
-          I fulfilled my dream of becoming a backpacker during university, 
-          traveling across various countries in Asia, Africa, and Europe.  
-          As tools for recording and discovery, ...  
-        </p>
-      </div>
-      <!-- 画像部分 -->
-      <div class="about-images">
-        <img src="images/aboutme/LINE_ALBUM_20220616_241205_1.jpeg" alt="me Image">
+          </p>
+          <hr style="width: 100%; border: 0; border-top: 1px solid #d3d3d3; margin-top: 30px;">
+          <p>
+            Born in 2001.<br/>
+            Raised in Itabashi, Tokyo.<br/>
+            Tokyo Metropolitan University Product design(MA)<br/><br/>
+            Influenced by my parents' love for traveling abroad, 
+            I fulfilled my dream of becoming a backpacker during university, 
+            traveling across various countries in Asia, Africa, and Europe.  
+            As tools for recording and discovery, ...  
+          </p>
+          <p>
+            <a href="https://www.instagram.com/akeru.min/" class="link-with-arrow">
+              instagram
+            </a>
+            /
+            <a href="https://note.com/minrarara" class="link-with-arrow">
+              note
+            </a>
+          </p>
+        </div>
+        <div class="project-details-japanese">
+          <!-- 日本語の説明文をここに追加 -->
+        </div>
       </div>
     </div>
-    
-    
-    <!-- <hr style="width: 100%; border: 0; border-top: 1px solid #d3d3d3; margin-top: 50px;"> -->
-    <div class="about-section2">
-      <img src="images/aboutme/map2.png" aworklt="Map Image">
-    </div>
-    <!-- <hr style="width: 100%; border: 0; border-top: 1px solid #d3d3d3;"> -->
   </main>
-</body>
 
-
-
-
-
-<!-- お花ー -->
-<div class="about-section3">
-  <img src="images/favicon_orange.svg" aworklt="ig Image">
-</div>
-
-
-<!-- フッター -->
-<footer class="footer">
-  <!-- <hr width="800" color="#c0c0c0"> -->
+  <!-- フッター -->
+  <footer class="footer">
     <p>&copy; 2025 Akeru Minemura Photography. All Rights Reserved.</p>
-</footer>
-
-
-
-
-<!-- <div class="about-section3">
-  <img src="https://res.cloudinary.com/dpyug4akr/image/upload/v1737614818/ig_stbcix.svg" alt="work">
-  <img src="https://res.cloudinary.com/dpyug4akr/image/upload/v1737614819/map2_df8i51.png" alt="work">
-</div> -->
-
-
-
-
+  </footer>
+</body>
 
 </html>
