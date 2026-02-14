@@ -376,7 +376,7 @@ object-fit: cover;
 /* 日本語テキスト用のフォント */
 .japanese-text {
   font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 10px; /* 次の偶数（12pxの次は10px） */
+  font-size: 11px; /* 11pxに変更 */
   font-weight: 320; /* font-weightを320に設定 */
   line-height: 1.6;
 }
@@ -385,19 +385,20 @@ object-fit: cover;
   text-align: right; /* テキストを右揃え */
   margin: 0;
   margin-top: auto; /* フッターを下に押し下げる */
-  margin-bottom: 40px; /* 下から40px */
+  margin-bottom: 20px; /* 下から20px */
   padding-left: 12px; /* 画像グリッドと同じ左右マージン */
   padding-right: 12px;
   padding-bottom: 0;
   box-sizing: border-box;
   font-size: 12px; /* 10pxから+2px */
-  color: #666; /* フォント色 */
+  color: #999; /* グレーに変更 */
 }
 
 .footer p {
   margin: 0;
   margin-bottom: 8px;
   padding: 0;
+  color: #999; /* グレーに変更 */
 }
 
 /* ____________________________________________________________________________________ */

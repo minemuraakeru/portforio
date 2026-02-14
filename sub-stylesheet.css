@@ -119,7 +119,7 @@
   margin: 6px 0;
   line-height: 1.6;
   font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 10px; /* 次の偶数（12pxの次は10px） */
+  font-size: 11px; /* 11pxに変更 */
   font-weight: 320; /* font-weightを320に設定 */
 }
 
