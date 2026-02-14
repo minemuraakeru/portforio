@@ -194,15 +194,15 @@ class YearCounter {
       if (this.currentYear !== null && this.targetYear !== null) {
         if (this.currentYear < this.targetYear) {
           this.currentYear++;
-          this.element.textContent = this.currentYear.toString();
+          this.element.textContent = this.currentYear.toString() + '→2019';
           this.lastUpdateTime = now;
         } else if (this.currentYear > this.targetYear) {
           this.currentYear--;
-          this.element.textContent = this.currentYear.toString();
+          this.element.textContent = this.currentYear.toString() + '→2019';
           this.lastUpdateTime = now;
         } else {
           // アニメーション完了
-          this.element.textContent = this.targetYear.toString();
+          this.element.textContent = this.targetYear.toString() + '→2019';
           this.animationFrameId = null;
           return;
         }
@@ -224,32 +224,39 @@ class YearCounter {
       this.animationFrameId = null;
     }
 
-    // ターゲットを数値に変換
-    const target = parseInt(targetYear, 10);
+    // ターゲットを数値に変換（「2019-」のような場合は「2019」を抽出）
+    let target = parseInt(targetYear, 10);
     if (isNaN(target)) {
-      // 数値でない場合はそのまま表示
-      this.element.textContent = targetYear;
-      this.currentYear = null;
-      this.targetYear = null;
-      return;
+      // 「2019-」のような形式の場合、「2019」を抽出
+      const match = targetYear.match(/(\d+)/);
+      if (match) {
+        target = parseInt(match[1], 10);
+      } else {
+        // 数値が含まれていない場合はそのまま表示
+        this.element.textContent = targetYear;
+        this.currentYear = null;
+        this.targetYear = null;
+        return;
+      }
     }
 
-    // 現在の値を取得（数値に変換）
+    // 現在の値を取得（「→2019」を除去して数値に変換）
     const currentText = this.element.textContent.trim();
-    const current = parseInt(currentText, 10);
+    const currentTextWithoutArrow = currentText.replace(/→\d+$/, ''); // 「→2019」を除去
+    const current = parseInt(currentTextWithoutArrow, 10);
     
     // 同じ値の場合はアニメーションしない
     if (!isNaN(current) && current === target) {
-      this.element.textContent = target.toString();
+      this.element.textContent = target.toString() + '→2019';
       this.currentYear = target;
       this.targetYear = target;
       return;
     }
 
     // 初期値が空または数値でない場合は、即座にターゲット値を表示してからアニメーションしない
-    if (isNaN(current) || currentText === '') {
+    if (isNaN(current) || currentTextWithoutArrow === '') {
       // 初期値が空の場合は即座に表示（アニメーションなし）
-      this.element.textContent = target.toString();
+      this.element.textContent = target.toString() + '→2019';
       this.currentYear = target;
       this.targetYear = target;
       return;
@@ -303,7 +310,12 @@ document.addEventListener("DOMContentLoaded", () => {
           if (hoverTitle.textContent !== title) {
             titleScrambler.animateTo(title);
           }
-          if (hoverYear.textContent !== year) {
+          // 現在の表示から「→2019」を除去して比較
+          const currentYearText = hoverYear.textContent.replace(/→\d+$/, '');
+          // yearから数値部分を抽出（「2019-」のような場合も対応）
+          const yearMatch = year.match(/(\d+)/);
+          const yearNumber = yearMatch ? yearMatch[1] : year;
+          if (currentYearText !== yearNumber) {
             yearCounter.animateTo(year);
           }
           if (hoverDescription.textContent !== description) {
@@ -326,6 +338,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 初期チェック
     checkCenterImage();
+
+    // 「→2019」の「2019」部分をクリックしたときにページの一番下までスクロール
+    hoverYear.style.cursor = 'pointer'; // クリック可能であることを示す
+    
+    // より確実な方法：hoverYear要素に直接イベントリスナーを追加
+    function setupYearClickHandler() {
+      // 既存のイベントリスナーを削除（重複を防ぐ）
+      const newHoverYear = document.querySelector('.hover-year');
+      if (newHoverYear && newHoverYear !== hoverYear) {
+        // 要素が更新された場合は新しい要素にイベントリスナーを追加
+        newHoverYear.style.cursor = 'pointer';
+        newHoverYear.addEventListener('click', handleYearClick);
+      } else {
+        hoverYear.addEventListener('click', handleYearClick);
+      }
+    }
+    
+    function handleYearClick(e) {
+      const text = hoverYear.textContent || '';
+      
+      // 「→」が含まれている場合のみ処理
+      if (text.includes('→')) {
+        // 要素の位置とサイズを取得
+        const rect = hoverYear.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const elementWidth = rect.width;
+        
+        // 要素の右側40%をクリック可能エリアとする（「→2019」部分をクリックしたとみなす）
+        const clickableAreaStart = elementWidth * 0.6;
+        
+        if (clickX > clickableAreaStart) {
+          e.preventDefault();
+          e.stopPropagation();
+          // ページの一番下までスクロール
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+          });
+          return false;
+        }
+      }
+    }
+    
+    setupYearClickHandler();
+    
+    // 要素が更新される可能性があるため、定期的にチェック
+    setInterval(() => {
+      const currentYear = document.querySelector('.hover-year');
+      if (currentYear && !currentYear.hasAttribute('data-click-handler')) {
+        currentYear.setAttribute('data-click-handler', 'true');
+        currentYear.style.cursor = 'pointer';
+        currentYear.addEventListener('click', handleYearClick);
+      }
+    }, 1000);
 
     // ホバーイベントは削除（スクロールベースのみ）
   }

@@ -14,14 +14,14 @@
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 12px; /* 写真-文字間のmargin */
+  gap: 18px; /* 写真-文字間のmargin（12pxから18pxに変更、+6px） */
   width: 100%;
   box-sizing: border-box;
   margin: 0;
   margin-top: 20px; /* homeの画像グリッドと同じ開始位置 */
   padding: 0;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   align-items: start;
 }
 
@@ -243,8 +243,8 @@ main {
   @media (max-width: 640px) {
     .project-container {
       grid-template-columns: 1fr; /* レスポンシブ時は1列表示 */
-      padding-left: 12px;
-      padding-right: 12px;
+      padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+      padding-right: 22px; /* 12pxから22pxに変更（+10px） */
     }
     
     .vertical-image-list li {

@@ -35,8 +35,8 @@ html {
   width: 100%;
   box-sizing: border-box;
   padding-top: 2%;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   margin: 0;
   gap: 0;
 }
@@ -44,6 +44,7 @@ html {
 .nav-left {
   display: flex;
   grid-column: 1; /* 左2/3 */
+  margin-left: 10px; /* 左側に10pxのマージン */
 }
 
 .nav-right {
@@ -52,7 +53,7 @@ html {
   justify-content: flex-end; /* 右揃え */
   align-items: center;
   margin: 0;
-  margin-right: 0; /* margin-rightを削除 */
+  margin-right: 10px; /* 右側に10pxのマージン */
   padding: 0;
   width: 100%;
 }
@@ -140,8 +141,8 @@ main {
   box-sizing: border-box;
   padding-top: 180px; /* ヘッダーの下の余白 */
   padding-bottom: 0; /* padding-bottomを削除 */
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   margin-bottom: 200px; /* 下のマージン */
 }
 
@@ -251,8 +252,8 @@ main {
 .image-hover-text {
   position: fixed;
   top: calc(180px + 20px - 100px); /* #photoのpadding-top: 180px + .content-gridのmargin-top: 20px - 100px上に移動 */
-  left: 12px; /* 左端から12px */
-  width: calc(33.33% - 12px); /* 左4/12の幅 - 左マージン */
+  left: 22px; /* 左端から22px（12pxから+10px） */
+  width: calc(33.33% - 22px); /* 左4/12の幅 - 左マージン（22pxに調整） */
   height: 50vh; /* 画面の50%の高さ */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 36px; /* 36pxに変更 */
@@ -287,6 +288,7 @@ main {
   padding: 0;
   margin-top: 4px; /* タイトルとの間隔 */
   white-space: nowrap; /* 改行しない */
+  cursor: pointer; /* クリック可能であることを示す */
 }
 
 /* 画面サイズに応じたタイトルと西暦のフォントサイズ調整 */
@@ -408,8 +410,8 @@ object-fit: cover;
   margin: 0;
   margin-top: auto; /* フッターを下に押し下げる */
   margin-bottom: 20px; /* 下から20px */
-  padding-left: 12px; /* 画像グリッドと同じ左右マージン */
-  padding-right: 12px;
+  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   padding-bottom: 0;
   box-sizing: border-box;
   font-size: 12px; /* 10pxから+2px */
@@ -504,8 +506,8 @@ object-fit: cover;
     .navbar {
       display: flex; /* レスポンシブ時はflexに戻す */
       justify-content: space-between;
-      padding-left: 12px;
-      padding-right: 12px;
+      padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+      padding-right: 22px; /* 12pxから22pxに変更（+10px） */
     }
     
     .hamburger-menu {
