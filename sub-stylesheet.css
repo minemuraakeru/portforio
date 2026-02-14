@@ -52,6 +52,16 @@
   display: block;
 }
 
+/* YouTube動画のスタイル */
+.project-images .vertical-image-list li.youtube-video {
+  width: 100%;
+  margin-bottom: 12px; /* 写真-写真間のmarginと同じ */
+}
+
+.project-images .vertical-image-list li.youtube-video > div {
+  width: 100%;
+}
+
 .project-text {
   width: 100%;
   text-align: left;
@@ -84,7 +94,7 @@
 
 main {
   justify-content: flex-start;
-  padding-top: 20%; /* homeの画像グリッドと同じ開始位置 */
+  padding-top: 140px; /* homeの画像グリッドと同じ開始位置 */
 }
 
 

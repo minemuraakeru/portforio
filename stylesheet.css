@@ -129,26 +129,28 @@ main {
   padding-right: 12px;
 }
 
-/* コンテンツグリッド - 左2/3画像、右1/3テキスト */
+/* コンテンツグリッド - 左4/12テキスト、8/12から画像（5/12） */
 .content-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* 左2/3、右1/3 */
+  grid-template-columns: 4fr 3fr 5fr; /* 左4/12テキスト、4/12-7/12空白、7/12-12/12画像 */
   gap: 12px; /* 写真と文字間の距離 */
   margin-top: 20px; /* #photoのpadding-top: 140pxの後、さらに20px下に配置 */
   width: 100%;
   box-sizing: border-box;
   padding: 0;
   align-items: start; /* グリッドアイテムを上端に配置 */
+  min-height: calc(100vh - 140px - 20px); /* スティッキーが機能するための最小高さ（画面高さ - padding-top - margin-top） */
 }
 
 .content-left {
-  grid-column: 1; /* 左2/3 - 画像 */
+  grid-column: 3; /* 7/12から - 画像（5/12） */
   align-self: start; /* 上端で固定 */
   height: fit-content; /* コンテンツの高さに合わせる */
+  min-height: 100vh; /* スティッキーが機能するための最小高さを確保 */
 }
 
 .content-right {
-  grid-column: 2; /* 右1/3 - テキスト */
+  grid-column: 1; /* 左4/12 - テキスト */
   align-self: start; /* 上端で固定 */
 }
 
@@ -162,9 +164,10 @@ main {
   box-sizing: border-box;
   padding: 0;
   position: sticky;
-  top: 80px; /* ヘッダーの下で固定 */
+  top: calc(2vh + 60px); /* ヘッダーの高さ（padding-top: 2vh + ナビゲーションバーの高さ）を考慮 */
   align-self: start;
   height: fit-content;
+  will-change: transform; /* パフォーマンス最適化 */
 }
 
 .image-grid li {
@@ -194,8 +197,8 @@ main {
 .image-hover-text {
   position: fixed;
   top: calc(140px + 20px); /* #photoのpadding-top: 140px + .content-gridのmargin-top: 20px */
-  right: 12px; /* 右端から12px */
-  width: calc(33.33% - 12px); /* 右1/3の幅 - 右マージン */
+  left: 12px; /* 左端から12px */
+  width: calc(33.33% - 12px); /* 左4/12の幅 - 左マージン */
   height: 50vh; /* 画面の50%の高さ */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px;
