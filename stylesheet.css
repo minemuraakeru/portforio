@@ -49,9 +49,10 @@ html {
 .nav-right {
   display: flex;
   grid-column: 2; /* 右1/3 */
-  justify-content: flex-start; /* 左揃え */
+  justify-content: flex-end; /* 右揃え */
   align-items: center;
   margin: 0;
+  margin-right: 0; /* margin-rightを削除 */
   padding: 0;
   width: 100%;
 }
@@ -119,9 +120,10 @@ body {
 .nav-right .nav-button {
   font-size: 16px; /* ヘッダーのフォントサイズ（14pxから+2px） */
   font-weight: 400;
-  text-align: left; /* 文字を左揃えに */
+  text-align: right; /* 文字を右揃えに */
   padding: 0 !important;
   margin: 0 !important;
+  margin-right: 0; /* margin-rightを削除 */
   transition: opacity 0.5s ease-out; /* フェードアウト用のトランジション */
 }
 
@@ -136,7 +138,7 @@ main {
 #photo {
   width: 100%;
   box-sizing: border-box;
-  padding-top: 140px; /* ヘッダーの下の余白 */
+  padding-top: 180px; /* ヘッダーの下の余白 */
   padding-bottom: 0; /* padding-bottomを削除 */
   padding-left: 12px;
   padding-right: 12px;
@@ -148,12 +150,13 @@ main {
   display: grid;
   grid-template-columns: 4fr 3fr 5fr; /* 左4/12テキスト、4/12-7/12空白、7/12-12/12画像 */
   gap: 12px; /* 写真と文字間の距離 */
-  margin-top: 20px; /* #photoのpadding-top: 140pxの後、さらに20px下に配置 */
+  margin-top: 20px; /* #photoのpadding-top: 180pxの後、さらに20px下に配置 */
   width: 100%;
   box-sizing: border-box;
   padding: 0;
+  padding-bottom: 120px; /* 下部に120pxの余白を追加 */
   align-items: start; /* グリッドアイテムを上端に配置 */
-  min-height: calc(100vh - 140px - 20px); /* スティッキーが機能するための最小高さ（画面高さ - padding-top - margin-top） */
+  min-height: calc(100vh - 180px - 20px); /* スティッキーが機能するための最小高さ（画面高さ - padding-top - margin-top） */
 }
 
 .content-left {
@@ -247,7 +250,7 @@ main {
 /* 画像ホバー時のテキスト表示 - 絶対位置で固定 */
 .image-hover-text {
   position: fixed;
-  top: calc(140px + 20px); /* #photoのpadding-top: 140px + .content-gridのmargin-top: 20px */
+  top: calc(180px + 20px - 100px); /* #photoのpadding-top: 180px + .content-gridのmargin-top: 20px - 100px上に移動 */
   left: 12px; /* 左端から12px */
   width: calc(33.33% - 12px); /* 左4/12の幅 - 左マージン */
   height: 50vh; /* 画面の50%の高さ */
@@ -270,7 +273,7 @@ main {
 }
 
 .image-hover-text .hover-title {
-  font-size: 48px; /* 36pxに変更 */
+  font-size: 56px; /* 48pxから56pxに拡大 */
   font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
@@ -278,12 +281,31 @@ main {
 }
 
 .image-hover-text .hover-year {
-  font-size: 36px; /* 36pxに変更 */
+  font-size: 42px; /* 36pxから42pxに拡大 */
   font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
   margin-top: 4px; /* タイトルとの間隔 */
   white-space: nowrap; /* 改行しない */
+}
+
+/* 画面サイズに応じたタイトルと西暦のフォントサイズ調整 */
+@media (max-width: 1200px) {
+  .image-hover-text .hover-title {
+    font-size: 46px; /* 56pxから46pxに縮小 */
+  }
+  .image-hover-text .hover-year {
+    font-size: 35px; /* 42pxから35pxに縮小（比率維持） */
+  }
+}
+
+@media (max-width: 900px) {
+  .image-hover-text .hover-title {
+    font-size: 38px; /* 46pxから38pxに縮小 */
+  }
+  .image-hover-text .hover-year {
+    font-size: 28px; /* 35pxから28pxに縮小（比率維持） */
+  }
 }
 
 .image-hover-text .hover-description {
