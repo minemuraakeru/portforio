@@ -184,24 +184,6 @@ class YearCounter {
     this.targetYear = null;
     this.animationSpeed = 150; // ミリ秒（1ずつ変わる間隔）- 遅くするために150に変更
     this.lastUpdateTime = 0;
-    this.arrowElement = null; // 「→2019」部分の要素
-    this.initArrowElement(); // 初期化時に「→2019」要素を作成
-  }
-
-  // 「→2019」部分の要素を初期化
-  initArrowElement() {
-    // 既存のarrow要素があれば削除
-    const existingArrow = this.element.querySelector('.year-arrow');
-    if (existingArrow) {
-      existingArrow.remove();
-    }
-    
-    // 「→2019」部分の要素を作成
-    this.arrowElement = document.createElement('span');
-    this.arrowElement.className = 'year-arrow';
-    this.arrowElement.textContent = '→2019';
-    this.arrowElement.style.cursor = 'pointer';
-    this.element.appendChild(this.arrowElement);
   }
 
   // アニメーションループ
@@ -234,30 +216,10 @@ class YearCounter {
     }
   }
 
-  // 表示を更新（年と「→2019」を分離）
+  // 表示を更新（年のみ表示）
   updateDisplay() {
     if (this.currentYear === null) return;
-    
-    // 「→2019」要素が存在しない場合は作成
-    if (!this.arrowElement || !this.element.contains(this.arrowElement)) {
-      this.initArrowElement();
-    }
-    
-    // 既存のテキストノードをクリア（arrowElement以外）
-    const textNodes = Array.from(this.element.childNodes).filter(node => 
-      node.nodeType === Node.TEXT_NODE && node !== this.arrowElement
-    );
-    textNodes.forEach(node => node.remove());
-    
-    // 年の部分をテキストノードとして追加（arrowElementの前に）
-    const yearText = document.createTextNode(this.currentYear.toString());
-    if (this.arrowElement.parentNode === this.element) {
-      this.element.insertBefore(yearText, this.arrowElement);
-    } else {
-      this.element.appendChild(yearText);
-      this.initArrowElement();
-      this.element.appendChild(this.arrowElement);
-    }
+    this.element.textContent = this.currentYear.toString();
   }
 
   // 西暦を1ずつカウントアップ/ダウンで変更
@@ -280,26 +242,12 @@ class YearCounter {
         this.element.textContent = targetYear;
         this.currentYear = null;
         this.targetYear = null;
-        // 「→2019」要素を削除
-        if (this.arrowElement) {
-          this.arrowElement.remove();
-          this.arrowElement = null;
-        }
         return;
       }
     }
 
-    // 現在の値を取得（テキストノードから取得、または「→2019」を除去して数値に変換）
-    let currentText = '';
-    // テキストノードを探す
-    const textNodes = Array.from(this.element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE);
-    if (textNodes.length > 0) {
-      currentText = textNodes[0].textContent.trim();
-    } else {
-      // テキストノードがない場合は、textContentから取得
-      currentText = this.element.textContent.trim();
-      currentText = currentText.replace(/→\d+$/, ''); // 「→2019」を除去
-    }
+    // 現在の値を取得
+    const currentText = this.element.textContent.trim().replace(/→\d+$/, '');
     const current = parseInt(currentText, 10);
     
     // 同じ値の場合はアニメーションしない
@@ -311,7 +259,7 @@ class YearCounter {
     }
 
     // 初期値が空または数値でない場合は、即座にターゲット値を表示してからアニメーションしない
-    if (isNaN(current) || currentTextWithoutArrow === '') {
+    if (isNaN(current) || currentText === '') {
       // 初期値が空の場合は即座に表示（アニメーションなし）
       this.currentYear = target;
       this.targetYear = target;
@@ -367,8 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (hoverTitle.textContent !== title) {
             titleScrambler.animateTo(title);
           }
-          // 現在の表示から「→2019」を除去して比較
-          const currentYearText = hoverYear.textContent.replace(/→\d+$/, '');
+          const currentYearText = hoverYear.textContent.trim();
           // yearから数値部分を抽出（「2019-」のような場合も対応）
           const yearMatch = year.match(/(\d+)/);
           const yearNumber = yearMatch ? yearMatch[1] : year;
@@ -396,35 +343,39 @@ document.addEventListener("DOMContentLoaded", () => {
     // 初期チェック
     checkCenterImage();
 
-    // 「→2019」部分をクリックしたときにページの一番下までスクロール
-    // 「→2019」要素（.year-arrow）に直接クリックイベントを追加
-    function setupArrowClickHandler() {
-      const arrowElement = document.querySelector('.hover-year .year-arrow');
-      if (arrowElement) {
-        arrowElement.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          // ページの一番下までスクロール
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth'
-          });
-          return false;
-        });
+    // ホバーイベントは削除（スクロールベースのみ）
+  }
+
+  // 640px以下：タイトルが上から10pxに来たら固定。スクロールを戻すと元の位置に戻る
+  const contentRight = document.querySelector(".content-right");
+  const contentGrid = document.querySelector(".content-grid");
+  if (contentRight && contentGrid) {
+    const STICKY_TOP = 10;
+    let stuckNaturalTop = 0; // 固定した瞬間の、タイトル上端のドキュメント座標
+    function updateTitleSticky() {
+      if (window.innerWidth > 640) {
+        contentRight.classList.remove("is-stuck");
+        contentGrid.style.paddingTop = "";
+        return;
+      }
+      if (contentRight.classList.contains("is-stuck")) {
+        // 固定中は rect が常に 10 付近なので、スクロール位置で「戻す」判定
+        if (window.scrollY < stuckNaturalTop - STICKY_TOP) {
+          contentRight.classList.remove("is-stuck");
+          contentGrid.style.paddingTop = "";
+        }
+        return;
+      }
+      const rect = contentRight.getBoundingClientRect();
+      if (rect.top <= STICKY_TOP) {
+        stuckNaturalTop = window.scrollY + rect.top;
+        const h = contentRight.offsetHeight;
+        contentRight.classList.add("is-stuck");
+        contentGrid.style.paddingTop = h + 12 + "px";
       }
     }
-    
-    // 初期設定
-    setupArrowClickHandler();
-    
-    // 要素が動的に更新される可能性があるため、MutationObserverで監視
-    if (hoverYear) {
-      const observer = new MutationObserver(function(mutations) {
-        setupArrowClickHandler();
-      });
-      observer.observe(hoverYear, { childList: true, subtree: true });
-    }
-
-    // ホバーイベントは削除（スクロールベースのみ）
+    window.addEventListener("scroll", updateTitleSticky, { passive: true });
+    window.addEventListener("resize", updateTitleSticky);
+    updateTitleSticky();
   }
 });
