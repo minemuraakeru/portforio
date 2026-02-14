@@ -87,6 +87,18 @@ body {
   }
 }
 
+/* 上からボワっと表示されるアニメーション（自然な動き） */
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* ヘッダーリンクのスタイル */
 .nav-button {
@@ -124,9 +136,10 @@ main {
   width: 100%;
   box-sizing: border-box;
   padding-top: 140px; /* ヘッダーの下の余白 */
-  padding-bottom: 50vh; /* 最後の画像が中央に来るように十分なスペースを確保 */
+  padding-bottom: 0; /* padding-bottomを削除 */
   padding-left: 12px;
   padding-right: 12px;
+  margin-bottom: 200px; /* 下のマージン */
 }
 
 /* コンテンツグリッド - 左4/12テキスト、8/12から画像（5/12） */
@@ -158,7 +171,7 @@ main {
 .image-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 10px;
   margin: 0;
   width: 100%;
   box-sizing: border-box;
@@ -174,6 +187,43 @@ main {
   list-style: none;
   margin: 0;
   padding: 0;
+  opacity: 0;
+  animation: slideDownFadeIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* 各画像に順番に遅延を付ける（自然な流れ） */
+.image-grid li:nth-child(1) {
+  animation-delay: 0.08s;
+}
+.image-grid li:nth-child(2) {
+  animation-delay: 0.16s;
+}
+.image-grid li:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.image-grid li:nth-child(4) {
+  animation-delay: 0.32s;
+}
+.image-grid li:nth-child(5) {
+  animation-delay: 0.40s;
+}
+.image-grid li:nth-child(6) {
+  animation-delay: 0.48s;
+}
+.image-grid li:nth-child(7) {
+  animation-delay: 0.56s;
+}
+.image-grid li:nth-child(8) {
+  animation-delay: 0.64s;
+}
+.image-grid li:nth-child(9) {
+  animation-delay: 0.72s;
+}
+.image-grid li:nth-child(10) {
+  animation-delay: 0.80s;
+}
+.image-grid li:nth-child(11) {
+  animation-delay: 0.88s;
 }
 
 .image-grid .image-link {
@@ -191,6 +241,12 @@ main {
   object-fit: cover;
   object-position: center;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* タイトルが表示されている画像を1.02倍に拡大 */
+.image-grid .image-link.image-active img {
+  transform: scale(1.02);
 }
 
 /* 画像ホバー時のテキスト表示 - 絶対位置で固定 */
@@ -201,7 +257,8 @@ main {
   width: calc(33.33% - 12px); /* 左4/12の幅 - 左マージン */
   height: 50vh; /* 画面の50%の高さ */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 36px; /* 36pxに変更 */
+  font-weight: 320; /* font-weightを320に設定 */
   color: #333;
   text-align: left;
   margin: 0;
@@ -209,24 +266,28 @@ main {
   box-sizing: border-box;
   pointer-events: none; /* マウスイベントを無効化して、下の要素と干渉しないように */
   display: flex;
-  flex-direction: row; /* 一列（横並び）に */
-  align-items: center; /* 縦方向の中央揃え */
-  gap: 10px; /* 要素間の間隔 */
+  flex-direction: column; /* 縦並びに */
+  align-items: flex-start; /* 左揃え */
+  justify-content: center; /* 縦方向の中央揃え */
+  gap: 0; /* 要素間の間隔 */
   z-index: 100;
-  white-space: nowrap; /* 改行しない */
+  white-space: normal; /* 改行を許可 */
 }
 
 .image-hover-text .hover-title {
-  font-size: 16px;
+  font-size: 48px; /* 36pxに変更 */
+  font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
   white-space: nowrap; /* 改行しない */
 }
 
 .image-hover-text .hover-year {
-  font-size: 16px;
+  font-size: 36px; /* 36pxに変更 */
+  font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
+  margin-top: 4px; /* タイトルとの間隔 */
   white-space: nowrap; /* 改行しない */
 }
 
@@ -321,7 +382,7 @@ object-fit: cover;
 .japanese-text {
   font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
   font-size: 10px; /* 次の偶数（12pxの次は10px） */
-  font-weight: 400;
+  font-weight: 320; /* font-weightを320に設定 */
   line-height: 1.6;
 }
 /* 共通フッタースタイル */
@@ -473,13 +534,9 @@ object-fit: cover;
       top: auto;
     }
     
-    /* レスポンシブ時はテキストも全幅に、絶対位置を解除 */
+    /* レスポンシブ時はhover textを非表示 */
     .image-hover-text {
-      position: static; /* 絶対位置を解除 */
-      top: auto;
-      right: auto;
-      width: 100%;
-      margin-left: 0;
+      display: none; /* スマホ用なので非表示 */
     }
     
     .image-list {

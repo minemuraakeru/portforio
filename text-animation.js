@@ -1,81 +1,267 @@
-// テキストアニメーション機能
+// テキストアニメーション機能（効率化版）
 class TextScrambler {
   constructor(element) {
     this.element = element;
     this.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    this.animationSpeed = 50; // ミリ秒
     this.totalDuration = 500; // 総アニメーション時間（ミリ秒）
-    this.animationId = null;
+    this.animationFrameId = null;
+    this.charStates = [];
+    this.startTime = 0;
   }
 
-  // ランダムな文字を生成
+  // ランダムな文字を生成（キャッシュ済み）
   getRandomChar() {
     return this.chars[Math.floor(Math.random() * this.chars.length)];
   }
 
-  // テキストをスクランブルアニメーションで変更
+  // 文字をABC順で次の文字に進める（遠い場合は飛ばす）
+  getNextCharInSequence(currentChar, targetChar) {
+    if (!currentChar || !targetChar) return targetChar;
+    
+    const currentIndex = this.chars.indexOf(currentChar);
+    const targetIndex = this.chars.indexOf(targetChar);
+    
+    // 現在の文字がcharsにない場合（日本語など）は、ランダム文字を使用
+    if (currentIndex === -1) {
+      return this.getRandomChar();
+    }
+    
+    // ターゲットがcharsにない場合（日本語など）は、ランダム文字を使用
+    if (targetIndex === -1) {
+      return this.getRandomChar();
+    }
+    
+    // ターゲットと同じ場合はターゲットを返す
+    if (currentIndex === targetIndex) {
+      return targetChar;
+    }
+    
+    const distance = Math.abs(targetIndex - currentIndex);
+    const skipThreshold = 10; // 10文字以上離れている場合は飛ばす
+    
+    // 遠い場合は違和感のない程度に飛ばす（最大5文字ずつ）
+    if (distance > skipThreshold) {
+      const skipAmount = Math.min(5, Math.floor(distance / 3));
+      if (currentIndex < targetIndex) {
+        return this.chars[Math.min(currentIndex + skipAmount, targetIndex)];
+      } else {
+        return this.chars[Math.max(currentIndex - skipAmount, targetIndex)];
+      }
+    }
+    
+    // 近い場合は1文字ずつ進める
+    if (currentIndex < targetIndex) {
+      return this.chars[Math.min(currentIndex + 1, targetIndex)];
+    } else {
+      return this.chars[Math.max(currentIndex - 1, targetIndex)];
+    }
+  }
+
+  // アニメーションループ（requestAnimationFrame使用、最適化版）
+  animate() {
+    const elapsed = performance.now() - this.startTime;
+    const isComplete = elapsed >= this.totalDuration;
+    const textParts = [];
+    let allComplete = true;
+    let hasChanges = false;
+    const statesLength = this.charStates.length;
+
+    // 事前に最終テキストを構築（完了時のため）
+    let finalText = '';
+
+    for (let i = 0; i < statesLength; i++) {
+      const state = this.charStates[i];
+      
+      if (state.target === null) {
+        // この文字は削除される（表示しない）
+        continue;
+      }
+
+      finalText += state.target;
+
+      // 同じ文字の場合は変更しない
+      if (!state.needsChange) {
+        textParts.push(state.target);
+        continue;
+      }
+
+      // 0.5秒経過したら強制的に完了
+      if (isComplete) {
+        textParts.push(state.target);
+        state.needsChange = false;
+      } else if (state.iterations < state.maxIterations) {
+        // まだアニメーション中 - ABC順で変更
+        const nextChar = this.getNextCharInSequence(state.current, state.target);
+        if (nextChar !== state.current) {
+          state.current = nextChar;
+          state.iterations++;
+          hasChanges = true;
+        }
+        textParts.push(state.current);
+        allComplete = false;
+      } else {
+        // アニメーション完了、最終文字を表示
+        textParts.push(state.target);
+        state.needsChange = false;
+      }
+    }
+
+    // 変更があった場合のみDOMを更新（効率化）
+    if (hasChanges || !allComplete) {
+      this.element.textContent = textParts.join('');
+    }
+
+    if (allComplete || isComplete) {
+      // 最終的なテキストを確実に設定
+      this.element.textContent = finalText;
+      this.animationFrameId = null;
+    } else {
+      // 次のフレームをスケジュール
+      this.animationFrameId = requestAnimationFrame(() => this.animate());
+    }
+  }
+
+  // テキストをスクランブルアニメーションで変更（最適化版）
   animateTo(targetText) {
     // 既存のアニメーションをキャンセル
-    if (this.animationId) {
-      clearInterval(this.animationId);
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
     }
 
+    // 同じテキストの場合はアニメーションしない
     const currentText = this.element.textContent;
-    const maxLength = Math.max(currentText.length, targetText.length);
+    if (currentText === targetText) {
+      return;
+    }
+
+    const currentLength = currentText.length;
+    const targetLength = targetText.length;
+    const maxLength = Math.max(currentLength, targetLength);
     
-    // 各文字位置の状態を管理
-    const charStates = [];
-    const maxIterations = Math.floor(this.totalDuration / this.animationSpeed); // 約10回
+    // 各文字位置の状態を管理（事前に配列サイズを確保）
+    this.charStates = new Array(maxLength);
+    const frameRate = 60; // 60fps想定
+    const maxIterations = Math.floor((this.totalDuration / 1000) * frameRate); // 約30フレーム
     
     for (let i = 0; i < maxLength; i++) {
-      // 各文字が8〜10回の範囲でランダムに終わるように設定
-      charStates.push({
-        current: i < currentText.length ? currentText[i] : '',
-        target: i < targetText.length ? targetText[i] : null,
-        iterations: 0,
-        maxIterations: Math.floor(8 + Math.random() * (maxIterations - 8)) // 8〜10回の範囲
-      });
+      const currentChar = i < currentLength ? currentText[i] : '';
+      const targetChar = i < targetLength ? targetText[i] : null;
+      
+      // 同じ文字の場合は変更しない
+      if (currentChar === targetChar) {
+        this.charStates[i] = {
+          current: currentChar,
+          target: targetChar,
+          iterations: 0,
+          maxIterations: 0, // 即座に完了
+          needsChange: false // 変更不要
+        };
+      } else {
+        // 各文字が異なるタイミングで終わるように設定（ランダムな順序）
+        this.charStates[i] = {
+          current: currentChar,
+          target: targetChar,
+          iterations: 0,
+          maxIterations: Math.floor(15 + Math.random() * (maxIterations - 15)), // 15〜30フレームの範囲
+          needsChange: true // 変更が必要
+        };
+      }
     }
 
-    const startTime = Date.now();
+    this.startTime = performance.now(); // Date.now()より高精度
+    // requestAnimationFrameでアニメーション開始
+    this.animationFrameId = requestAnimationFrame(() => this.animate());
+  }
+}
 
-    // アニメーションループ
-    this.animationId = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      let scrambledText = '';
-      let allComplete = true;
+// 西暦の数字を1ずつカウントアップ/ダウンするアニメーション
+class YearCounter {
+  constructor(element) {
+    this.element = element;
+    this.animationFrameId = null;
+    this.currentYear = null;
+    this.targetYear = null;
+    this.animationSpeed = 150; // ミリ秒（1ずつ変わる間隔）- 遅くするために150に変更
+    this.lastUpdateTime = 0;
+  }
 
-      for (let i = 0; i < charStates.length; i++) {
-        const state = charStates[i];
-        
-        if (state.target === null) {
-          // この文字は削除される（表示しない）
-          continue;
-        }
-
-        // 0.5秒経過したら強制的に完了
-        if (elapsed >= this.totalDuration) {
-          scrambledText += state.target;
-        } else if (state.iterations < state.maxIterations) {
-          // まだアニメーション中
-          scrambledText += this.getRandomChar();
-          state.iterations++;
-          allComplete = false;
+  // アニメーションループ
+  animate() {
+    const now = performance.now();
+    
+    if (now - this.lastUpdateTime >= this.animationSpeed) {
+      if (this.currentYear !== null && this.targetYear !== null) {
+        if (this.currentYear < this.targetYear) {
+          this.currentYear++;
+          this.element.textContent = this.currentYear.toString();
+          this.lastUpdateTime = now;
+        } else if (this.currentYear > this.targetYear) {
+          this.currentYear--;
+          this.element.textContent = this.currentYear.toString();
+          this.lastUpdateTime = now;
         } else {
-          // アニメーション完了、最終文字を表示
-          scrambledText += state.target;
+          // アニメーション完了
+          this.element.textContent = this.targetYear.toString();
+          this.animationFrameId = null;
+          return;
         }
       }
+    }
 
-      this.element.textContent = scrambledText;
+    if (this.currentYear !== this.targetYear) {
+      this.animationFrameId = requestAnimationFrame(() => this.animate());
+    } else {
+      this.animationFrameId = null;
+    }
+  }
 
-      if (allComplete || elapsed >= this.totalDuration) {
-        clearInterval(this.animationId);
-        this.animationId = null;
-        // 最終的なテキストを確実に設定
-        this.element.textContent = targetText;
-      }
-    }, this.animationSpeed);
+  // 西暦を1ずつカウントアップ/ダウンで変更
+  animateTo(targetYear) {
+    // 既存のアニメーションをキャンセル
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+
+    // ターゲットを数値に変換
+    const target = parseInt(targetYear, 10);
+    if (isNaN(target)) {
+      // 数値でない場合はそのまま表示
+      this.element.textContent = targetYear;
+      this.currentYear = null;
+      this.targetYear = null;
+      return;
+    }
+
+    // 現在の値を取得（数値に変換）
+    const currentText = this.element.textContent.trim();
+    const current = parseInt(currentText, 10);
+    
+    // 同じ値の場合はアニメーションしない
+    if (!isNaN(current) && current === target) {
+      this.element.textContent = target.toString();
+      this.currentYear = target;
+      this.targetYear = target;
+      return;
+    }
+
+    // 初期値が空または数値でない場合は、即座にターゲット値を表示してからアニメーションしない
+    if (isNaN(current) || currentText === '') {
+      // 初期値が空の場合は即座に表示（アニメーションなし）
+      this.element.textContent = target.toString();
+      this.currentYear = target;
+      this.targetYear = target;
+      return;
+    }
+
+    // 初期値を設定
+    this.currentYear = current;
+    this.targetYear = target;
+    this.lastUpdateTime = performance.now();
+
+    // アニメーション開始
+    this.animationFrameId = requestAnimationFrame(() => this.animate());
   }
 }
 
@@ -89,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (hoverText && hoverTitle && hoverYear && hoverDescription && imageLinks.length > 0) {
     const titleScrambler = new TextScrambler(hoverTitle);
-    const yearScrambler = new TextScrambler(hoverYear);
+    const yearCounter = new YearCounter(hoverYear); // TextScramblerからYearCounterに変更
     const descriptionScrambler = new TextScrambler(hoverDescription);
 
     // スクロール時に中央に来た画像を検知
@@ -109,7 +295,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+      // すべての画像からアクティブクラスを削除
+      imageLinks.forEach((link) => {
+        link.classList.remove("image-active");
+      });
+
       if (centerImage) {
+        // 中央の画像にアクティブクラスを追加
+        centerImage.classList.add("image-active");
+        
         const title = centerImage.getAttribute("data-title");
         const year = centerImage.getAttribute("data-year");
         const description = centerImage.getAttribute("data-description") || ""; // 説明はオプション
@@ -118,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
             titleScrambler.animateTo(title);
           }
           if (hoverYear.textContent !== year) {
-            yearScrambler.animateTo(year);
+            yearCounter.animateTo(year);
           }
           if (hoverDescription.textContent !== description) {
             if (description) {
