@@ -60,7 +60,7 @@ html {
 
   
   
-/* 全体のフォント設定 */
+/* 全体のフォント設定（背景白・オープニングアニメなし） */
 body {
   cursor: url('images/icon.png'), auto;
   overflow-x: hidden; /* 横スクロールを無効にする */
@@ -70,50 +70,29 @@ body {
   line-height: 1.6;
   margin: 0;
   padding: 0;
-  color: #333;
+  background-color: #ffffff;
+  color: #121212;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   line-height: 1.2; /* 行間を詰める */
-  /* margin-top: 80px; ヘッダーの高さ分だけ余白を追加 */
-  opacity: 0;
-  animation: fadeIn 0.4s ease-in-out forwards;
 }
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* 上からボワっと表示されるアニメーション（自然な動き） */
-@keyframes slideDownFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 
 /* ヘッダーリンクのスタイル */
 .nav-button {
-  font-size: 16px; /* ヘッダーのフォントサイズ（14pxから+2px） */
-  color: #333;
-  text-decoration: none; /* 下線を消す */
+  font-size: 16px;
+  color: #121212;
+  text-decoration: none;
   margin-right: 20px;
   margin-left: 0px;
   cursor: cell;
+  position: relative;
+  transition: color 0.25s ease, opacity 0.25s ease;
 }
 
 .nav-button:hover {
-  color: #ff4400; /* ホバー時の色 */
+  color: #ff3c00;
+  opacity: 0.85;
 }
   
 
@@ -125,7 +104,13 @@ body {
   padding: 0 !important;
   margin: 0 !important;
   margin-right: 0; /* margin-rightを削除 */
-  transition: opacity 0.5s ease-out; /* フェードアウト用のトランジション */
+  transition: opacity 0.5s ease-out; /* スクロール時のフェード用 */
+}
+
+/* スクロール時のみ非表示（インラインstyleを使わないのでホバーアニメが効く） */
+.nav-right .nav-button.nav-button-scrolled {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* メインコンテンツエリア */
@@ -192,43 +177,6 @@ main {
   list-style: none;
   margin: 0;
   padding: 0;
-  opacity: 0;
-  animation: slideDownFadeIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-/* 各画像に順番に遅延を付ける（自然な流れ） */
-.image-grid li:nth-child(1) {
-  animation-delay: 0.08s;
-}
-.image-grid li:nth-child(2) {
-  animation-delay: 0.16s;
-}
-.image-grid li:nth-child(3) {
-  animation-delay: 0.24s;
-}
-.image-grid li:nth-child(4) {
-  animation-delay: 0.32s;
-}
-.image-grid li:nth-child(5) {
-  animation-delay: 0.40s;
-}
-.image-grid li:nth-child(6) {
-  animation-delay: 0.48s;
-}
-.image-grid li:nth-child(7) {
-  animation-delay: 0.56s;
-}
-.image-grid li:nth-child(8) {
-  animation-delay: 0.64s;
-}
-.image-grid li:nth-child(9) {
-  animation-delay: 0.72s;
-}
-.image-grid li:nth-child(10) {
-  animation-delay: 0.80s;
-}
-.image-grid li:nth-child(11) {
-  animation-delay: 0.88s;
 }
 
 .image-grid .image-link {
@@ -258,7 +206,7 @@ main {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 36px; /* 36pxに変更 */
   font-weight: 320; /* font-weightを320に設定 */
-  color: #333;
+  color: #121212;
   text-align: left;
   margin: 0;
   padding: 0;
@@ -319,7 +267,7 @@ main {
   margin: 0;
   padding: 0;
   line-height: 1.3;
-  color: #666; /* 少し薄い色 */
+  color: #666666; /* 白背景用のグレー */
   white-space: nowrap; /* 改行しない */
 }
 
@@ -419,14 +367,14 @@ object-fit: cover;
   padding-bottom: 0;
   box-sizing: border-box;
   font-size: 12px; /* 10pxから+2px */
-  color: #999; /* グレーに変更 */
+  color: #a0a0a0; /* 白ベースの薄いグレー */
 }
 
 .footer p {
   margin: 0;
   margin-bottom: 8px;
   padding: 0;
-  color: #999; /* グレーに変更 */
+  color: #a0a0a0; /* 白ベースの薄いグレー */
 }
 
 /* ____________________________________________________________________________________ */
@@ -448,7 +396,7 @@ object-fit: cover;
   .hamburger-menu .bar {
     height: 3px;
     width: 100%;
-    background-color: #333;
+    background-color: #121212;
     border-radius: 5px;
   }
   
@@ -463,7 +411,7 @@ object-fit: cover;
   left: 0;
   width: 100%; /* 画面全体をカバー */
   height: 100%; /* 高さを100%に設定 */
-  background-color: rgba(255, 255, 255, 0.88); /* 背景を半透明の黒に */
+  background-color: rgba(18, 18, 18, 0.96);
   backdrop-filter: blur(12px);
   z-index: 1000; /* 最前面に表示 */
 }
@@ -473,22 +421,21 @@ object-fit: cover;
 }
 
 .menu-content .menu-link {
-  padding: 4px 20px;/* 選択肢同士の幅 */
+  padding: 4px 20px;
   text-decoration: none;
-  color: #222222; /* 白色で目立たせる */
-  font-size: 17px; /* 大きめのフォントサイズ */
-  margin-bottom: 14px; /* 選択肢間に余白 */
-  border-bottom: none; /* 下線をなくす */
+  color: #f5f5f5;
+  font-size: 17px;
+  margin-bottom: 14px;
+  border-bottom: none;
   font-weight: 500;
   cursor: cell;
-}
-
-.menu-content .menu-link:last-child {
-  border-bottom: none;
+  position: relative;
+  transition: opacity 0.25s ease, padding-left 0.25s ease;
 }
 
 .menu-content .menu-link:hover {
-  color: #ff4400; /* ホバー時の色 */
+  opacity: 0.9;
+  padding-left: 28px;
 }
   
 /* ____________________________________________________________________________________ */
@@ -553,7 +500,7 @@ object-fit: cover;
       order: -1; /* タイトル・西暦を上に */
       position: relative; /* JSで .is-stuck のときに fixed に切り替え */
       z-index: 50;
-      background: #fff;
+      background: #ffffff;
     }
     /* JSで上から10pxに来たら付与。固定表示。top:0 + padding-top で隙間も白で覆う */
     .content-right.is-stuck {
@@ -563,6 +510,7 @@ object-fit: cover;
       right: 22px;
       width: auto !important;
       padding-top: 10px; /* タイトルは実質10px下に。この10px分で隙間の画像を隠す */
+      background: #ffffff; /* 白背景用 */
     }
     
     /* 画像グリッドを縦一列に */
@@ -614,7 +562,7 @@ object-fit: cover;
       text-align: right; /* テキストを右揃え */
       margin: 10px 0; /* 上下に10pxのマージン */
       font-size: 12px; /* 10pxから+2px */
-      color: #666; /* フォント色 */
+      color: #a0a0a0; /* 白ベースの薄いグレー */
     }
   }
 
@@ -637,7 +585,7 @@ object-fit: cover;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
+  background-color: #121212;
   display: flex;
   justify-content: center;
   align-items: center;

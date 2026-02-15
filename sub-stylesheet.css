@@ -25,6 +25,12 @@
   align-items: start;
 }
 
+/* 画像列を上端揃えにし、列の高さは内容に合わせる（写真の下の白余白を抑える） */
+.project-container .project-images {
+  align-self: start;
+  min-height: 0; /* グリッドセルの余計な伸びを防ぐ */
+}
+
 .project-images {
   width: 100%;
   display: flex;
@@ -39,17 +45,33 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background: transparent;
+  border: none;
 }
 
 .project-images .vertical-image-list li {
   width: 100%;
-  margin-bottom: 12px; /* 写真-写真間のmargin */
+  margin-bottom: 0; /* 写真間の白い線を出さない（余白なし） */
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* 最後の写真の下に白い余白が出ないように */
+.project-images .vertical-image-list li:last-child {
+  margin-bottom: 0;
 }
 
 .project-images .vertical-image-list img {
   width: 100%;
   height: auto;
   display: block;
+  vertical-align: bottom;
+  background: transparent;
+  line-height: 0;
+  font-size: 0;
+  border: none;   /* 写真間の白線を消す */
+  outline: none;
 }
 
 /* YouTube動画のスタイル */
@@ -128,28 +150,60 @@ main {
   padding-top: 140px; /* homeの画像グリッドと同じ開始位置 */
 }
 
+/* ========== aboutme 専用: 1カラムで写真の下に白余白が出ないように ========== */
+.aboutme-page .project-container {
+  display: block; /* グリッドやめ。写真→テキストの縦並びだけ */
+  max-width: 100%;
+}
+.aboutme-page .project-images {
+  width: 100%;
+  margin-bottom: 24px; /* 写真とテキストの間 */
+}
+.aboutme-page .project-images .vertical-image-list {
+  margin: 0;
+  padding: 0;
+}
+.aboutme-page .project-images .vertical-image-list li {
+  margin-bottom: 0; /* 写真1枚なので余白なし */
+}
+.aboutme-page .project-images .vertical-image-list li:last-child {
+  margin-bottom: 0;
+}
+.aboutme-page .project-text {
+  width: 100%;
+}
 
   
   /* サブページ専用: 縦1列の画像リスト */
   .vertical-image-list {
     list-style: none;
     padding: 0;
-    margin: 50px auto 20px; /* 上下の余白調整 */
-    width: 80%; /* リスト自体は幅全体 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    margin: 50px auto 20px;
+    width: 80%;
     display: flex;
     flex-direction: column;
-    align-items: center; /* 画像を中央揃え */
+    align-items: center;
+    background: transparent;
   }
   
   .vertical-image-list li {
-    margin-bottom: 4px; /* 画像間の間隔 !!!!!!!!!!!*/
-    width: 70%; /* 各画像の幅を70%に設定 !!!!!!*/
+    margin-bottom: 0; /* 写真間の白線を出さない */
+    width: 70%;
+    background: transparent;
+    border: none;
+    outline: none;
   }
   
   .vertical-image-list img {
-    width: 100%; /* リストの幅に合わせる */
-    height: auto; /* 画像比率を保持 */
+    width: 100%;
+    height: auto;
     object-fit: cover;
+    display: block;
+    background: transparent;
+    line-height: 0;
+    font-size: 0;
+    border: none;
+    outline: none;
   }
 
 
@@ -298,8 +352,39 @@ main {
       font-size: 12px;
     }
   }
-  
 
+/* ========== 縦並び写真の白線を確実に消す（全ルールを上書き） ========== */
+main .project-container .project-images .vertical-image-list {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 8px !important; /* 縦に並んだ画像の間を8px開ける */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+main .project-container .project-images .vertical-image-list li {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+main .project-container .project-images .vertical-image-list img {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: block !important;
+  vertical-align: top !important;
+  line-height: 0 !important;
+  font-size: 0 !important;
+  max-width: 100%;
+  height: auto;
+  object-fit: fill;
+}
 
 
 

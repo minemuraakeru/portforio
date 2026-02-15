@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ページ遷移をなめらかにする
+  // ページ遷移をなめらかにする（index / aboutme への遷移のみフェード。workサブページへは白背景のまま即遷移）
   const links = document.querySelectorAll('a[href]');
   links.forEach(link => {
     const href = link.getAttribute('href');
@@ -26,36 +26,36 @@ document.addEventListener("DOMContentLoaded", () => {
         !href.startsWith('https://') &&
         (href.endsWith('.html') || href === 'index.html' || href === 'aboutme.html' || 
          href.includes('/') && !href.includes('://'))) {
+      // home → サブページ（1.html, 2.html など）のときはフェードせずそのまま遷移（白＞黒の背景変更なし）
+      // home → aboutme（a.html）のときもフェードせずそのまま遷移（黒＞黒のままでよい）
+      const isWorkSubpage = /^\d+\.html$/.test(href) || href === '0_temple.html';
+      const isAboutMe = href === 'aboutme.html' || href.endsWith('/aboutme.html');
+      if (isWorkSubpage || isAboutMe) {
+        return; // 通常のリンク遷移のまま
+      }
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        document.body.style.transition = 'opacity 0.2s ease-in-out'; // フェードアウト時間
+        document.body.style.transition = 'opacity 0.2s ease-in-out';
         document.body.style.opacity = '0';
         setTimeout(() => {
           window.location.href = href;
-        }, 200); // フェードアウト時間と同じ
+        }, 200);
       });
     }
   });
 
   // 画像ホバー時のテキスト変更は text-animation.js で処理
 
-  // スクロール時に「AKERU MINEMURA PORTFOLIO」をフェードアウト
+  // スクロール時に「AKERU MINEMURA PORTFOLIO」をフェードアウト（クラスで制御してホバーアニメを維持）
   const portfolioButton = document.querySelector('.nav-right .nav-button');
   if (portfolioButton) {
-    let lastScrollTop = 0;
-    
     window.addEventListener('scroll', () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // 60pxスクロールした時にフェードアウト
       if (scrollTop > 60) {
-        portfolioButton.style.opacity = '0';
+        portfolioButton.classList.add('nav-button-scrolled');
       } else {
-        // 60px未満の場合は表示
-        portfolioButton.style.opacity = '1';
+        portfolioButton.classList.remove('nav-button-scrolled');
       }
-      
-      lastScrollTop = scrollTop;
     }, { passive: true });
   }
 });
@@ -68,11 +68,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-window.addEventListener('load', () => {
-  // オープニングアニメーションが終了した後に、コンテンツを表示する
-  const openingAnimation = document.querySelector('.opening-animation');
-  setTimeout(() => {
-    openingAnimation.style.display = 'none'; // アニメーション終了後にオープニングを非表示
-  }, 2000); // アニメーション時間（ミリ秒）
-});
 
