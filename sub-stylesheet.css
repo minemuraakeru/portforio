@@ -14,7 +14,7 @@
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 18px; /* 写真-文字間のmargin（12pxから18pxに変更、+6px） */
+  gap: 38px; /* 写真-文字間（18pxから+20px） */
   width: 100%;
   box-sizing: border-box;
   margin: 0;
@@ -387,6 +387,10 @@ main .project-container .project-images .vertical-image-list img {
   object-fit: fill;
 }
 
+/* 1.html 等サブページのフッター：上余白60px、下余白2px */
+.footer {
+  margin-top: 60px;
+  margin-bottom: 2px;
+}
 
 
-  

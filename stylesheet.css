@@ -4,6 +4,11 @@
   
 } */
 
+/* コンテンツ左端の余白（WORKとタイトル・西暦を縦揃えするため統一） */
+:root {
+  --content-padding-x: 22px;
+}
+
 /* html要素のリセット */
 html {
   margin: 0;
@@ -12,6 +17,7 @@ html {
   min-height: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
+  background-color: #ffffff; /* PC時はbodyが中央1200pxのため、左右余白部分の背景 */
 }
 
 /* ヘッダー全体のスタイル */
@@ -35,8 +41,8 @@ html {
   width: 100%;
   box-sizing: border-box;
   padding-top: 2%;
-  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-left: var(--content-padding-x);
+  padding-right: var(--content-padding-x);
   margin: 0;
   gap: 0;
 }
@@ -44,7 +50,6 @@ html {
 .nav-left {
   display: flex;
   grid-column: 1; /* 左2/3 */
-  margin-left: 10px; /* 左側に10pxのマージン */
 }
 
 .nav-right {
@@ -76,6 +81,28 @@ body {
   display: flex;
   flex-direction: column;
   line-height: 1.2; /* 行間を詰める */
+}
+
+/* PC（デスクトップ）：コンテンツ最大幅1200px、残りを左右均等マージンで中央配置 */
+@media (min-width: 1201px) {
+  body {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* 固定ヘッダーも同じ幅で中央に */
+  .header {
+    width: 1200px;
+    max-width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+  /* タイトル・西暦をコンテンツ左1/3に、WORKと縦揃え（同じ左端） */
+  .image-hover-text {
+    left: calc((100vw - 1200px) / 2 + var(--content-padding-x));
+    width: calc((1200px - 44px) * 4 / 12); /* グリッド1列目＝左1/3幅 */
+  }
 }
 
 /* ヘッダーリンクのスタイル */
@@ -120,14 +147,14 @@ main {
   flex-grow: 1;
 }
 
-/* 写真コンテナ - ヘッダーと同じ左右マージン */
+/* 写真コンテナ - ヘッダーと同じ左右マージン（WORKと縦揃え） */
 #photo {
   width: 100%;
   box-sizing: border-box;
   padding-top: 180px; /* ヘッダーの下の余白 */
   padding-bottom: 0; /* padding-bottomを削除 */
-  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-left: var(--content-padding-x);
+  padding-right: var(--content-padding-x);
   margin-bottom: 200px; /* 下のマージン */
 }
 
@@ -196,29 +223,29 @@ main {
   display: block;
 }
 
-/* 画像ホバー時のテキスト表示 - 絶対位置で固定 */
+/* 画像ホバー時のテキスト表示 - content grid左1/3、WORKと縦揃え（leftは--content-padding-xで統一） */
 .image-hover-text {
   position: fixed;
-  top: calc(180px + 20px - 100px); /* #photoのpadding-top: 180px + .content-gridのmargin-top: 20px - 100px上に移動 */
-  left: 22px; /* 左端から22px（12pxから+10px） */
-  width: calc(33.33% - 22px); /* 左4/12の幅 - 左マージン（22pxに調整） */
-  height: 50vh; /* 画面の50%の高さ */
+  top: calc(180px + 20px - 100px); /* #photoのpadding-top + .content-gridのmargin-top - 100px上に配置 */
+  left: var(--content-padding-x);
+  width: calc(33.33% - var(--content-padding-x)); /* 左4/12の幅（グリッド1列目に相当） */
+  height: 50vh;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 36px; /* 36pxに変更 */
-  font-weight: 320; /* font-weightを320に設定 */
+  font-size: 36px;
+  font-weight: 320;
   color: #121212;
   text-align: left;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  pointer-events: none; /* マウスイベントを無効化して、下の要素と干渉しないように */
+  pointer-events: none;
   display: flex;
-  flex-direction: column; /* 縦並びに */
-  align-items: flex-start; /* 左揃え */
-  justify-content: center; /* 縦方向の中央揃え */
-  gap: 0; /* 要素間の間隔 */
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
   z-index: 100;
-  white-space: normal; /* 改行を許可 */
+  white-space: normal;
 }
 
 .image-hover-text .hover-title {
@@ -506,8 +533,8 @@ object-fit: cover;
     .content-right.is-stuck {
       position: fixed !important;
       top: 0 !important;
-      left: 22px;
-      right: 22px;
+      left: var(--content-padding-x);
+      right: var(--content-padding-x);
       width: auto !important;
       padding-top: 10px; /* タイトルは実質10px下に。この10px分で隙間の画像を隠す */
       background: #ffffff; /* 白背景用 */
@@ -587,8 +614,8 @@ object-fit: cover;
     .content-right.is-stuck {
       position: fixed !important;
       top: 0 !important;
-      left: 22px;
-      right: 22px;
+      left: var(--content-padding-x);
+      right: var(--content-padding-x);
       width: auto !important;
       padding-top: 10px; /* タイトルは実質10px下に */
       background: #ffffff;
@@ -599,6 +626,7 @@ object-fit: cover;
       margin-left: 0;
       position: static;
       top: auto;
+      gap: 40px; /* 縦並びの画像間隔（14pxから+26px） */
     }
     .image-hover-text {
       display: flex !important;
