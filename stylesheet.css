@@ -12,7 +12,7 @@ html {
   min-height: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
-  background-color: #ffffff; /* PC時はbodyが中央1140pxのため、左右余白部分の背景 */
+  background-color: #ffffff; /* PC時はbodyが中央1200pxのため、左右余白部分の背景 */
 }
 
 /* ヘッダー全体のスタイル */
@@ -45,7 +45,6 @@ html {
 .nav-left {
   display: flex;
   grid-column: 1; /* 左2/3 */
-  margin-left: 0;
 }
 
 .nav-right {
@@ -93,16 +92,6 @@ body {
     left: 50%;
     transform: translateX(-50%);
     right: auto;
-  }
-  /* タイトル・西暦を表示（fixed）、WORKと揃う位置に */
-  .image-hover-text {
-    position: fixed;
-    left: calc((100vw - 1140px) / 2 + 22px);
-    width: auto;
-    height: 50vh;
-    top: calc(180px + 20px - 100px);
-    justify-content: center;
-    z-index: 100;
   }
 }
 
@@ -224,13 +213,12 @@ main {
   display: block;
 }
 
-/* 画像ホバー時のテキスト表示 - fixedで表示、WORKと揃う（PC時はメディアクエリでleft調整） */
+/* 画像ホバー時のテキスト表示 - content-gridの一番左（WORKと揃う）。高さのみ指定、横はautoで流れに乗せる */
 .image-hover-text {
-  position: fixed;
-  top: calc(180px + 20px - 100px);
-  left: 22px;
-  width: auto;
-  height: 50vh;
+  position: static; /* グリッド内で流れに乗せ、WORKと左揃え */
+  width: 100%;
+  height: auto;
+  min-height: 50vh; /* 高さのみ絶対値で指定 */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 36px;
   font-weight: 320;
@@ -245,7 +233,6 @@ main {
   align-items: flex-start;
   justify-content: center;
   gap: 0;
-  z-index: 100;
   white-space: normal;
 }
 
@@ -579,7 +566,7 @@ object-fit: cover;
       left: 0;
       right: 0;
       width: 100%; 
-      max-width: 1140px;
+      max-width: 1200px; /* 必要に応じて最大幅を設定 */
       /* width: 80%; 1列表示に変更 */
     }
     
@@ -657,7 +644,7 @@ object-fit: cover;
       left: 0;
       right: 0;
       width: 100%;
-      max-width: 1140px;
+      max-width: 1200px;
     }
     .image-list2 {
       gap: 20px; /* 縦並びの画像間隔を＋10px（10px→20px） */
