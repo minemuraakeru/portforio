@@ -346,31 +346,31 @@ document.addEventListener("DOMContentLoaded", () => {
     // ホバーイベントは削除（スクロールベースのみ）
   }
 
-  // 640px以下：タイトル（.image-hover-text）が上から10pxに来たら固定。スクロールを戻すと元の位置に戻る
-  const titleBlock = document.querySelector(".content-grid > .image-hover-text");
+  // 640px以下：タイトルが上から10pxに来たら固定。スクロールを戻すと元の位置に戻る
+  const contentRight = document.querySelector(".content-right");
   const contentGrid = document.querySelector(".content-grid");
-  if (titleBlock && contentGrid) {
+  if (contentRight && contentGrid) {
     const STICKY_TOP = 10;
     let stuckNaturalTop = 0; // 固定した瞬間の、タイトル上端のドキュメント座標
     function updateTitleSticky() {
       if (window.innerWidth > 640) {
-        titleBlock.classList.remove("is-stuck");
+        contentRight.classList.remove("is-stuck");
         contentGrid.style.paddingTop = "";
         return;
       }
-      if (titleBlock.classList.contains("is-stuck")) {
+      if (contentRight.classList.contains("is-stuck")) {
         // 固定中は rect が常に 10 付近なので、スクロール位置で「戻す」判定
         if (window.scrollY < stuckNaturalTop - STICKY_TOP) {
-          titleBlock.classList.remove("is-stuck");
+          contentRight.classList.remove("is-stuck");
           contentGrid.style.paddingTop = "";
         }
         return;
       }
-      const rect = titleBlock.getBoundingClientRect();
+      const rect = contentRight.getBoundingClientRect();
       if (rect.top <= STICKY_TOP) {
         stuckNaturalTop = window.scrollY + rect.top;
-        const h = titleBlock.offsetHeight;
-        titleBlock.classList.add("is-stuck");
+        const h = contentRight.offsetHeight;
+        contentRight.classList.add("is-stuck");
         contentGrid.style.paddingTop = h + 12 + "px";
       }
     }

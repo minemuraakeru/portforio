@@ -4,11 +4,6 @@
   
 } */
 
-/* コンテンツ左端の余白（WORKとタイトル・西暦を縦揃えするため統一） */
-:root {
-  --content-padding-x: 22px;
-}
-
 /* html要素のリセット */
 html {
   margin: 0;
@@ -41,8 +36,8 @@ html {
   width: 100%;
   box-sizing: border-box;
   padding-top: 2%;
-  padding-left: var(--content-padding-x);
-  padding-right: var(--content-padding-x);
+  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   margin: 0;
   gap: 0;
 }
@@ -50,6 +45,7 @@ html {
 .nav-left {
   display: flex;
   grid-column: 1; /* 左2/3 */
+  margin-left: 0;
 }
 
 .nav-right {
@@ -98,7 +94,16 @@ body {
     transform: translateX(-50%);
     right: auto;
   }
-  /* タイトル・西暦の横はautoのまま（静的位置でWORKと揃う） */
+  /* タイトル・西暦を表示（fixed）、WORKと揃う位置に */
+  .image-hover-text {
+    position: fixed;
+    left: calc((100vw - 1140px) / 2 + 22px);
+    width: auto;
+    height: 50vh;
+    top: calc(180px + 20px - 100px);
+    justify-content: center;
+    z-index: 100;
+  }
 }
 
 /* ヘッダーリンクのスタイル */
@@ -143,14 +148,14 @@ main {
   flex-grow: 1;
 }
 
-/* 写真コンテナ - ヘッダーと同じ左右マージン（WORKと縦揃え） */
+/* 写真コンテナ - ヘッダーと同じ左右マージン */
 #photo {
   width: 100%;
   box-sizing: border-box;
   padding-top: 180px; /* ヘッダーの下の余白 */
   padding-bottom: 0; /* padding-bottomを削除 */
-  padding-left: var(--content-padding-x);
-  padding-right: var(--content-padding-x);
+  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
+  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   margin-bottom: 200px; /* 下のマージン */
 }
 
@@ -175,10 +180,9 @@ main {
   min-height: 100vh; /* スティッキーが機能するための最小高さを確保 */
 }
 
-/* .image-hover-text は content-grid の直下の一番左（1列目）に配置 */
-.content-grid > .image-hover-text {
-  grid-column: 1;
-  align-self: start;
+.content-right {
+  grid-column: 1; /* 左4/12 - テキスト */
+  align-self: start; /* 上端で固定 */
 }
 
 /* 画像グリッド - 左2/3の1列 */
@@ -218,18 +222,13 @@ main {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.25s ease;
-}
-.image-grid .image-link:hover img {
-  transform: scale(1.06);
 }
 
-/* 画像ホバー時のテキスト表示 - 高さのみ絶対値、横はautoでWORKと揃う（グリッドの静的位置） */
+/* 画像ホバー時のテキスト表示 - fixedで表示、WORKと揃う（PC時はメディアクエリでleft調整） */
 .image-hover-text {
   position: fixed;
-  top: calc(180px + 20px - 100px); /* #photoのpadding-top + .content-gridのmargin-top - 100px上に配置 */
-  left: auto;
-  right: auto;
+  top: calc(180px + 20px - 100px);
+  left: 22px;
   width: auto;
   height: 50vh;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -273,7 +272,7 @@ main {
 }
 
 /* 画面サイズに応じたタイトルと西暦のフォントサイズ調整 */
-@media (max-width: 1140px) {
+@media (max-width: 1200px) {
   .image-hover-text .hover-title {
     font-size: 46px; /* 56pxから46pxに縮小 */
   }
@@ -524,19 +523,19 @@ object-fit: cover;
       order: 1; /* 画像リストを下に */
     }
     
-    .content-grid > .image-hover-text {
-      grid-column: 1;
+    .content-right {
+      grid-column: 1; /* すべて1列目に */
       order: -1; /* タイトル・西暦を上に */
       position: relative; /* JSで .is-stuck のときに fixed に切り替え */
       z-index: 50;
       background: #ffffff;
     }
     /* JSで上から10pxに来たら付与。固定表示。top:0 + padding-top で隙間も白で覆う */
-    .content-grid > .image-hover-text.is-stuck {
+    .content-right.is-stuck {
       position: fixed !important;
       top: 0 !important;
-      left: var(--content-padding-x);
-      right: var(--content-padding-x);
+      left: 22px;
+      right: 22px;
       width: auto !important;
       padding-top: 10px; /* タイトルは実質10px下に。この10px分で隙間の画像を隠す */
       background: #ffffff; /* 白背景用 */
@@ -606,18 +605,18 @@ object-fit: cover;
       top: auto;
       order: 1;
     }
-    .content-grid > .image-hover-text {
+    .content-right {
       grid-column: 1;
       order: -1; /* タイトル・西暦を上に */
       position: relative; /* JSで .is-stuck のときに fixed に切り替え */
       z-index: 50;
       background: #ffffff;
     }
-    .content-grid > .image-hover-text.is-stuck {
+    .content-right.is-stuck {
       position: fixed !important;
       top: 0 !important;
-      left: var(--content-padding-x);
-      right: var(--content-padding-x);
+      left: 22px;
+      right: 22px;
       width: auto !important;
       padding-top: 10px; /* タイトルは実質10px下に */
       background: #ffffff;
