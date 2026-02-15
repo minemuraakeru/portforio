@@ -150,21 +150,22 @@ main {
   padding-top: 140px; /* homeの画像グリッドと同じ開始位置 */
 }
 
-/* ========== aboutme 専用: 1カラムで写真の下に白余白が出ないように ========== */
+/* ========== aboutme 専用: 他サブページと同じ 左2/3写真・右1/3テキスト ========== */
 .aboutme-page .project-container {
-  display: block; /* グリッドやめ。写真→テキストの縦並びだけ */
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 18px;
   max-width: 100%;
 }
 .aboutme-page .project-images {
   width: 100%;
-  margin-bottom: 24px; /* 写真とテキストの間 */
 }
 .aboutme-page .project-images .vertical-image-list {
   margin: 0;
   padding: 0;
 }
 .aboutme-page .project-images .vertical-image-list li {
-  margin-bottom: 0; /* 写真1枚なので余白なし */
+  margin-bottom: 0;
 }
 .aboutme-page .project-images .vertical-image-list li:last-child {
   margin-bottom: 0;
