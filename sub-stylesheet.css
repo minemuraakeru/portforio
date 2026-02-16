@@ -18,7 +18,7 @@
   width: 100%;
   box-sizing: border-box;
   margin: 0;
-  margin-top: 20px; /* homeの画像グリッドと同じ開始位置 */
+  margin-top: 0; /* mainのpadding-top: 20vhで調整（home同様） */
   padding: 0;
   padding-left: 22px;
   padding-right: 22px;
@@ -87,7 +87,7 @@
 /* 右側のテキストブロック（スティッキーでスクロール時も見える） */
 .project-text {
   position: -webkit-sticky; /* Safari対応 */
-  /* position: sticky; */
+  position: sticky;
   top: 0;
   height: auto; /* コンテンツの高さに合わせる */
   width: 100%;
@@ -152,7 +152,7 @@
 
 main {
   justify-content: flex-start;
-  padding-top: 140px; /* homeの画像グリッドと同じ開始位置 */
+  padding-top: 20vh; /* home同様 */
 }
 
 /* ========== aboutme 専用: 他サブページと同じ 左2/3写真・右1/3テキスト ========== */

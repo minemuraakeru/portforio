@@ -290,16 +290,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const yearCounter = new YearCounter(hoverYear); // TextScramblerからYearCounterに変更
     const descriptionScrambler = new TextScrambler(hoverDescription);
 
-    // スクロール時に中央に来た画像を検知
+    // 画面上から34vhの位置に一番近い画像のタイトル・西暦を表示
     function checkCenterImage() {
-      const viewportCenter = window.innerHeight / 2 + window.scrollY;
+      const viewportReference = window.scrollY + window.innerHeight * 0.34; // 34vh
       let centerImage = null;
       let minDistance = Infinity;
 
       imageLinks.forEach((link) => {
         const rect = link.getBoundingClientRect();
         const imageCenter = rect.top + rect.height / 2 + window.scrollY;
-        const distance = Math.abs(viewportCenter - imageCenter);
+        const distance = Math.abs(viewportReference - imageCenter);
 
         if (distance < minDistance) {
           minDistance = distance;

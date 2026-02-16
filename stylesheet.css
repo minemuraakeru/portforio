@@ -143,10 +143,11 @@ main {
 }
 
 /* 写真コンテナ - ヘッダーと同じ左右マージン */
-#photo {
+#content-section {
   width: 100%;
   box-sizing: border-box;
-  padding-top: 180px; /* ヘッダーの下の余白 */
+  /* padding-top: 140px; ヘッダーの下の余白 */
+  padding-top: 20vh;
   padding-bottom: 0; /* padding-bottomを削除 */
   padding-left: 22px; /* 12pxから22pxに変更（+10px） */
   padding-right: 22px; /* 12pxから22pxに変更（+10px） */
@@ -158,7 +159,7 @@ main {
   display: grid;
   grid-template-columns: 4fr 3fr 5fr; /* 左4/12テキスト、4/12-7/12空白、7/12-12/12画像 */
   gap: 12px; /* 写真と文字間の距離 */
-  margin-top: 20px; /* #photoのpadding-top: 180pxの後、さらに20px下に配置 */
+  /* margin-top: 20px; #content-sectionのpadding-top: 180pxの後、さらに20px下に配置 */
   width: 100%;
   box-sizing: border-box;
   padding: 0;
@@ -223,14 +224,14 @@ main {
   transform: scale(1.08);
 }
 
-/* 画像ホバー時のテキスト表示 - Yだけ絶対値で固定、横は auto（レイアウトに従う） */
+/* 画像ホバー時のテキスト表示 - 高さ（Y）だけ絶対値で固定、横（X）は auto でレイアウトに従う */
 .image-hover-text {
   position: fixed;
-  top: 100px; /* Yのみ絶対値で固定 */
-  left: auto;
+  top: 15%; /* 高さのみ絶対値 */
+  left: auto;  /* 横は指定しない → static position（左列に揃う） */
   right: auto;
   width: auto;
-  height: 50vh;
+  height: 40vh;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 36px;
   font-weight: 320;
