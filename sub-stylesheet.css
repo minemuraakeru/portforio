@@ -14,15 +14,15 @@
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 38px; /* 写真-文字間（18pxから+20px） */
+  gap: 38px; /* 画像とテキストの間の余白 */
   width: 100%;
   box-sizing: border-box;
   margin: 0;
   margin-top: 20px; /* homeの画像グリッドと同じ開始位置 */
   padding: 0;
-  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
-  align-items: start;
+  padding-left: 22px;
+  padding-right: 22px;
+  align-items: start; /* 子要素が縦に伸びるのを防ぐ */
 }
 
 /* 画像列を上端揃えにし、列の高さは内容に合わせる（写真の下の白余白を抑える） */
@@ -84,7 +84,12 @@
   width: 100%;
 }
 
+/* 右側のテキストブロック（スティッキーでスクロール時も見える） */
 .project-text {
+  position: -webkit-sticky; /* Safari対応 */
+  /* position: sticky; */
+  top: 0;
+  height: auto; /* コンテンツの高さに合わせる */
   width: 100%;
   text-align: left;
 }
@@ -387,10 +392,44 @@ main .project-container .project-images .vertical-image-list img {
   object-fit: fill;
 }
 
-/* 1.html 等サブページのフッター：上余白60px、下余白2px */
+/* 1.html 等サブページのフッター：上余白20px、下余白2px */
 .footer {
-  margin-top: 60px;
+  margin-top: 20px;
   margin-bottom: 2px;
 }
 
+/* 一番上に戻る（円形＋白矢印）・著作権より上に配置・右揃え */
+.back-to-top-wrap {
+  text-align: right;
+  margin: 0;
+  margin-top: 64px; /* 24px + 40px */
+  margin-right: 22px;
+  margin-bottom: 0;
+  padding: 0;
+}
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e8e8e8; /* さらに薄いグレー */
+  text-decoration: none;
+  transition: background 0.2s ease;
+  line-height: 0;
+}
+.back-to-top:hover {
+  background: #d0d0d0;
+}
+/* 矢印（白） */
+.back-to-top-arrow {
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid #ffffff;
+  margin-bottom: 2px; /* 視覚的に中央に */
+}
 
