@@ -290,48 +290,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const yearCounter = new YearCounter(hoverYear); // TextScramblerからYearCounterに変更
     const descriptionScrambler = new TextScrambler(hoverDescription);
 
-    // 画面上から34vhの位置に一番近い画像のタイトル・西暦を表示
-    function checkCenterImage() {
-      const viewportReference = window.scrollY + window.innerHeight * 0.34; // 34vh
-      let centerImage = null;
-      let minDistance = Infinity;
+    // ホバー中の画像があればそれを優先して使用
+    let hoveredImageLink = null;
 
-      imageLinks.forEach((link) => {
-        const rect = link.getBoundingClientRect();
-        const imageCenter = rect.top + rect.height / 2 + window.scrollY;
-        const distance = Math.abs(viewportReference - imageCenter);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          centerImage = link;
+    function updateDisplayFromLink(link) {
+      if (!link) return;
+      const title = link.getAttribute("data-title");
+      const year = link.getAttribute("data-year");
+      const description = link.getAttribute("data-description") || "";
+      if (title && year) {
+        if (hoverTitle.textContent !== title) {
+          titleScrambler.animateTo(title);
         }
-      });
-
-      if (centerImage) {
-        const title = centerImage.getAttribute("data-title");
-        const year = centerImage.getAttribute("data-year");
-        const description = centerImage.getAttribute("data-description") || ""; // 説明はオプション
-        if (title && year) {
-          if (hoverTitle.textContent !== title) {
-            titleScrambler.animateTo(title);
-          }
-          const currentYearText = hoverYear.textContent.trim();
-          // yearから数値部分を抽出（「2019-」のような場合も対応）
-          const yearMatch = year.match(/(\d+)/);
-          const yearNumber = yearMatch ? yearMatch[1] : year;
-          if (currentYearText !== yearNumber) {
-            yearCounter.animateTo(year);
-          }
-          if (hoverDescription.textContent !== description) {
-            if (description) {
-              descriptionScrambler.animateTo(description);
-            } else {
-              hoverDescription.textContent = "";
-            }
+        const currentYearText = hoverYear.textContent.trim();
+        const yearMatch = year.match(/(\d+)/);
+        const yearNumber = yearMatch ? yearMatch[1] : year;
+        if (currentYearText !== yearNumber) {
+          yearCounter.animateTo(year);
+        }
+        if (hoverDescription.textContent !== description) {
+          if (description) {
+            descriptionScrambler.animateTo(description);
+          } else {
+            hoverDescription.textContent = "";
           }
         }
       }
     }
+
+    // 画面上から34vhの位置に一番近い画像、またはホバー中ならその画像のタイトル・西暦を表示
+    function checkCenterImage() {
+      let targetLink = hoveredImageLink;
+
+      if (!targetLink) {
+        const viewportReference = window.scrollY + window.innerHeight * 0.34; // 34vh
+        let minDistance = Infinity;
+
+        imageLinks.forEach((link) => {
+          const rect = link.getBoundingClientRect();
+          const imageCenter = rect.top + rect.height / 2 + window.scrollY;
+          const distance = Math.abs(viewportReference - imageCenter);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            targetLink = link;
+          }
+        });
+      }
+
+      if (targetLink) {
+        updateDisplayFromLink(targetLink);
+      }
+    }
+
+    // ホバー中はその画像を優先
+    imageLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () => {
+        hoveredImageLink = link;
+        updateDisplayFromLink(link);
+      });
+      link.addEventListener("mouseleave", () => {
+        hoveredImageLink = null;
+        checkCenterImage(); // 34vhに近い画像に戻す
+      });
+    });
 
     // スクロールイベント
     let scrollTimeout;
@@ -342,8 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 初期チェック
     checkCenterImage();
-
-    // ホバーイベントは削除（スクロールベースのみ）
   }
 
   // 640px以下：タイトルが上から10pxに来たら固定。スクロールを戻すと元の位置に戻る（タイトルは content-text 内）

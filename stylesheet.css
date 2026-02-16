@@ -13,6 +13,7 @@ html {
   box-sizing: border-box;
   overflow-x: hidden;
   background-color: #ffffff; /* PC時はbodyが中央1140pxのため、左右余白部分の背景 */
+  scrollbar-gutter: stable; /* スクロールバー有無でヘッダーがずれないように */
 }
 
 /* ヘッダー全体のスタイル */
@@ -223,6 +224,38 @@ main {
 .image-grid .image-link:hover img {
   transform: scale(1.08);
 }
+
+/* index 画像：ページ表示時に上からふわっと出現 */
+@keyframes imageFadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.image-grid li {
+  animation: imageFadeInFromTop 0.7s ease-out both;
+}
+
+/* 画像を順番に少しずつ遅らせて表示 */
+.image-grid li:nth-child(1) { animation-delay: 0.05s; }
+.image-grid li:nth-child(2) { animation-delay: 0.1s; }
+.image-grid li:nth-child(3) { animation-delay: 0.15s; }
+.image-grid li:nth-child(4) { animation-delay: 0.2s; }
+.image-grid li:nth-child(5) { animation-delay: 0.25s; }
+.image-grid li:nth-child(6) { animation-delay: 0.3s; }
+.image-grid li:nth-child(7) { animation-delay: 0.35s; }
+.image-grid li:nth-child(8) { animation-delay: 0.4s; }
+.image-grid li:nth-child(9) { animation-delay: 0.45s; }
+.image-grid li:nth-child(10) { animation-delay: 0.5s; }
+.image-grid li:nth-child(11) { animation-delay: 0.55s; }
+.image-grid li:nth-child(12) { animation-delay: 0.6s; }
+.image-grid li:nth-child(13) { animation-delay: 0.65s; }
+.image-grid li:nth-child(14) { animation-delay: 0.7s; }
 
 /* 画像ホバー時のテキスト表示 - 高さ（Y）だけ絶対値で固定、横（X）は auto でレイアウトに従う */
 .image-hover-text {
