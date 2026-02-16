@@ -61,6 +61,37 @@ html {
 
   
   
+/* マウスアピアランス：追従する円（PCのみ・script.jsでbodyに.has-mouse-appearanceを付与） */
+.mouse-appearance {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(200, 200, 200, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease;
+  opacity: 0; /* 初回mousemoveまで非表示 */
+}
+.mouse-appearance.is-pressed {
+  width: 26px;
+  height: 26px;
+}
+body.has-mouse-appearance {
+  cursor: none;
+}
+body.has-mouse-appearance a,
+body.has-mouse-appearance button,
+body.has-mouse-appearance .nav-button,
+body.has-mouse-appearance .image-link {
+  cursor: none;
+}
+
 /* 全体のフォント設定（背景白・オープニングアニメなし） */
 body {
   cursor: url('images/icon.png'), auto;

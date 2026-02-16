@@ -1,4 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // マウスアピアランス：追従する円（PC・マウス操作時のみ表示）
+  (function initMouseAppearance() {
+    const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in document.documentElement;
+    if (isTouch) return;
+
+    const el = document.createElement("div");
+    el.className = "mouse-appearance";
+    el.setAttribute("aria-hidden", "true");
+    document.body.appendChild(el);
+
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let visible = false;
+
+    document.body.addEventListener("mousemove", (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!visible) {
+        visible = true;
+        document.body.classList.add("has-mouse-appearance");
+        el.style.opacity = "1";
+        currentX = targetX;
+        currentY = targetY;
+      }
+    });
+
+    document.body.addEventListener("mouseleave", () => {
+      visible = false;
+      document.body.classList.remove("has-mouse-appearance");
+      el.style.opacity = "0";
+    });
+
+    document.addEventListener("mousedown", () => el.classList.add("is-pressed"));
+    document.addEventListener("mouseup", () => el.classList.remove("is-pressed"));
+
+    function update() {
+      const ease = 0.18;
+      currentX += (targetX - currentX) * ease;
+      currentY += (targetY - currentY) * ease;
+      el.style.left = currentX + "px";
+      el.style.top = currentY + "px";
+      requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  })();
+
   const menuButton = document.querySelector(".hamburger-menu");
   const menuContent = document.querySelector(".menu-content");
 
