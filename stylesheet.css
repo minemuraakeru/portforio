@@ -61,7 +61,7 @@ html {
 
   
   
-/* マウスアピアランス：追従する円（PCのみ・script.jsでbodyに.has-mouse-appearanceを付与） */
+/* マウスアピアランス：追従する円（PCのみ・script.jsでbodyに.has-mouse-appearanceを付与）※コメントアウト
 .mouse-appearance {
   position: fixed;
   width: 36px;
@@ -77,7 +77,7 @@ html {
   transform: translate(-50%, -50%);
   will-change: transform;
   transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease;
-  opacity: 0; /* 初回mousemoveまで非表示 */
+  opacity: 0;
 }
 .mouse-appearance.is-pressed {
   width: 26px;
@@ -92,6 +92,7 @@ body.has-mouse-appearance .nav-button,
 body.has-mouse-appearance .image-link {
   cursor: none;
 }
+*/
 
 /* 全体のフォント設定（背景白・オープニングアニメなし） */
 body {
@@ -254,7 +255,7 @@ main {
   transition: transform 0.3s ease;
 }
 .image-grid .image-link:hover img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 /* index 画像：ページ表示時に上からふわっと出現 */

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // マウスアピアランス：追従する円（PC・マウス操作時のみ表示・軽量版）
+  // マウスアピアランス：追従する円（PC・マウス操作時のみ表示・軽量版）※コメントアウト
+  /*
   (function initMouseAppearance() {
     const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in document.documentElement;
     if (isTouch) return;
@@ -49,6 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (dx * dx + dy * dy > 0.5) rafId = requestAnimationFrame(update);
     }
   })();
+  */
 
   const menuButton = document.querySelector(".hamburger-menu");
   const menuContent = document.querySelector(".menu-content");
