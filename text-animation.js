@@ -318,12 +318,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 画面上から34vhの位置に一番近い画像、またはホバー中ならその画像のタイトル・西暦を表示
+    // 画面上の基準位置に一番近い画像、またはホバー中ならその画像のタイトル・西暦を表示
+    // 640px以下: 画面縦中央に一番近い画像 / それ以上: 上から34vhに一番近い画像
     function checkCenterImage() {
       let targetLink = hoveredImageLink;
 
       if (!targetLink) {
-        const viewportReference = window.scrollY + window.innerHeight * 0.34; // 34vh
+        const isNarrow = window.innerWidth <= 640;
+        const viewportReference = window.scrollY + window.innerHeight * (isNarrow ? 0.5 : 0.34);
         let minDistance = Infinity;
 
         imageLinks.forEach((link) => {
@@ -358,6 +360,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // スクロールイベント
     let scrollTimeout;
     window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(checkCenterImage, 50);
+    });
+
+    // リサイズ時（640px境界をまたぐときも反映）
+    window.addEventListener('resize', () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(checkCenterImage, 50);
     });
