@@ -10,19 +10,16 @@
   
   
 
-/* プロジェクトコンテナ - 2/3画像、1/3テキスト */
+/* プロジェクトコンテナ - 親要素の設定 */
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 38px; /* 画像とテキストの間の余白 */
+  gap: 38px;
   width: 100%;
   box-sizing: border-box;
-  margin: 0;
-  margin-top: 0; /* mainのpadding-top: 20vhで調整（home同様） */
-  padding: 0;
-  padding-left: 22px;
-  padding-right: 22px;
-  align-items: start; /* 子要素が縦に伸びるのを防ぐ */
+  /* 重要: これがないと右側のテキスト列が画像と同じ高さまで伸びてしまい、動く隙間がなくなります */
+  align-items: start;
+  position: relative;
 }
 
 /* 画像列を上端揃えにし、列の高さは内容に合わせる（写真の下の白余白を抑える） */
@@ -84,14 +81,23 @@
   width: 100%;
 }
 
-/* 右側のテキストブロック（スティッキーでスクロール時も見える） */
+/* 右側のテキストブロック（追従設定） */
 .project-text {
-  position: -webkit-sticky; /* Safari対応 */
+  /* Safari用の記述 */
+  position: -webkit-sticky;
   position: sticky;
-  top: 0;
-  height: auto; /* コンテンツの高さに合わせる */
+
+  /* 固定ヘッダーに被らないよう、上から少し余裕を持たせます */
+  top: 100px;
+
+  /* 重要: 高さを中身に合わせることで、スクロールする余地を作ります */
+  height: fit-content;
+
   width: 100%;
   text-align: left;
+
+  /* 他の要素に埋もれないよう設定 */
+  z-index: 10;
 }
 
 .project-text .title {
