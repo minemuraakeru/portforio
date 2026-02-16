@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // マウスアピアランス：追従する円（PC・マウス操作時のみ表示）
+  // マウスアピアランス：追従する円（PC・マウス操作時のみ表示・軽量版）
   (function initMouseAppearance() {
     const isTouch = window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in document.documentElement;
     if (isTouch) return;
@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let targetX = 0, targetY = 0;
     let currentX = 0, currentY = 0;
     let visible = false;
+    let rafId = null;
 
     document.body.addEventListener("mousemove", (e) => {
       targetX = e.clientX;
@@ -23,26 +24,30 @@ document.addEventListener("DOMContentLoaded", () => {
         currentX = targetX;
         currentY = targetY;
       }
-    });
+      if (visible && rafId === null) rafId = requestAnimationFrame(update);
+    }, { passive: true });
 
     document.body.addEventListener("mouseleave", () => {
       visible = false;
       document.body.classList.remove("has-mouse-appearance");
       el.style.opacity = "0";
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
     });
 
-    document.addEventListener("mousedown", () => el.classList.add("is-pressed"));
-    document.addEventListener("mouseup", () => el.classList.remove("is-pressed"));
+    document.addEventListener("mousedown", () => el.classList.add("is-pressed"), { passive: true });
+    document.addEventListener("mouseup", () => el.classList.remove("is-pressed"), { passive: true });
 
     function update() {
-      const ease = 0.18;
+      rafId = null;
+      if (!visible) return;
+      const ease = 0.22;
       currentX += (targetX - currentX) * ease;
       currentY += (targetY - currentY) * ease;
-      el.style.left = currentX + "px";
-      el.style.top = currentY + "px";
-      requestAnimationFrame(update);
+      el.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px))`;
+      const dx = targetX - currentX, dy = targetY - currentY;
+      if (dx * dx + dy * dy > 0.5) rafId = requestAnimationFrame(update);
     }
-    requestAnimationFrame(update);
   })();
 
   const menuButton = document.querySelector(".hamburger-menu");

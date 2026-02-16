@@ -75,6 +75,7 @@ html {
   left: 0;
   top: 0;
   transform: translate(-50%, -50%);
+  will-change: transform;
   transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease;
   opacity: 0; /* 初回mousemoveまで非表示 */
 }
