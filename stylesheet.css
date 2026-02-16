@@ -692,7 +692,7 @@ object-fit: cover;
       margin-left: 0;
       position: static;
       top: auto;
-      gap: 40px; /* 縦並びの画像間隔（14pxから+26px） */
+      gap: 10px; /* 640px以下：homeの画像間 */
     }
     .image-hover-text {
       display: flex !important;
