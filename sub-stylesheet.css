@@ -178,6 +178,13 @@
   text-decoration: underline;
 }
 
+/* リンク未設定（準備中）用：グレーアウト・クリック不可 */
+.link-disabled {
+  color: #999;
+  cursor: default;
+  pointer-events: none;
+}
+
 /* achievementsのスタイル */
 .project-details .achievements {
   margin: 6px 0;
