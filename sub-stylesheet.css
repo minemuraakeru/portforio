@@ -157,6 +157,27 @@
   font-size: 13px; /* 16pxから3px小さく */
 }
 
+/* aboutme 経歴ブロック（既存 .project-details p のフォント・行間を継承し色のみグレーに） */
+.project-details .career-entry {
+  margin: 14px 0;
+  line-height: 1.5;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+/* リンクが埋め込まれた文字は青色で統一 */
+.project-details a,
+.project-text a,
+.link-with-arrow {
+  color: #4a6fa5;
+  text-decoration: none;
+}
+.project-details a:hover,
+.project-text a:hover,
+.link-with-arrow:hover {
+  text-decoration: underline;
+}
+
 /* achievementsのスタイル */
 .project-details .achievements {
   margin: 6px 0;
@@ -168,6 +189,14 @@
 .project-details .achievements:empty,
 .project-details .achievements[style*="display: none"] {
   display: none !important;
+}
+
+/* 属性（Member / Design category / Role）と説明文の間に区切り線 */
+.project-details .project-attributes-divider {
+  width: 100%;
+  margin: 14px 0 10px;
+  border: 0;
+  border-top: 1px solid #d3d3d3;
 }
 
 /* 詳しい説明のスタイル */
@@ -189,6 +218,11 @@
 }
 
 /* 日本語テキスト - 統一スタイル（aboutme.html、0_temple.html、1.htmlなどすべてのページで使用） */
+/* 日本語ブロック（属性の直下に配置時）の下余白 */
+.project-details .project-details-japanese {
+  margin-bottom: 14px;
+}
+
 .project-details-japanese p,
 .japanese-text {
   margin: 6px 0;
@@ -350,11 +384,21 @@ main {
   
   @media (max-width: 640px) {
     .project-container {
-      grid-template-columns: 1fr; /* レスポンシブ時は1列表示 */
-      padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-      padding-right: 22px; /* 12pxから22pxに変更（+10px） */
+      grid-template-columns: 1fr; /* レスポンシブ時は1列表示（縦並び） */
+      padding-left: 22px;
+      padding-right: 22px;
     }
-    
+    /* aboutme も他サブページ同様に画像→テキストの縦並び */
+    .aboutme-page .project-container {
+      grid-template-columns: 1fr;
+    }
+    .aboutme-page .project-images {
+      order: 1;
+    }
+    .aboutme-page .project-text {
+      order: 2;
+    }
+
     .vertical-image-list li {
       width: 90%; /* 幅を90%に拡大 */
     }
