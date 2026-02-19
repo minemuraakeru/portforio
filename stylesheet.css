@@ -252,12 +252,20 @@ main {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.3s ease, filter 0.45s ease;
-  filter: grayscale(1); /* デフォルトはグレー */
+  transition: transform 0.3s ease, filter 0.35s ease;
+  filter: saturate(0.4); /* デフォルト：上下は40% */
 }
-/* タイトル・西暦を表示している画像のみ彩度を残す（一枚だけ常に色付き） */
-.image-grid .image-link.is-active img {
-  filter: grayscale(0);
+/* タイトル・西暦を取得している画像：彩度100% */
+.image-grid .image-link.image-link-sat-100 img {
+  filter: saturate(1);
+}
+/* その上下：65% */
+.image-grid .image-link.image-link-sat-65 img {
+  filter: saturate(0.4);
+}
+/* そのさらに上下：40% */
+.image-grid .image-link.image-link-sat-40 img {
+  filter: saturate(0.2);
 }
 .image-grid .image-link:hover img {
   transform: scale(1.06);

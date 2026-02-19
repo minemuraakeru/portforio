@@ -294,10 +294,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let hoveredImageLink = null;
 
     function updateDisplayFromLink(link) {
-      // タイトル・西暦を表示している画像のみ彩度を残す（他はグレー）用のクラス
-      imageLinks.forEach((l) => l.classList.remove("is-active"));
-      if (link) link.classList.add("is-active");
-
       if (!link) return;
       const title = link.getAttribute("data-title");
       const year = link.getAttribute("data-year");
@@ -320,6 +316,22 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
+    }
+
+    // タイトル・西暦を表示している画像を基準に彩度クラスを付与（100% / 上下65% / さらに上下40%）
+    function applySaturationClasses(targetLink) {
+      const index = targetLink ? Array.from(imageLinks).indexOf(targetLink) : -1;
+      imageLinks.forEach((link, i) => {
+        link.classList.remove("image-link-sat-100", "image-link-sat-65", "image-link-sat-40");
+        if (index === -1) {
+          link.classList.add("image-link-sat-40");
+        } else {
+          const distance = Math.abs(i - index);
+          if (distance === 0) link.classList.add("image-link-sat-100");
+          else if (distance === 1) link.classList.add("image-link-sat-65");
+          else link.classList.add("image-link-sat-40");
+        }
+      });
     }
 
     // 画面上の基準位置に一番近い画像、またはホバー中ならその画像のタイトル・西暦を表示
@@ -347,17 +359,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (targetLink) {
         updateDisplayFromLink(targetLink);
       }
+      applySaturationClasses(targetLink);
     }
 
-    // ホバー中はその画像を優先
+    // ホバー中はその画像を優先（彩度もその画像を100%に）
     imageLinks.forEach((link) => {
       link.addEventListener("mouseenter", () => {
         hoveredImageLink = link;
         updateDisplayFromLink(link);
+        applySaturationClasses(link);
       });
       link.addEventListener("mouseleave", () => {
         hoveredImageLink = null;
-        checkCenterImage(); // 34vhに近い画像に戻す
+        checkCenterImage(); // 34vhに近い画像に戻す（彩度も再計算）
       });
     });
 
@@ -374,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scrollTimeout = setTimeout(checkCenterImage, 50);
     });
 
-    // 初期チェック
+    // 初期チェック（彩度クラスも含む）
     checkCenterImage();
   }
 
