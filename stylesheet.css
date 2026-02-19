@@ -261,7 +261,7 @@ main {
 }
 /* その上下：65% */
 .image-grid .image-link.image-link-sat-65 img {
-  filter: saturate(0.4);
+  filter: saturate(0.8);
 }
 /* そのさらに上下：40% */
 .image-grid .image-link.image-link-sat-40 img {
