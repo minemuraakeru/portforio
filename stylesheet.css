@@ -252,7 +252,12 @@ main {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, filter 0.45s ease;
+  filter: grayscale(1); /* デフォルトはグレー */
+}
+/* タイトル・西暦を表示している画像のみ彩度を残す（一枚だけ常に色付き） */
+.image-grid .image-link.is-active img {
+  filter: grayscale(0);
 }
 .image-grid .image-link:hover img {
   transform: scale(1.06);
@@ -663,6 +668,12 @@ object-fit: cover;
 
   /* 640px以下：タイトル・西暦を画面上部に固定（スティッキー） */
   @media (max-width: 640px) {
+    body {
+      padding-bottom: 0;
+    }
+    #content-section {
+      margin-bottom: 0; /* 200px短く（200px→0） */
+    }
     .content-grid {
       grid-template-columns: 1fr;
     }

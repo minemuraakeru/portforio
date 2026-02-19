@@ -294,6 +294,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let hoveredImageLink = null;
 
     function updateDisplayFromLink(link) {
+      // タイトル・西暦を表示している画像のみ彩度を残す（他はグレー）用のクラス
+      imageLinks.forEach((l) => l.classList.remove("is-active"));
+      if (link) link.classList.add("is-active");
+
       if (!link) return;
       const title = link.getAttribute("data-title");
       const year = link.getAttribute("data-year");
