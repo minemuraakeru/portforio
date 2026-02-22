@@ -14,7 +14,7 @@
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 38px;
+  gap: 3%;
   width: 100%;
   box-sizing: border-box;
   padding-left: 22px;
@@ -241,7 +241,7 @@
 
 main {
   justify-content: flex-start;
-  padding-top: 20vh; /* home同様 */
+  padding-top: 20vh; /* project同様 */
 }
 
 /* ========== aboutme 専用: 他サブページと同じ 左2/3写真・右1/3テキスト ========== */

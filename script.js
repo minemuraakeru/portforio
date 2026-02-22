@@ -79,8 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
         !href.startsWith('https://') &&
         (href.endsWith('.html') || href === 'index.html' || href === 'aboutme.html' || 
          href.includes('/') && !href.includes('://'))) {
-      // home → サブページ（1.html, 2.html など）のときはフェードせずそのまま遷移（白＞黒の背景変更なし）
-      // home → aboutme（a.html）のときもフェードせずそのまま遷移（黒＞黒のままでよい）
+      // project(index) → サブページ（1.html, 2.html など）のときはフェードせずそのまま遷移（白＞黒の背景変更なし）
+      // project → aboutme（a.html）のときもフェードせずそのまま遷移（黒＞黒のままでよい）
       const isWorkSubpage = /^\d+\.html$/.test(href) || href === '0_temple.html';
       const isAboutMe = href === 'aboutme.html' || href.endsWith('/aboutme.html');
       if (isWorkSubpage || isAboutMe) {
@@ -99,17 +99,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 画像ホバー時のテキスト変更は text-animation.js で処理
 
-  // スクロール時に「AKERU MINEMURA PORTFOLIO」をフェードアウト（クラスで制御してホバーアニメを維持）
-  const portfolioButton = document.querySelector('.nav-right .nav-button');
-  if (portfolioButton) {
-    window.addEventListener('scroll', () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > 60) {
-        portfolioButton.classList.add('nav-button-scrolled');
-      } else {
-        portfolioButton.classList.remove('nav-button-scrolled');
+  // 640px以下：20pxスクロールで akeru.min を縦10%縮小・opacity 0
+  const navBrand = document.querySelector('.nav-brand');
+  if (navBrand) {
+    const SCROLL_END = 20;
+    const BREAKPOINT = 640;
+    function updateNavBrandScroll() {
+      if (window.innerWidth > BREAKPOINT) {
+        navBrand.style.opacity = '';
+        navBrand.style.transform = '';
+        navBrand.style.pointerEvents = '';
+        return;
       }
-    }, { passive: true });
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const t = Math.min(1, scrollTop / SCROLL_END);
+      navBrand.style.opacity = (1 - t).toString();
+      navBrand.style.transform = `scaleY(${1 - t * 0.1})`;
+      navBrand.style.pointerEvents = scrollTop >= SCROLL_END ? 'none' : '';
+    }
+    window.addEventListener('scroll', updateNavBrandScroll, { passive: true });
+    window.addEventListener('resize', updateNavBrandScroll);
+    updateNavBrandScroll();
+  }
+
+  // index: スクロール速度に応じて画像を14%縮小（最大速度時）。止まっている時は100%。滑らかに比例。
+  const contentSection = document.getElementById("content-section");
+  const imageGrid = contentSection?.querySelector(".image-grid");
+  if (contentSection && imageGrid) {
+    const MAX_SPEED = 2500;   // px/s 以上を「最大速度」とする
+    const SMOOTH = 0.15;      // 速度の平滑化（小さいほどなめらか）
+    const EASE = 0.12;        // スケールの追従（小さいほどなめらか）
+    let lastScrollY = window.scrollY;
+    let lastTime = performance.now();
+    let smoothSpeed = 0;
+    let currentScale = 1;
+
+    function updateScrollScale() {
+      const now = performance.now();
+      const dt = (now - lastTime) / 1000;
+      const rawSpeed = Math.abs((window.scrollY - lastScrollY) / (dt || 0.001));
+      lastScrollY = window.scrollY;
+      lastTime = now;
+      smoothSpeed += (rawSpeed - smoothSpeed) * SMOOTH;
+      const t = Math.min(1, smoothSpeed / MAX_SPEED);
+      const targetScale = 1 - 0.14 * t;
+      currentScale += (targetScale - currentScale) * EASE;
+      contentSection.style.setProperty("--scroll-scale", currentScale.toString());
+      requestAnimationFrame(updateScrollScale);
+    }
+    requestAnimationFrame(updateScrollScale);
   }
 });
 

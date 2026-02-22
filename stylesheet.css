@@ -29,32 +29,38 @@ html {
   width: 100%; /* ヘッダーの幅を画面全体に広げる */
   z-index: 1000; /* 他の要素の上に配置する */
 }
-/* ナビゲーションバー - 左2/3、右1/3のレイアウト */
+/* ナビゲーションバー - 左：ブランド、右：リンク */
 .navbar {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* 左2/3、右1/3 */
+  grid-template-columns: 1fr 2fr; /* 左：akeru.min、右：WORK / ABOUT ME */
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  padding-top: 2%;
+  padding-top: 20px;
   padding-left: 22px; /* 12pxから22pxに変更（+10px） */
   padding-right: 22px; /* 12pxから22pxに変更（+10px） */
   margin: 0;
   gap: 0;
 }
-/* 左右のリンクグループ */
-.nav-left {
+/* 左：ブランド（akeru.min） */
+.nav-brand {
   display: flex;
-  grid-column: 1; /* 左2/3 */
-}
-
-.nav-right {
-  display: flex;
-  grid-column: 2; /* 右1/3 */
-  justify-content: flex-end; /* 右揃え */
+  grid-column: 1;
+  justify-content: flex-start;
   align-items: center;
   margin: 0;
-  margin-right: 10px; /* 右側に10pxのマージン */
+  padding: 0;
+  width: 100%;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+/* 右：ナビリンク（WORK / ABOUT ME） */
+.nav-links {
+  display: flex;
+  grid-column: 2;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  margin-right: 10px;
   padding: 0;
   width: 100%;
 }
@@ -152,21 +158,13 @@ body {
 }
   
 
-/* 右側ナビゲーション専用のスタイル */
-.nav-right .nav-button {
-  font-size: 16px; /* ヘッダーのフォントサイズ（14pxから+2px） */
+/* ブランド（akeru.min）のスタイル */
+.nav-brand .nav-button {
+  font-size: 16px;
   font-weight: 400;
-  text-align: right; /* 文字を右揃えに */
+  text-align: left;
   padding: 0 !important;
   margin: 0 !important;
-  margin-right: 0; /* margin-rightを削除 */
-  transition: opacity 0.5s ease-out; /* スクロール時のフェード用 */
-}
-
-/* スクロール時のみ非表示（インラインstyleを使わないのでホバーアニメが効く） */
-.nav-right .nav-button.nav-button-scrolled {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* メインコンテンツエリア */
@@ -219,7 +217,7 @@ main {
 .image-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 14px;
+  gap: calc(8px * var(--scroll-scale, 1)); /* スクロール速度で画像サイズと同様に0.86〜1倍 */
   margin: 0;
   width: 100%;
   box-sizing: border-box;
@@ -252,23 +250,24 @@ main {
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.3s ease, filter 0.35s ease;
-  filter: saturate(0.4); /* デフォルト：上下は40% */
+  transition: transform 0.2s ease-out, opacity 0.35s ease;
+  opacity: 0.4; /* デフォルト：そのさらに上下は40% */
+  transform: scale(var(--scroll-scale, 1)); /* index: スクロール速度で0.86〜1 */
 }
-/* タイトル・西暦を取得している画像：彩度100% */
+/* タイトル・西暦を取得している画像：opacity 100% */
 .image-grid .image-link.image-link-sat-100 img {
-  filter: saturate(1);
+  opacity: 1;
 }
-/* その上下：65% */
+/* その上下：60% */
 .image-grid .image-link.image-link-sat-65 img {
-  filter: saturate(0.8);
+  opacity: 0.6;
 }
 /* そのさらに上下：40% */
 .image-grid .image-link.image-link-sat-40 img {
-  filter: saturate(0.2);
+  opacity: 0.4;
 }
 .image-grid .image-link:hover img {
-  transform: scale(1.06);
+  transform: scale(calc(var(--scroll-scale, 1) * 1.06));
 }
 
 /* index 画像：ページ表示時に上からふわっと出現 */
@@ -510,22 +509,29 @@ object-fit: cover;
   
 /* ハンバーガーメニュー内のリンクのスタイル */
 .menu-content {
-  display: none; /* 初期状態は非表示 */
-  flex-direction: column; /* 縦並び */
-  justify-content: center; /* 中央揃え */
-  align-items: center; /* 中央揃え */
-  position: fixed; /* 画面全体を覆う */
+  display: flex; /* 常にflexで配置（表示はopacityで制御） */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%; /* 画面全体をカバー */
-  height: 100%; /* 高さを100%に設定 */
+  width: 100%;
+  height: 100%;
   background-color: rgba(18, 18, 18, 0.96);
   backdrop-filter: blur(12px);
-  z-index: 1000; /* 最前面に表示 */
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* 閉じる時：ふわっと消えてから visibility 解除 */
 }
 
 .menu-content.active {
-  display: flex; /* アクティブ時に表示 */
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease, visibility 0s linear 0; /* 開く時：即表示してからふわっと黒に */
 }
 
 .menu-content .menu-link {
@@ -573,20 +579,20 @@ object-fit: cover;
     .hamburger-menu {
       display: flex; /* 画面幅が小さいときに表示 */
     }
-    .nav-left {
-      display: none; /* 通常ナビゲーションは非表示 */
+    .nav-links {
+      display: none; /* 通常ナビゲーションは非表示（ハンバーガーで表示） */
     }
-    .nav-right {
-      grid-column: auto; /* グリッドの列指定を解除 */
-      justify-content: flex-start; /* 左寄せ */
-      margin-right: 0; /* 右側の余白をリセット */
+    .nav-brand {
+      grid-column: auto;
+      justify-content: flex-start;
+      margin-right: 0;
       margin-left: 0;
-      padding-left: 0; /* 必要なら左に余白を追加 */
-      text-align: left; /* 文字の左揃え */
+      padding-left: 0;
+      text-align: left;
       display: flex;
     }
-    .nav-right .nav-button {
-      text-align: left; /* 各リンクの文字を左揃え */
+    .nav-brand .nav-button {
+      text-align: left;
       padding: 0 !important;
       margin: 0 !important;
     }
@@ -713,7 +719,7 @@ object-fit: cover;
       margin-left: 0;
       position: static;
       top: auto;
-      gap: 10px; /* 640px以下：homeの画像間 */
+      gap: calc(6px * var(--scroll-scale, 1)); /* 640px以下：スクロール速度で同様に変動 */
     }
     .image-hover-text {
       display: flex !important;
