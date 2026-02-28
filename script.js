@@ -1,3 +1,10 @@
+// PWA: Service Worker 登録
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", { scope: "./" }).catch(() => {});
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // マウスアピアランス：追従する円（PC・マウス操作時のみ表示・軽量版）※コメントアウト
   /*
