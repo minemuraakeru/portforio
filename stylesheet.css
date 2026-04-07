@@ -4,12 +4,53 @@
   
 } */
 
+/* =============================================================================
+   タイポグラフィ設計（CSS変数）
+   -----------------------------------------------------------------------------
+   【混植】--font-family-body は「欧文サンセリフ → 和文ゴシック」の順。
+   ブラウザは英数字・欧文記号を先頭の Helvetica / Arial / Roboto で、
+   仮名・漢字を後段のヒラギノ系で描画する（font-family 1本で切り替え）。
+
+   【サイズ階層・px】フォントサイズ・段落余白は CSS 変数で px 指定（一括調整は :root）。
+   - Display … ヒーロー・index ホバー見出し。画面内で最も目立つ階層。
+   - H1 … 各ページの作品名・プロフィール名など主見出し。
+   - H2 … carrer/award 等の中見出し・補助見出し。
+   - Body … 欧文本文の基準（16px）。読みの標準。
+   - Body JP … 和文は同じ大きさでも視覚的に大きく見えやすいため 15px で
+     欧文 Body と並んだときのバランスを調整。
+   - Small … フッター・メタ情報・短い英語サマリー等。
+
+   【行間・字間】和文は 1.78 / 0.04em（可読域 1.7〜1.88 / 0.03〜0.05em の中央）。
+   欧文本文は 1.55（日本語よりややタイトで、プロポーションの差を補う）。
+   ============================================================================= */
+:root {
+  --font-sans-latin: "Helvetica Neue", Helvetica, Arial, Roboto, "Segoe UI", system-ui, sans-serif;
+  --font-sans-jp: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック体", "YuGothic", "メイリオ", sans-serif;
+  --font-family-body: var(--font-sans-latin), var(--font-sans-jp);
+
+  --font-size-small: 14px;
+  --font-size-body: 14px;
+  --font-size-body-jp: 12px;
+  --font-size-h2: 18px;
+  --font-size-h1: 20px;
+  --font-size-display: 36px;
+  --font-size-display-lg: 42px;
+  --font-size-display-xl: 56px;
+
+  --leading-en: 1.55;
+  --leading-jp: 1.78;
+  --tracking-jp: 0.04em;
+
+  --space-paragraph-y: 8px;
+}
+
 /* html要素のリセット */
 html {
   margin: 0;
   padding: 0;
   height: auto;
   min-height: 100%;
+  font-size: 16px;
   box-sizing: border-box;
   overflow-x: hidden;
   background-color: #ffffff; /* PC時はbodyが中央1140pxのため、左右余白部分の背景 */
@@ -100,14 +141,14 @@ body.has-mouse-appearance .image-link {
 }
 */
 
-/* 全体のフォント設定（背景白・オープニングアニメなし） */
+/* 全体のフォント設定（背景白・混植スタック・欧文行間） */
 body {
   cursor: url('images/icon.png'), auto;
   overflow-x: hidden; /* 横スクロールを無効にする */
-  /* min-width: 400px; */
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-family-body);
   font-weight: 400;
-  line-height: 1.6;
+  font-size: var(--font-size-body);
+  line-height: var(--leading-en);
   margin: 0;
   padding: 0;
   background-color: #ffffff;
@@ -115,7 +156,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  line-height: 1.2; /* 行間を詰める */
 }
 
 /* PC（デスクトップ）：コンテンツ最大幅1140px、残りを左右均等マージンで中央配置 */
@@ -142,7 +182,7 @@ body {
 
 /* ヘッダーリンクのスタイル */
 .nav-button {
-  font-size: 16px;
+  font-size: var(--font-size-body);
   color: #121212;
   text-decoration: none;
   margin-right: 20px;
@@ -160,7 +200,7 @@ body {
 
 /* ブランド（akeru.min）のスタイル */
 .nav-brand .nav-button {
-  font-size: 16px;
+  font-size: var(--font-size-body);
   font-weight: 400;
   text-align: left;
   padding: 0 !important;
@@ -310,8 +350,8 @@ main {
   right: auto;
   width: auto;
   height: 40vh;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 36px;
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-display);
   font-weight: 320;
   color: #121212;
   text-align: left;
@@ -329,7 +369,7 @@ main {
 }
 
 .image-hover-text .hover-title {
-  font-size: 56px; /* 48pxから56pxに拡大 */
+  font-size: var(--font-size-display-xl);
   font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
@@ -337,7 +377,7 @@ main {
 }
 
 .image-hover-text .hover-year {
-  font-size: 42px; /* 36pxから42pxに拡大 */
+  font-size: var(--font-size-display-lg);
   font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
@@ -353,27 +393,27 @@ main {
 /* 画面サイズに応じたタイトルと西暦のフォントサイズ調整 */
 @media (max-width: 1200px) {
   .image-hover-text .hover-title {
-    font-size: 46px; /* 56pxから46pxに縮小 */
+    font-size: 46px;
   }
   .image-hover-text .hover-year {
-    font-size: 35px; /* 42pxから35pxに縮小（比率維持） */
+    font-size: 35px;
   }
 }
 
 @media (max-width: 900px) {
   .image-hover-text .hover-title {
-    font-size: 38px; /* 46pxから38pxに縮小 */
+    font-size: 38px;
   }
   .image-hover-text .hover-year {
-    font-size: 28px; /* 35pxから28pxに縮小（比率維持） */
+    font-size: 28px;
   }
 }
 
 .image-hover-text .hover-description {
-  font-size: 13px; /* 英語テキストと同じサイズ */
+  font-size: var(--font-size-small);
   margin: 0;
   padding: 0;
-  line-height: 1.3;
+  line-height: var(--leading-en);
   color: #666666; /* 白背景用のグレー */
   white-space: nowrap; /* 改行しない */
 }
@@ -432,7 +472,7 @@ object-fit: cover;
 }
 
 .title {
-  font-size: 16px;/* !!!!!!!!!!!!!!!!! */
+  font-size: var(--font-size-body);
   margin: 0;
   padding: 0;
   width: 100%; /* 画像グリッドと同じ幅に揃える */
@@ -445,8 +485,8 @@ object-fit: cover;
 }
 
 .about-text {
-  font-size: 12px;/* !!!!!!!!!!!!!!! */
-  line-height: 1.5;/* 行間 */
+  font-size: var(--font-size-small);
+  line-height: var(--leading-en);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -456,13 +496,110 @@ object-fit: cover;
   box-sizing: border-box;
 }
 
-/* 日本語テキスト用のフォント */
-.japanese-text {
-  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック", "メイリオ", sans-serif;
-  font-size: 11px; /* 11pxに変更 */
-  font-weight: 320; /* font-weightを320に設定 */
-  line-height: 1.6;
+/* 日本語本文：混植スタック。詳細度を .project-details p より上げて body-jp を維持 */
+.japanese-text,
+.project-text .project-details-japanese p,
+.project-details .project-details-japanese p,
+.project-details p.japanese-text {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-body-jp);
+  font-weight: 320;
+  line-height: var(--leading-jp);
+  letter-spacing: var(--tracking-jp);
 }
+
+.project-text .project-details-japanese p,
+.project-details .project-details-japanese p,
+.project-details p.japanese-text {
+  margin: var(--space-paragraph-y) 0;
+}
+
+/* サブページ（project-container 内）テキスト — stylesheet.css で統一 */
+.project-text .title {
+  font-size: var(--font-size-h1);
+  font-weight: 400;
+  line-height: var(--leading-en);
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+/* aboutme: 主見出しを H1 階層で統一 */
+.aboutme-page .project-text .title {
+  font-size: var(--font-size-h1);
+}
+
+.project-text p,
+.project-details p {
+  margin: var(--space-paragraph-y) 0;
+  line-height: var(--leading-en);
+  font-size: var(--font-size-body);
+  color: #121212;
+}
+
+.project-details .about-mid-title {
+  margin: 22px 0 10px;
+  font-size: var(--font-size-h2);
+  font-weight: 500;
+  line-height: var(--leading-en);
+  color: #333;
+}
+
+.project-details a,
+.project-text a,
+.link-with-arrow {
+  color: #4a6fa5;
+  text-decoration: none;
+}
+
+.project-details a:hover,
+.project-text a:hover,
+.link-with-arrow:hover {
+  text-decoration: underline;
+}
+
+.link-disabled {
+  color: #999;
+  cursor: default;
+  pointer-events: none;
+}
+
+.project-details .achievements {
+  margin: var(--space-paragraph-y) 0;
+  line-height: var(--leading-en);
+  font-size: var(--font-size-small);
+}
+
+.project-details .achievements:empty,
+.project-details .achievements[style*="display: none"] {
+  display: none !important;
+}
+
+.project-details .project-attributes-divider {
+  width: 100%;
+  margin: 14px 0 10px;
+  border: 0;
+  border-top: 1px solid #d3d3d3;
+}
+
+.project-details .detailed-description {
+  margin-top: 12px;
+  line-height: var(--leading-en);
+  font-size: var(--font-size-small);
+}
+
+.project-details .detailed-description:empty,
+.project-details .detailed-description[style*="display: none"] {
+  display: none !important;
+}
+
+.project-details .short-description:empty {
+  display: none;
+}
+
+.project-details .project-details-japanese {
+  margin-bottom: 14px;
+}
+
 /* 共通フッタースタイル */
 .footer {
   text-align: right; /* テキストを右揃え */
