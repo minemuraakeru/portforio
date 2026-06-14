@@ -1,50 +1,89 @@
 /* デバック用 */
-/* * {
-  outline: 1px solid red; 
-  
-} */
+/* * { outline: 1px solid red; } */
+
+/* Noto Sans（欧文）+ Noto Sans JP（和文）— 各ページで stylesheet.css を読み込めば適用 */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Sans+JP:wght@100..900&display=swap");
 
 /* =============================================================================
-   タイポグラフィ設計（CSS変数）
+   デザイントークン（CSS変数）― 色・フォント・シャドウの一元管理
    -----------------------------------------------------------------------------
-   【混植】--font-family-body は「欧文サンセリフ → 和文ゴシック」の順。
-   ブラウザは英数字・欧文記号を先頭の Helvetica / Arial / Roboto で、
-   仮名・漢字を後段のヒラギノ系で描画する（font-family 1本で切り替え）。
+   変更は :root の変数値のみ編集する。個別ルールへの直接 HEX / 生数値記述は禁止。
 
-   【サイズ階層・px】フォントサイズ・段落余白は CSS 変数で px 指定（一括調整は :root）。
-   - Display … ヒーロー・index ホバー見出し。画面内で最も目立つ階層。
-   - H1 … 各ページの作品名・プロフィール名など主見出し。
-   - H2 … carrer/award 等の中見出し・補助見出し。
-   - Body … 欧文本文の基準（16px）。読みの標準。
-   - Body JP … 和文は同じ大きさでも視覚的に大きく見えやすいため 15px で
-     欧文 Body と並んだときのバランスを調整。
-   - Small … フッター・メタ情報・短い英語サマリー等。
+   【フォントファミリー】Noto Sans（欧文）→ Noto Sans JP（和字）。不足グリフは順にフォールバック。
 
-   【行間・字間】和文は 1.78 / 0.04em（可読域 1.7〜1.88 / 0.03〜0.05em の中央）。
-   欧文本文は 1.55（日本語よりややタイトで、プロポーションの差を補う）。
+   【フォントサイズ階層】ジャンプ率は意図的に大きく設定。段階を潰さないこと。
+   - Display-xl / -lg / base … index ホバー見出し（56 / 42 / 36px）
+   - H1 … 作品名・主見出し（20px）
+   - H2 … 中見出し（18px）
+   - Menu … ハンバーガーメニューリンク（17px）
+   - Body / Small … 欧文本文・補足（14px）
+   - Body-JP / Caption … 和文本文・フッター（12px）
+
+   【フォントウェイト】body は可変フォント向け 120（意図的超細字）。
+   - base: 120  display: 320  regular: 400  mid: 500
+
+   【行間・字間】和文 1.78 / 0.04em。欧文 1.55。
+
+   【カラーパレット】--color-* を編集。
+   【シャドウ】現在未使用。将来の拡張用。
    ============================================================================= */
 :root {
-  --font-sans-latin: "Helvetica Neue", Helvetica, Arial, Roboto, "Segoe UI", system-ui, sans-serif;
-  --font-sans-jp: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic Medium", "Yu Gothic", "Meiryo", "Noto Sans JP", "游ゴシック体", "YuGothic", "メイリオ", sans-serif;
-  --font-family-body: var(--font-sans-latin), var(--font-sans-jp);
+  /* フォントファミリー（日英とも Noto Sans 系。欧文→和文の順で混植） */
+  --font-sans-latin: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans-jp:    "Noto Sans JP", "Noto Sans", sans-serif;
+  --font-family-body: "Noto Sans", "Noto Sans JP", sans-serif;
 
-  --font-size-small: 14px;
-  --font-size-body: 14px;
-  --font-size-body-jp: 12px;
-  --font-size-h2: 18px;
-  --font-size-h1: 20px;
-  --font-size-display: 36px;
-  --font-size-display-lg: 42px;
-  --font-size-display-xl: 56px;
+  /* フォントサイズ（ジャンプ率維持） */
 
-  --leading-en: 1.55;
-  --leading-jp: 1.78;
-  --tracking-jp: 0.04em;
+  --font-size-body:       13px;  /* 欧文本文基準!!!!!!!!!!!!!!!!!!!!!!!!! */
+  --font-size-body-jp:    12px;  /* 和文本文 */
+  --font-size-project-copy-ja: var(--font-size-body-jp); /* project-copy 内 lang=ja のみ。ここだけ変えて微調整可 */
+  --font-size-menu:       17px;  /* ハンバーガーメニューリンク */
+  --font-size-h2:         18px;  /* 中見出し */
+  --font-size-h1:         20px;  /* 主見出し */
+  --font-size-display:    36px;  /* ディスプレイ基準 */
+  --font-size-display-lg: 30px; /* カタカタ数字 */
+  --font-size-display-xl: 46px; /* カタカタ文字 */
 
+  /* フォントウェイト */
+  --font-weight-base:    340;  /* body 英語 */
+  --font-weight-display: 320;  /* ホバーテキスト・和文 */
+  --font-weight-project-copy-ja: 330px; /* project-copy 内 lang=ja の太さ。ここだけ変えて微調整可 */
+  --font-weight-regular: 300;  /* プロジェクトタイトル等 */
+  /* --font-weight-mid:     500;  中見出し・メニュー */
+
+  /* 行間・字間 */
+  --leading-en:  1.5;
+  --leading-jp:  1.6;
+  --tracking-jp: 0.02em;
+
+  /* 段落余白 */
   --space-paragraph-y: 8px;
+
+  /* カラーパレット */
+  --color-bg:               #ffffff;                /* ページ背景 */
+  --color-text:             #121212;                /* プライマリテキスト */
+  --color-text-sub:         #333333;                /* サブテキスト（中見出し等） */
+  --color-text-muted:       #666666;                /* ミュートテキスト（説明・補足） */
+  --color-text-faint:       #a0a0a0;                /* フェイントテキスト（フッター等） */
+  --color-text-disabled:    #999999;                /* 無効テキスト */
+  --color-text-inv:         #f5f5f5;                /* 暗背景上の白系テキスト */
+  --color-accent:           #ff3c00;                /* アクセント・ホバー強調 */
+  --color-link:             #4a6fa5;                /* リンク */
+  --color-border:           #d3d3d3;                /* 区切り線・ボーダー */
+  --color-surface-ui:       #e8e8e8;                /* UIボタン等の表面 */
+  --color-surface-ui-hover: #d0d0d0;                /* UIボタンホバー */
+  --color-overlay:          rgba(18, 18, 18, 0.96); /* メニューオーバーレイ */
+
+  /* シャドウ（現在未使用） */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.16);
 }
 
-/* html要素のリセット */
+
+/* ===== RESET ===== */
+
 html {
   margin: 0;
   padding: 0;
@@ -53,62 +92,27 @@ html {
   font-size: 16px;
   box-sizing: border-box;
   overflow-x: hidden;
-  background-color: #ffffff; /* PC時はbodyが中央1140pxのため、左右余白部分の背景 */
-  scrollbar-gutter: stable; /* スクロールバー有無でヘッダーがずれないように */
+  background-color: var(--color-bg); /* PC時はbodyが中央1140pxのため左右余白部分の背景 */
+  scrollbar-gutter: stable;
 }
 
-/* ヘッダー全体のスタイル */
-.header {
-  /* background-color: #f8f8f8; */
-  padding: 0;
-  margin-bottom: 80px; /* ヘッダーの下に20pxの隙間 */
-  /* border-bottom: 1px solid #ddd; */
-  position: fixed; /* 画面上部に固定 */
-  top: 0; /* 上部からの距離を0に設定 */
-  left: 0; /* 左端からの距離を0に設定 */
-  right: 0; /* 右端からの距離を0に設定 */
-  width: 100%; /* ヘッダーの幅を画面全体に広げる */
-  z-index: 1000; /* 他の要素の上に配置する */
-}
-/* ナビゲーションバー - 左：ブランド、右：リンク */
-.navbar {
-  display: grid;
-  grid-template-columns: 1fr 2fr; /* 左：akeru.min、右：WORK / ABOUT ME */
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  padding-top: 20px;
-  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
+body {
+  cursor: url('images/icon.png'), auto;
+  overflow-x: hidden;
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-base);
+  font-size: var(--font-size-body);
+  line-height: var(--leading-en);
   margin: 0;
-  gap: 0;
-}
-/* 左：ブランド（akeru.min） */
-.nav-brand {
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
   display: flex;
-  grid-column: 1;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-}
-/* 右：ナビリンク（WORK / ABOUT ME） */
-.nav-links {
-  display: flex;
-  grid-column: 2;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0;
-  margin-right: 10px;
-  padding: 0;
-  width: 100%;
+  flex-direction: column;
 }
 
-  
-  
-/* マウスアピアランス：追従する円（PCのみ・script.jsでbodyに.has-mouse-appearanceを付与）※コメントアウト
+/* マウスアピアランス：追従する円（現在オフ）
 .mouse-appearance {
   position: fixed;
   width: 36px;
@@ -126,154 +130,197 @@ html {
   transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease;
   opacity: 0;
 }
-.mouse-appearance.is-pressed {
-  width: 26px;
-  height: 26px;
-}
-body.has-mouse-appearance {
-  cursor: none;
-}
+.mouse-appearance.is-pressed { width: 26px; height: 26px; }
+body.has-mouse-appearance { cursor: none; }
 body.has-mouse-appearance a,
 body.has-mouse-appearance button,
 body.has-mouse-appearance .nav-button,
-body.has-mouse-appearance .image-link {
-  cursor: none;
-}
+body.has-mouse-appearance .image-link { cursor: none; }
 */
 
-/* 全体のフォント設定（背景白・混植スタック・欧文行間） */
-body {
-  cursor: url('images/icon.png'), auto;
-  overflow-x: hidden; /* 横スクロールを無効にする */
-  font-family: var(--font-family-body);
-  font-weight: 400;
-  font-size: var(--font-size-body);
-  line-height: var(--leading-en);
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff;
-  color: #121212;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
-/* PC（デスクトップ）：コンテンツ最大幅1140px、残りを左右均等マージンで中央配置 */
+/* ===== LAYOUT — PC max-width（1140px 中央寄せ） ===== */
+
 @media (min-width: 1141px) {
   body {
     max-width: 1140px;
     margin-left: auto;
     margin-right: auto;
   }
-  /* 固定ヘッダーも同じ幅で中央に */
   .header {
-    width: 1140px;
-    max-width: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
+    max-width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  /* PC時も Y のみ固定、横は auto のまま */
   .image-hover-text {
     left: auto;
     right: auto;
   }
 }
 
-/* ヘッダーリンクのスタイル */
+
+/* ===== NAVIGATION ===== */
+
+.header {
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 20px;
+  padding-left: 22px;
+  padding-right: 22px;
+  margin: 0;
+  gap: 0;
+}
+
+.nav-links {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
 .nav-button {
   font-size: var(--font-size-body);
-  color: #121212;
+  color: var(--color-text);
   text-decoration: none;
-  margin-right: 20px;
-  margin-left: 0px;
+  margin: 0;
   cursor: cell;
   position: relative;
   transition: color 0.25s ease, opacity 0.25s ease;
 }
 
+.nav-links .nav-button {
+  text-align: left;
+  padding: 0;
+}
+
 .nav-button:hover {
-  color: #ff3c00;
+  color: var(--color-accent);
   opacity: 0.85;
 }
-  
 
-/* ブランド（akeru.min）のスタイル */
-.nav-brand .nav-button {
-  font-size: var(--font-size-body);
-  font-weight: 400;
-  text-align: left;
-  padding: 0 !important;
-  margin: 0 !important;
-}
 
-/* メインコンテンツエリア */
+/* ===== INDEX — レイアウトグリッド ===== */
+
 main {
   width: 100%;
   box-sizing: border-box;
   flex-grow: 1;
 }
 
-/* 写真コンテナ - ヘッダーと同じ左右マージン */
 #content-section {
   width: 100%;
   box-sizing: border-box;
-  /* padding-top: 140px; ヘッダーの下の余白 */
   padding-top: 20vh;
-  padding-bottom: 0; /* padding-bottomを削除 */
-  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
-  margin-bottom: 200px; /* 下のマージン */
+  padding-bottom: 0;
+  padding-left: 22px;
+  padding-right: 22px;
+  margin-bottom: 200px;
+  /* index: script.js が --scroll-scale / --scroll-rotate を更新 */
+  --scroll-rotate: 0deg;
 }
 
-/* コンテンツグリッド - 左4/12テキスト、8/12から画像（5/12） */
+/* 左4/12テキスト、中3/12空白、右5/12画像 */
 .content-grid {
   display: grid;
-  grid-template-columns: 4fr 3fr 5fr; /* 左4/12テキスト、4/12-7/12空白、7/12-12/12画像 */
-  gap: 12px; /* 写真と文字間の距離 */
-  /* margin-top: 20px; #content-sectionのpadding-top: 180pxの後、さらに20px下に配置 */
+  grid-template-columns: 4fr 3fr 5fr;
+  gap: 12px;
   width: 100%;
   box-sizing: border-box;
   padding: 0;
-  padding-bottom: 120px; /* 下部に120pxの余白を追加 */
-  align-items: start; /* グリッドアイテムを上端に配置 */
-  min-height: calc(100vh - 180px - 20px); /* スティッキーが機能するための最小高さ（画面高さ - padding-top - margin-top） */
+  padding-bottom: 120px;
+  align-items: start;
+  min-height: calc(100vh - 180px - 20px);
+  /* index: 右カラムの rotateY と組み合わせて奥行き感 */
+  perspective: 1500px;
+  perspective-origin: 78% 28%;
 }
 
 .content-works {
-  grid-column: 3; /* 7/12から - 画像（5/12） */
-  align-self: start; /* 上端で固定 */
-  height: fit-content; /* コンテンツの高さに合わせる */
-  min-height: 100vh; /* スティッキーが機能するための最小高さを確保 */
+  grid-column: 3;
+  align-self: start;
+  height: fit-content;
+  min-height: 100vh;
+  transform: rotateY(var(--scroll-rotate, 0deg));
+  transform-origin: right center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-grid {
+    perspective: none;
+  }
+
+  .content-works {
+    transform: none !important;
+    will-change: auto;
+    backface-visibility: visible;
+  }
 }
 
 .content-text {
-  grid-column: 1; /* 左4/12 - テキスト */
-  align-self: start; /* 上端で固定 */
-
+  grid-column: 1;
+  align-self: start;
 }
 
-/* 画像グリッド - 左2/3の1列 */
+
+/* ===== INDEX — 画像グリッド ===== */
+
 .image-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: calc(8px * var(--scroll-scale, 1)); /* スクロール速度で画像サイズと同様に0.86〜1倍 */
+  gap: calc(8px * var(--scroll-scale, 1));
   margin: 0;
   width: 100%;
   box-sizing: border-box;
   padding: 0;
   position: sticky;
-  top: calc(2vh + 60px); /* ヘッダーの高さ（padding-top: 2vh + ナビゲーションバーの高さ）を考慮 */
+  top: calc(2vh + 60px);
   align-self: start;
   height: fit-content;
-  will-change: transform; /* パフォーマンス最適化 */
+  will-change: transform;
 }
 
+/* list-style + animation を 1 ルールに統合 */
 .image-grid li {
   list-style: none;
   margin: 0;
   padding: 0;
+  animation: imageFadeInFromTop 0.7s ease-out both;
 }
+
+/* 画像を順番に遅らせて表示 */
+.image-grid li:nth-child(1)  { animation-delay: 0.05s; }
+.image-grid li:nth-child(2)  { animation-delay: 0.1s; }
+.image-grid li:nth-child(3)  { animation-delay: 0.15s; }
+.image-grid li:nth-child(4)  { animation-delay: 0.2s; }
+.image-grid li:nth-child(5)  { animation-delay: 0.25s; }
+.image-grid li:nth-child(6)  { animation-delay: 0.3s; }
+.image-grid li:nth-child(7)  { animation-delay: 0.35s; }
+.image-grid li:nth-child(8)  { animation-delay: 0.4s; }
+.image-grid li:nth-child(9)  { animation-delay: 0.45s; }
+.image-grid li:nth-child(10) { animation-delay: 0.5s; }
+.image-grid li:nth-child(11) { animation-delay: 0.55s; }
+.image-grid li:nth-child(12) { animation-delay: 0.6s; }
+.image-grid li:nth-child(13) { animation-delay: 0.65s; }
+.image-grid li:nth-child(14) { animation-delay: 0.7s; }
 
 .image-grid .image-link {
   display: block;
@@ -291,69 +338,38 @@ main {
   object-position: center;
   display: block;
   transition: transform 0.2s ease-out, opacity 0.35s ease;
-  opacity: 0.4; /* デフォルト：そのさらに上下は40% */
-  transform: scale(var(--scroll-scale, 1)); /* index: スクロール速度で0.86〜1 */
-}
-/* タイトル・西暦を取得している画像：opacity 100% */
-.image-grid .image-link.image-link-sat-100 img {
-  opacity: 1;
-}
-/* その上下：60% */
-.image-grid .image-link.image-link-sat-65 img {
-  opacity: 0.6;
-}
-/* そのさらに上下：40% */
-.image-grid .image-link.image-link-sat-40 img {
   opacity: 0.4;
+  transform: scale(var(--scroll-scale, 1));
 }
+
+/* フォーカス画像の opacity 段階 */
+.image-grid .image-link.image-link-sat-100 img { opacity: 1; }
+.image-grid .image-link.image-link-sat-65  img { opacity: 0.6; }
+.image-grid .image-link.image-link-sat-40  img { opacity: 0.4; }
+
 .image-grid .image-link:hover img {
   transform: scale(calc(var(--scroll-scale, 1) * 1.06));
 }
 
-/* index 画像：ページ表示時に上からふわっと出現 */
 @keyframes imageFadeInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.image-grid li {
-  animation: imageFadeInFromTop 0.7s ease-out both;
-}
 
-/* 画像を順番に少しずつ遅らせて表示 */
-.image-grid li:nth-child(1) { animation-delay: 0.05s; }
-.image-grid li:nth-child(2) { animation-delay: 0.1s; }
-.image-grid li:nth-child(3) { animation-delay: 0.15s; }
-.image-grid li:nth-child(4) { animation-delay: 0.2s; }
-.image-grid li:nth-child(5) { animation-delay: 0.25s; }
-.image-grid li:nth-child(6) { animation-delay: 0.3s; }
-.image-grid li:nth-child(7) { animation-delay: 0.35s; }
-.image-grid li:nth-child(8) { animation-delay: 0.4s; }
-.image-grid li:nth-child(9) { animation-delay: 0.45s; }
-.image-grid li:nth-child(10) { animation-delay: 0.5s; }
-.image-grid li:nth-child(11) { animation-delay: 0.55s; }
-.image-grid li:nth-child(12) { animation-delay: 0.6s; }
-.image-grid li:nth-child(13) { animation-delay: 0.65s; }
-.image-grid li:nth-child(14) { animation-delay: 0.7s; }
+/* ===== INDEX — ホバーテキスト ===== */
 
-/* 画像ホバー時のテキスト表示 - 高さ（Y）だけ絶対値で固定、横（X）は auto でレイアウトに従う */
+/* 高さ（Y）だけ fixed で固定、横（X）は auto でレイアウトに従う */
 .image-hover-text {
   position: fixed;
-  top: 15%; /* 高さのみ絶対値 */
-  left: auto;  /* 横は指定しない → static position（左列に揃う） */
+  top: 15%;
+  left: auto;
   right: auto;
   width: auto;
   height: 40vh;
-  font-family: var(--font-family-body);
   font-size: var(--font-size-display);
-  font-weight: 320;
-  color: #121212;
+  font-weight: var(--font-weight-display);
+  color: var(--color-text);
   text-align: left;
   margin: 0;
   padding: 0;
@@ -370,43 +386,22 @@ main {
 
 .image-hover-text .hover-title {
   font-size: var(--font-size-display-xl);
-  font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
-  white-space: nowrap; /* 改行しない */
+  white-space: nowrap;
 }
 
 .image-hover-text .hover-year {
   font-size: var(--font-size-display-lg);
-  font-weight: 320; /* font-weightを320に設定 */
   margin: 0;
   padding: 0;
-  margin-top: 4px; /* タイトルとの間隔 */
-  white-space: nowrap; /* 改行しない */
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
 .image-hover-text .hover-year .year-arrow {
-  cursor: pointer; /* クリック可能であることを示す */
-  user-select: none; /* テキスト選択を無効化 */
-}
-
-/* 画面サイズに応じたタイトルと西暦のフォントサイズ調整 */
-@media (max-width: 1200px) {
-  .image-hover-text .hover-title {
-    font-size: 46px;
-  }
-  .image-hover-text .hover-year {
-    font-size: 35px;
-  }
-}
-
-@media (max-width: 900px) {
-  .image-hover-text .hover-title {
-    font-size: 38px;
-  }
-  .image-hover-text .hover-year {
-    font-size: 28px;
-  }
+  cursor: pointer;
+  user-select: none;
 }
 
 .image-hover-text .hover-description {
@@ -414,28 +409,34 @@ main {
   margin: 0;
   padding: 0;
   line-height: var(--leading-en);
-  color: #666666; /* 白背景用のグレー */
-  white-space: nowrap; /* 改行しない */
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
-/* 共通の画像リストスタイル */
+
+
+/* ===== SHARED — 画像リスト ===== */
+
+/* .image-list と .image-list2 はマージン下辺のみ異なる（20px vs 80px） */
 .image-list {
   display: flex;
-  flex-wrap: wrap; /* 折り返し */
+  flex-wrap: wrap;
   justify-content: space-between;
   list-style: none;
   padding: 0;
-  width: 80%; /* 通常時は幅70% */
-  gap: 10px; /* 画像間の隙間 */
-  margin: 20px auto 20px !important;/* コンテンツからヘッダーまでの距離!!!!!!!!!!!!!!!!!!!!!!! */
+  width: 80%;
+  gap: 10px;
+  margin: 20px auto 20px !important;
 }
+
 .image-list li {
-  width: calc(33.333% - 10px); /* 通常時は3列表示 */
-  aspect-ratio: 2 / 3; /* 6:9のアスペクト比 */
+  width: calc(33.333% - 10px);
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   position: relative;
-  margin-bottom: 5px; /* 画像の下にスペースを追加 */
+  margin-bottom: 5px;
 }
+
 .image-list img {
   position: absolute;
   top: 0;
@@ -447,35 +448,40 @@ main {
 
 .image-list2 {
   display: flex;
-  flex-wrap: wrap; /* 折り返し */
+  flex-wrap: wrap;
   justify-content: space-between;
   list-style: none;
   padding: 0;
-  width: 80%; /* 通常時は幅70% */
-  gap: 10px; /* 画像間の隙間 */
-  margin: 20px auto 80px !important;/* コンテンツからヘッダーまでの距離!!!!!!!!!!!!!!!!!!!!!!! */
+  width: 80%;
+  gap: 10px;
+  margin: 20px auto 80px !important;
 }
+
 .image-list2 li {
-width: calc(33.333% - 10px); /* 通常時は3列表示 */
-aspect-ratio: 2 / 3; /* 6:9のアスペクト比 */
-overflow: hidden;
-position: relative;
-margin-bottom: 5px; /* 画像の下にスペースを追加 */
+  width: calc(33.333% - 10px);
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 5px;
 }
+
 .image-list2 img {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
+
+
+/* ===== TYPOGRAPHY — タイトル・本文・日本語テキスト ===== */
 
 .title {
   font-size: var(--font-size-body);
   margin: 0;
   padding: 0;
-  width: 100%; /* 画像グリッドと同じ幅に揃える */
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -492,18 +498,17 @@ object-fit: cover;
   flex-direction: column;
   padding: 0;
   margin: 0;
-  width: 100%; /* 画像グリッドと同じ幅に揃える */
+  width: 100%;
   box-sizing: border-box;
 }
 
-/* 日本語本文：混植スタック。詳細度を .project-details p より上げて body-jp を維持 */
+/* 日本語本文：詳細度を .project-details p より上げて body-jp スタイルを維持 */
 .japanese-text,
 .project-text .project-details-japanese p,
 .project-details .project-details-japanese p,
 .project-details p.japanese-text {
-  font-family: var(--font-family-body);
   font-size: var(--font-size-body-jp);
-  font-weight: 320;
+  font-weight: var(--font-weight-display);
   line-height: var(--leading-jp);
   letter-spacing: var(--tracking-jp);
 }
@@ -514,18 +519,13 @@ object-fit: cover;
   margin: var(--space-paragraph-y) 0;
 }
 
-/* サブページ（project-container 内）テキスト — stylesheet.css で統一 */
+/* サブページ主見出し（作品名）— H1 階層。ジャンプ率維持 */
 .project-text .title {
   font-size: var(--font-size-h1);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   line-height: var(--leading-en);
   margin-bottom: 12px;
   margin-top: 0;
-}
-
-/* aboutme: 主見出しを H1 階層で統一 */
-.aboutme-page .project-text .title {
-  font-size: var(--font-size-h1);
 }
 
 .project-text p,
@@ -533,21 +533,51 @@ object-fit: cover;
   margin: var(--space-paragraph-y) 0;
   line-height: var(--leading-en);
   font-size: var(--font-size-body);
-  color: #121212;
+  color: var(--color-text);
 }
 
+/* メタ（project-meta）＋ project-copy の欧文：同一タイポ。和文段落は下で上書き */
+.project-details .project-meta p,
+.project-details .project-copy p[lang="en"] {
+  margin: var(--space-paragraph-y) 0;
+  line-height: var(--leading-en);
+  font-size: var(--font-size-body);
+  color: var(--color-text);
+}
+
+/* project-copy 内の日本語だけ少し小さく（視覚補正）。サイズ・太さは :root の --font-size-project-copy-ja / --font-weight-project-copy-ja */
+.project-details .project-copy p[lang="ja"] {
+  margin: var(--space-paragraph-y) 0;
+  font-size: var(--font-size-project-copy-ja);
+  line-height: var(--leading-jp);
+  letter-spacing: var(--tracking-jp);
+  font-weight: var(--font-weight-project-copy-ja);
+  color: var(--color-text);
+}
+
+.project-details .project-copy {
+  margin: 0;
+  padding: 0;
+}
+
+.project-details .project-meta {
+  margin: 0;
+  padding: 0;
+}
+
+/* H2 階層：中見出し */
 .project-details .about-mid-title {
   margin: 22px 0 10px;
   font-size: var(--font-size-h2);
-  font-weight: 500;
+  font-weight: var(--font-weight-mid);
   line-height: var(--leading-en);
-  color: #333;
+  color: var(--color-text-sub);
 }
 
 .project-details a,
 .project-text a,
 .link-with-arrow {
-  color: #4a6fa5;
+  color: var(--color-link);
   text-decoration: none;
 }
 
@@ -558,10 +588,13 @@ object-fit: cover;
 }
 
 .link-disabled {
-  color: #999;
+  color: var(--color-text-disabled);
   cursor: default;
   pointer-events: none;
 }
+
+
+/* ===== PROJECT — メタ情報・区切り線 ===== */
 
 .project-details .achievements {
   margin: var(--space-paragraph-y) 0;
@@ -574,11 +607,24 @@ object-fit: cover;
   display: none !important;
 }
 
-.project-details .project-attributes-divider {
+/* メタ情報上部の区切り線（全サブページ共通） */
+.project-top-divider {
+  width: 100%;
+  margin: 50px 0 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.aboutme-page .project-top-divider {
+  margin-top: 30px;
+}
+
+/* メタ情報とテキストの間の区切り線 */
+.project-details .project-bottom-divider {
   width: 100%;
   margin: 14px 0 10px;
   border: 0;
-  border-top: 1px solid #d3d3d3;
+  border-top: 1px solid var(--color-border);
 }
 
 .project-details .detailed-description {
@@ -600,53 +646,72 @@ object-fit: cover;
   margin-bottom: 14px;
 }
 
-/* 共通フッタースタイル */
+
+/* ===== FOOTER ===== */
+
 .footer {
-  text-align: right; /* テキストを右揃え */
+  text-align: right;
+  /* text-decoration は子へ伝播するため、ここで none にすると
+     .footer 内の a への underline 等が効かなくなる。リンクは .footer a で個別指定。 */
+  display: flex;
   margin: 0;
-  margin-top: auto; /* フッターを下に押し下げる */
-  margin-bottom: 20px; /* 下から20px */
-  padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-  padding-right: 22px; /* 12pxから22pxに変更（+10px） */
+  margin-top: auto;
+  margin-bottom: 20px;
+  padding-left: 22px;
+  padding-right: 22px;
   padding-bottom: 0;
   box-sizing: border-box;
-  font-size: 12px; /* 10pxから+2px */
-  color: #a0a0a0; /* 白ベースの薄いグレー */
+  font-size: var(--font-size-caption);
+  color: var(--color-text-faint);
 }
 
 .footer p {
   margin: 0;
   margin-bottom: 8px;
-  padding: 0;
-  color: #a0a0a0; /* 白ベースの薄いグレー */
+  margin-right: 10px;
+  /* カンマ区切りは無効 → スペース区切りのショートハンド */
+  padding: 0 0 100px 0;
+  color: var(--color-text-faint);
 }
 
-/* ____________________________________________________________________________________ */
+/* フッターリンク：親に text-decoration: none があると子の装飾が打ち消されるため a で個別指定 */
+.footer a {
+  color: inherit;
+  text-decoration: none;
+}
 
-/* ハンバーガーメニュー */
+.footer a:hover {
+  color: var(--color-text-muted);
+  /* text-decoration: underline; */
+  text-underline-offset: 2px;
+}
+
+
+/* ===== HAMBURGER MENU ===== */
+
 .hamburger-menu {
-  display: none; /* 初期状態は非表示 */
-  position: fixed; /* 固定位置に配置 */
-  top: 20px; /* 画面上部から20px下 */
-  right: 20px; /* 画面右端から20px内側 */
-  flex-direction: column; /* バーを縦に並べる */
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  flex-direction: column;
   justify-content: space-between;
-  width: 30px; /* 幅を指定 */
-  height: 25px; /* 高さを指定 */
+  width: 30px;
+  height: 25px;
   cursor: pointer;
-  z-index: 2000; /* 最前面に表示 */
+  z-index: 2000;
 }
-  
-  .hamburger-menu .bar {
-    height: 3px;
-    width: 100%;
-    background-color: #121212;
-    border-radius: 5px;
-  }
-  
-/* ハンバーガーメニュー内のリンクのスタイル */
+
+.hamburger-menu .bar {
+  height: 3px;
+  width: 100%;
+  background-color: var(--color-text);
+  border-radius: 5px;
+}
+
+/* メニューオーバーレイ（opacity で開閉制御） */
 .menu-content {
-  display: flex; /* 常にflexで配置（表示はopacityで制御） */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -655,30 +720,29 @@ object-fit: cover;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(18, 18, 18, 0.96);
+  background-color: var(--color-overlay);
   backdrop-filter: blur(12px);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* 閉じる時：ふわっと消えてから visibility 解除 */
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 
 .menu-content.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity 0.3s ease, visibility 0s linear 0; /* 開く時：即表示してからふわっと黒に */
+  transition: opacity 0.3s ease, visibility 0s linear 0;
 }
 
 .menu-content .menu-link {
   padding: 4px 20px;
   text-decoration: none;
-  color: #f5f5f5;
-  font-size: 17px;
+  color: var(--color-text-inv);
+  font-size: var(--font-size-menu);
   margin-bottom: 14px;
-  border-bottom: none;
-  font-weight: 500;
+  font-weight: var(--font-weight-mid);
   cursor: cell;
   position: relative;
   transition: opacity 0.25s ease, padding-left 0.25s ease;
@@ -688,234 +752,144 @@ object-fit: cover;
   opacity: 0.9;
   padding-left: 28px;
 }
-  
-/* ____________________________________________________________________________________ */
 
-  /* レスポンシブデザイン */
-  /* 画面幅が900px以下でハンバーガーメニュー表示 */
-  
-  @media (max-width: 900px) {
-    .image-list {
-        width: 80%; /* 画面幅が小さくなったら幅を90%に広げる */
-      }
-    .image-list li {
-      width: calc(50% - 10px); /* 2列表示 */
-    }
-  
+
+/* ===== RESPONSIVE ===== */
+
+/* 900px：image-list 3列 → 2列 */
+@media (max-width: 900px) {
+  .image-list li {
+    width: calc(50% - 10px);
   }
-  
-  /* 640px + iOS対応のため768px / max-device-width も使用 */
-  @media (max-width: 768px), (max-device-width: 768px) {
-    .navbar {
-      display: flex; /* レスポンシブ時はflexに戻す */
-      justify-content: space-between;
-      padding-left: 22px; /* 12pxから22pxに変更（+10px） */
-      padding-right: 22px; /* 12pxから22pxに変更（+10px） */
-    }
-    
-    .hamburger-menu {
-      display: flex; /* 画面幅が小さいときに表示 */
-    }
-    .nav-links {
-      display: none; /* 通常ナビゲーションは非表示（ハンバーガーで表示） */
-    }
-    .nav-brand {
-      grid-column: auto;
-      justify-content: flex-start;
-      margin-right: 0;
-      margin-left: 0;
-      padding-left: 0;
-      text-align: left;
-      display: flex;
-    }
-    .nav-brand .nav-button {
-      text-align: left;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
+}
 
-    /* コンテンツグリッドを縦一列に・タイトルと西暦を上に表示 */
-    .content-grid {
-      grid-template-columns: 1fr; /* 1列表示 */
-    }
-    
-    .content-text {
-      grid-column: 1; /* すべて1列目に */
-      position: relative; /* JSで .is-stuck のときに fixed に切り替え */
-      z-index: 50;
-      background: #ffffff;
-      order: -1; /* タイトル・西暦を上に */
-    }
-    
-    .content-works {
-      grid-column: 1; /* すべて1列目に */
-      position: static;
-      top: auto;
-      order: 1; /* 画像リストを下に */
-    }
-    /* JSで上から10pxに来たら付与。固定表示。top:0 + padding-top で隙間も白で覆う */
-    .content-text.is-stuck {
-      position: fixed !important;
-      top: 0 !important;
-      left: 22px;
-      right: 22px;
-      width: auto !important;
-      padding-top: 10px; /* タイトルは実質10px下に。この10px分で隙間の画像を隠す */
-      background: #ffffff; /* 白背景用 */
-    }
-    
-    /* 画像グリッドを縦一列に */
-    .image-grid {
-      grid-template-columns: 1fr; /* 1列表示 */
-      width: 100%; /* レスポンシブ時は全幅 */
-      margin-left: 0; /* 左に配置 */
-      position: static; /* スティッキーを解除 */
-      top: auto;
-    }
-    
-    /* 640px以下：タイトルと西暦を表示し、上から10pxでスティッキー */
-    .image-hover-text {
-      display: flex !important; /* 表示する */
-      position: static; /* 親のstickyに任せる */
-      width: 100%;
-      height: auto;
-      min-height: 0;
-      justify-content: flex-start;
-      align-items: flex-start;
-      padding-bottom: 12px; /* 画像リストとの間隔 */
-    }
-    .image-hover-text .hover-description {
-      display: none; /* 640px以下では説明は非表示 */
-    }
-    .image-hover-text .hover-title,
-    .image-hover-text .hover-year {
-      font-size: 28px; /* スマホ用にやや小さめ */
-    }
-    .image-hover-text .hover-year {
-      margin-top: 2px;
-    }
-    
-    .image-list {
-      margin-top: 20px; /* 上部余白を減らして隙間を縮める */
-    }
-    .image-list li {
-      left: 0;
-      right: 0;
-      width: 100%; 
-      max-width: 1140px; /* コンテンツ最大幅に合わせる */
-      /* width: 80%; 1列表示に変更 */
-    }
-    
-    .image-list2 li {
-      width: 100%; /* 1列表示 */
-    }
-    .footer {
-      text-align: right; /* テキストを右揃え */
-      margin: 10px 0; /* 上下に10pxのマージン */
-      font-size: 12px; /* 10pxから+2px */
-      color: #a0a0a0; /* 白ベースの薄いグレー */
-    }
+/* 768px + iOS 対応（max-device-width 併記）：ハンバーガーメニュー表示 */
+@media (max-width: 768px), (max-device-width: 768px) {
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
-  /* 640px以下：タイトル・西暦を画面上部に固定（スティッキー） */
-  @media (max-width: 640px) {
-    body {
-      padding-bottom: 0;
-    }
-    #content-section {
-      margin-bottom: 0; /* 200px短く（200px→0） */
-    }
-    .content-grid {
-      grid-template-columns: 1fr;
-    }
-    .content-text {
-      grid-column: 1;
-      position: relative; /* JSで .is-stuck のときに fixed に切り替え */
-      z-index: 50;
-      background: #ffffff;
-      order: -1; /* タイトル・西暦を上に */
-    }
-    .content-works {
-      grid-column: 1;
-      position: static;
-      top: auto;
-      order: 1;
-    }
-    .content-text.is-stuck {
-      position: fixed !important;
-      top: 0 !important;
-      left: 22px;
-      right: 22px;
-      width: auto !important;
-      padding-top: 10px; /* タイトルは実質10px下に */
-      background: #ffffff;
-    }
-    .image-grid {
-      grid-template-columns: 1fr;
-      width: 100%;
-      margin-left: 0;
-      position: static;
-      top: auto;
-      gap: calc(6px * var(--scroll-scale, 1)); /* 640px以下：スクロール速度で同様に変動 */
-    }
-    .image-hover-text {
-      display: flex !important;
-      position: static;
-      width: 100%;
-      height: auto;
-      min-height: 0;
-      justify-content: flex-start;
-      align-items: flex-start;
-      padding-bottom: 12px;
-    }
-    .image-hover-text .hover-description {
-      display: none;
-    }
-    .image-hover-text .hover-title,
-    .image-hover-text .hover-year {
-      font-size: 28px;
-    }
-    .image-hover-text .hover-year {
-      margin-top: 2px;
-    }
-    .image-list {
-      margin-top: 20px;
-      gap: 20px; /* 縦並びの画像間隔を＋10px（10px→20px） */
-    }
-    .image-list li {
-      left: 0;
-      right: 0;
-      width: 100%;
-      max-width: 1140px;
-    }
-    .image-list2 {
-      gap: 20px; /* 縦並びの画像間隔を＋10px（10px→20px） */
-    }
-    .image-list2 li {
-      width: 100%;
-    }
+  .hamburger-menu { display: flex; }
+
+  /* ナビは左にサイト名のみ（about me はハンバーガー内） */
+  .nav-links {
+    display: flex;
+    flex: 1;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
   }
 
-  
+  .nav-links .nav-button:not(:first-child) {
+    display: none;
+  }
+
+  /* コンテンツを縦1列に：タイトルを上、画像を下 */
+  .content-grid {
+    grid-template-columns: 1fr;
+    perspective: none;
+  }
+
+  .content-text {
+    grid-column: 1;
+    position: relative;
+    z-index: 50;
+    background: var(--color-bg);
+    order: -1;
+  }
+
+  .content-works {
+    grid-column: 1;
+    position: static;
+    top: auto;
+    order: 1;
+    transform: none;
+    will-change: auto;
+    backface-visibility: visible;
+  }
+
+  /* タイトル・西暦をスクロールに追従してスティッキー固定 */
+  .content-text.is-stuck {
+    position: fixed !important;
+    top: 0 !important;
+    left: 22px;
+    right: 22px;
+    width: auto !important;
+    padding-top: 10px;
+    background: var(--color-bg);
+  }
+
+  .image-grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    margin-left: 0;
+    position: static;
+    top: auto;
+  }
+
+  /* モバイルでホバーテキストを static で表示 */
+  .image-hover-text {
+    display: flex !important;
+    position: static;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-bottom: 12px;
+  }
+
+  .image-hover-text .hover-description { display: none; }
+
+  .image-hover-text .hover-title,
+  .image-hover-text .hover-year {
+    font-size: 28px;
+  }
+
+  .image-hover-text .hover-year { margin-top: 2px; }
+
+  .image-list { margin-top: 20px; }
+
+  .image-list li {
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 1140px;
+  }
+
+  .image-list2 li { width: 100%; }
+
+  .footer {
+    text-align: right;
+    margin: 10px 0;
+    font-size: var(--font-size-caption);
+    color: var(--color-text-faint);
+  }
+}
+
+/* 640px：body/コンテンツ余白リセット・画像ギャップ縮小
+ * 768px と重複するルールは 768px ブロックに集約済み */
+@media (max-width: 640px) {
+  body             { padding-bottom: 0; }
+  #content-section { margin-bottom: 0; }
+  .image-grid      { gap: calc(6px * var(--scroll-scale, 1)); }
+  .image-list      { gap: 20px; }
+  .image-list2     { gap: 20px; }
+}
 
 
-  
-  
+/* ===== OPENING ANIMATION ===== */
 
-  
-
-
-
-/* ____________________________________________________________________________________ */
-
- /* オープニングアニメーションのスタイル */
 .opening-animation {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #121212;
+  background-color: var(--color-text);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -933,30 +907,13 @@ object-fit: cover;
   animation: focusIn 3s ease-out forwards;
 }
 
-/* 画像がぼかしからクリアになるアニメーション */
 @keyframes focusIn {
-  0% {
-    filter: blur(20px);
-    transform: scale(1.1);
-  }
-  100% {
-    filter: blur(0px);
-    transform: scale(1);
-  }
+  0%   { filter: blur(20px); transform: scale(1.1); }
+  100% { filter: blur(0px);  transform: scale(1); }
 }
 
-/* オーバーレイがフェードアウト */
 @keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-    pointer-events: none;
-  }
+  0%   { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; display: none; pointer-events: none; }
 }
-

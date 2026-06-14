@@ -1,16 +1,17 @@
+/*
+ * sub-stylesheet.css — サブページ（プロジェクト詳細・aboutme）専用レイアウト
+ *
+ * 役割分担：
+ *   stylesheet.css  … グローバルトークン・リセット・タイポグラフィ・index レイアウト・ナビ・レスポンシブ
+ *   sub-stylesheet.css … サブページのグリッド構造（project-container）・sticky テキスト・back-to-top UI
+ *
+ * タイポグラフィ・リンク色・日本語ブロック余白は stylesheet.css に集約。
+ * このファイルでフォントサイズ・色を直接指定しないこと。
+ */
 
 
+/* ===== SUBPAGE — プロジェクトコンテナ（左2/3写真・右1/3テキスト） ===== */
 
-
-
-/* メインコンテンツを上下左右中央に配置 */
-
-  
-
-  
-  
-
-/* プロジェクトコンテナ - 親要素の設定（左右余白はヘッダーと同じ22px） */
 .project-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -19,15 +20,14 @@
   box-sizing: border-box;
   padding-left: 22px;
   padding-right: 22px;
-  /* 重要: これがないと右側のテキスト列が画像と同じ高さまで伸びてしまい、動く隙間がなくなります */
-  align-items: start;
+  align-items: start; /* 右テキスト列が画像と同高に伸びないよう上端揃え */
   position: relative;
 }
 
-/* 画像列を上端揃えにし、列の高さは内容に合わせる（写真の下の白余白を抑える） */
+/* 画像列：上端揃え・高さを内容に合わせる */
 .project-container .project-images {
   align-self: start;
-  min-height: 0; /* グリッドセルの余計な伸びを防ぐ */
+  min-height: 0;
 }
 
 .project-images {
@@ -50,35 +50,29 @@
 
 .project-images .vertical-image-list li {
   width: 100%;
-  margin-bottom: 0; /* 写真間の白い線を出さない（余白なし） */
+  margin-bottom: 0;
   background: transparent;
   border: none;
   outline: none;
   animation: subpageImageFadeInFromTop 0.7s ease-out both;
 }
 
-/* サブページ画像：上からふわっと出現（index と同じ） */
+/* サブページ画像：上からふわっと出現 */
 @keyframes subpageImageFadeInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* 上の画像から順に少しずつ遅らせて表示 */
-.project-images .vertical-image-list li:nth-child(1) { animation-delay: 0.05s; }
-.project-images .vertical-image-list li:nth-child(2) { animation-delay: 0.1s; }
-.project-images .vertical-image-list li:nth-child(3) { animation-delay: 0.15s; }
-.project-images .vertical-image-list li:nth-child(4) { animation-delay: 0.2s; }
-.project-images .vertical-image-list li:nth-child(5) { animation-delay: 0.25s; }
-.project-images .vertical-image-list li:nth-child(6) { animation-delay: 0.3s; }
-.project-images .vertical-image-list li:nth-child(7) { animation-delay: 0.35s; }
-.project-images .vertical-image-list li:nth-child(8) { animation-delay: 0.4s; }
-.project-images .vertical-image-list li:nth-child(9) { animation-delay: 0.45s; }
+/* 上の画像から順に遅らせて表示 */
+.project-images .vertical-image-list li:nth-child(1)  { animation-delay: 0.05s; }
+.project-images .vertical-image-list li:nth-child(2)  { animation-delay: 0.1s; }
+.project-images .vertical-image-list li:nth-child(3)  { animation-delay: 0.15s; }
+.project-images .vertical-image-list li:nth-child(4)  { animation-delay: 0.2s; }
+.project-images .vertical-image-list li:nth-child(5)  { animation-delay: 0.25s; }
+.project-images .vertical-image-list li:nth-child(6)  { animation-delay: 0.3s; }
+.project-images .vertical-image-list li:nth-child(7)  { animation-delay: 0.35s; }
+.project-images .vertical-image-list li:nth-child(8)  { animation-delay: 0.4s; }
+.project-images .vertical-image-list li:nth-child(9)  { animation-delay: 0.45s; }
 .project-images .vertical-image-list li:nth-child(10) { animation-delay: 0.5s; }
 .project-images .vertical-image-list li:nth-child(11) { animation-delay: 0.55s; }
 .project-images .vertical-image-list li:nth-child(12) { animation-delay: 0.6s; }
@@ -96,7 +90,6 @@
 .project-images .vertical-image-list li:nth-child(24) { animation-delay: 1.2s; }
 .project-images .vertical-image-list li:nth-child(25) { animation-delay: 1.25s; }
 
-/* 最後の写真の下に白い余白が出ないように */
 .project-images .vertical-image-list li:last-child {
   margin-bottom: 0;
 }
@@ -109,269 +102,198 @@
   background: transparent;
   line-height: 0;
   font-size: 0;
-  border: none;   /* 写真間の白線を消す */
+  border: none;
   outline: none;
 }
 
-/* YouTube動画のスタイル */
+/* YouTube 動画アイテム */
 .project-images .vertical-image-list li.youtube-video {
   width: 100%;
-  margin-bottom: 12px; /* 写真-写真間のmarginと同じ */
+  margin-bottom: 12px;
 }
 
 .project-images .vertical-image-list li.youtube-video > div {
   width: 100%;
 }
 
-/* 右側のテキストブロック（追従設定） */
+
+/* ===== SUBPAGE — テキストブロック（sticky） ===== */
+
 .project-text {
-  /* Safari用の記述 */
-  position: -webkit-sticky;
+  position: -webkit-sticky; /* Safari */
   position: sticky;
-
-  /* 固定ヘッダーに被らないよう、上から少し余裕を持たせます */
-  top: 100px;
-
-  /* 重要: 高さを中身に合わせることで、スクロールする余地を作ります */
-  height: fit-content;
-
+  top: 100px;          /* 固定ヘッダー分の余白 */
+  height: fit-content; /* 高さを内容に合わせてスクロール余地を確保 */
   width: 100%;
   text-align: left;
-
-  /* 他の要素に埋もれないよう設定 */
   z-index: 10;
 }
 
-/* サブページのタイポグラフィ・リンク・日本語ブロック余白は stylesheet.css に集約 */
-
+/* サブページ：コンテンツを上詰めで表示 */
 main {
   justify-content: flex-start;
-  padding-top: 20vh; /* project同様 */
+  padding-top: 20vh;
 }
 
-/* ========== aboutme 専用: 他サブページと同じ 左2/3写真・右1/3テキスト ========== */
+
+/* ===== ABOUTME — 専用オーバーライド ===== */
+
+/* aboutme のみグリッドギャップを 3% → 18px に変更 */
 .aboutme-page .project-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
   gap: 18px;
-  max-width: 100%;
 }
-.aboutme-page .project-images {
-  width: 100%;
-}
-.aboutme-page .project-images .vertical-image-list {
-  margin: 0;
+
+
+/* ===== LEGACY — 未使用クラス（将来削除候補） ===== */
+/*
+ * 以下のクラスは現在どの HTML ファイルからも参照されていない。
+ * 削除する場合は全 .html ファイルを検索して使用がないことを確認すること。
+ *   .vertical-image-list（基底）/ .about-section / .about-text（.about-section 内）
+ *   .about-images / .about-section2 / .about-section3
+ */
+
+/* 縦1列画像リスト基底スタイル
+ * → 実際の表示は下部の !important ブロックで上書きされる */
+.vertical-image-list {
+  list-style: none;
   padding: 0;
-}
-.aboutme-page .project-images .vertical-image-list li {
-  margin-bottom: 0;
-}
-.aboutme-page .project-images .vertical-image-list li:last-child {
-  margin-bottom: 0;
-}
-.aboutme-page .project-text {
-  width: 100%;
-}
-
-  
-  /* サブページ専用: 縦1列の画像リスト */
-  .vertical-image-list {
-    list-style: none;
-    padding: 0;
-    margin: 50px auto 20px;
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: transparent;
-  }
-  
-  .vertical-image-list li {
-    margin-bottom: 0; /* 写真間の白線を出さない */
-    width: 70%;
-    background: transparent;
-    border: none;
-    outline: none;
-  }
-  
-  .vertical-image-list img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-    background: transparent;
-    line-height: 0;
-    font-size: 0;
-    border: none;
-    outline: none;
-  }
-
-
-
-
-
-
-
-
-
-/* Aboutセクションをグリッドで配置 */
-.about-section {
-  display: grid; /* グリッドレイアウトを使用 */
-  grid-template-columns: 1fr 1fr; /* 2カラムのグリッド */
-  gap: 50px; /* 各グリッドアイテムの間の余白 */
-  margin: 0 auto; /* 中央揃え */
-  padding: 0 10%; /* 左右に10%の余白 */
-  align-items: start; /* 上端揃え */
-}
-
-/* 文章部分 */
-.about-text {
-  grid-column: 1; /* 左カラムに配置 */
-  font-size: 16px;
-  line-height: 1.8; /* 行間を調整して読みやすく */
-  text-align: left; /* 左揃え */
+  margin: 50px auto 20px;
+  width: 80%;
   display: flex;
-  flex-direction: column; /* 縦方向に揃える */
-  gap: 10px; /* 段落間の余白 */
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
 }
 
-/* 画像部分 */
+.vertical-image-list li {
+  margin-bottom: 0;
+  width: 70%;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.vertical-image-list img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  background: transparent;
+  line-height: 0;
+  font-size: 0;
+  border: none;
+  outline: none;
+}
+
+/* about-section 系（未使用） */
+.about-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin: 0 auto;
+  padding: 0 10%;
+  align-items: start;
+}
+
+/* .about-section 内に限定してスコープ（stylesheet.css の .about-text を上書きしないよう） */
+.about-section .about-text {
+  grid-column: 1;
+  font-size: var(--font-size-body);
+  line-height: var(--leading-jp);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .about-images {
-  grid-column: 2; /* 右カラムに配置 */
-  display: flex; /* 画像を縦に並べる */
-  flex-direction: column; /* 縦並び */
-  gap: 10px; /* 各画像の間に隙間 */
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .about-images img {
-  width: 100%; /* 画像の幅を親要素に合わせる */
-  height: auto; /* アスペクト比を維持 */
-  object-fit: cover; /* 必要に応じて拡大縮小 */
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
-/* about-section2 のスタイル */
 .about-section2 {
-  width: 80%; /* 幅を全体の80%に設定 */
-  margin: 30px auto; /* 上下に間隔を追加して中央揃え */
+  width: 80%;
+  margin: 30px auto;
   text-align: center;
 }
 
 .about-section2 img {
-  width: 100%; /* 画像の幅を親要素に合わせる */
+  width: 100%;
   height: auto;
   display: block;
   margin: 0 auto;
 }
 
-
-/* about-section3 のスタイル */
 .about-section3 {
-  width: 40%; /* 幅を全体の80%に設定 */
-  margin: 20px auto; /* 上下に間隔を追加して中央揃え */
+  width: 40%;
+  margin: 20px auto;
   text-align: center;
 }
 
 .about-section3 img {
-  width: 20%; /* 画像の幅を親要素に合わせる */
+  width: 20%;
   height: auto;
   display: block;
   margin: 0 auto;
 }
 
 
+/* ===== RESPONSIVE ===== */
 
-
-
-
-
-
-
-  
-  
-  /* レスポンシブ対応 */
-  @media (max-width: 900px) {
+@media (max-width: 640px) {
+  .project-container {
+    grid-template-columns: 1fr;
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
+  /* aboutme は画像→テキストの縦並び（他サブページと逆順） */
+  .aboutme-page .project-container { grid-template-columns: 1fr; }
+  .aboutme-page .project-images    { order: 1; }
+  .aboutme-page .project-text      { order: 2; }
 
-  
-  @media (max-width: 640px) {
-    .project-container {
-      grid-template-columns: 1fr; /* レスポンシブ時は1列表示（縦並び） */
-      padding-left: 22px;
-      padding-right: 22px;
-    }
-    /* aboutme も他サブページ同様に画像→テキストの縦並び */
-    .aboutme-page .project-container {
-      grid-template-columns: 1fr;
-    }
-    .aboutme-page .project-images {
-      order: 1;
-    }
-    .aboutme-page .project-text {
-      order: 2;
-    }
+  .vertical-image-list li { width: 90%; }
+  .title                  { font-size: 1.6em; }
+  body                    { font-size: var(--font-size-body); }
 
-    .vertical-image-list li {
-      width: 90%; /* 幅を90%に拡大 */
-    }
-    .title {
-      font-size: 1.6em;
-    }
-    body {
-      font-size: 14px;
-    }
-    /* ヘッダー関連のスタイルはstylesheet.cssで統一管理 */
-    .image-list li {
-      width: 100%; 
-      max-width: 1200px; /* 必要に応じて最大幅を設定 */
-      /* width: 80%; 1列表示に変更 */
-    }
-
-      /* about-section3 のスタイル */
-  .about-section3 {
-    width: 60%; /* 幅を全体の80%に設定 */
-    margin: 20px auto; /* 上下に間隔を追加して中央揃え */
-    text-align: center;
+  .image-list li {
+    width: 100%;
+    max-width: 1200px;
   }
 
-  .about-section3 img {
-    width: 20%; /* 画像の幅を親要素に合わせる */
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
+  .about-section3 { width: 60%; margin: 20px auto; }
+}
+
+@media (max-width: 400px) {
+  .vertical-image-list li { width: 100%; }
+  .title                  { font-size: var(--font-size-h2); }
+  body                    { font-size: var(--font-size-caption); }
+}
 
 
-
-
-
-    
-  }
-
-
-  
-  @media (max-width: 400px) {
-    .vertical-image-list li {
-      width: 100%; /* 幅を100%に拡大 */
-    }
-    .title{
-      font-size: 18px; /* フォントサイズを少し小さく */
-    }
-
-    body {
-      font-size: 12px;
-    }
-  }
-
-/* ========== 縦並び写真の白線を確実に消す（全ルールを上書き） ========== */
+/* ===== SUBPAGE — 縦並び写真の白線強制リセット ===== */
+/*
+ * .vertical-image-list の基底スタイルおよびブラウザデフォルトを上書きし、
+ * 写真間の余計な隙間・白線を確実に消す。
+ * !important は基底セレクタとの詳細度競合を解決するために必要。
+ */
 main .project-container .project-images .vertical-image-list {
   margin: 0 !important;
   padding: 0 !important;
-  gap: 8px !important; /* 縦に並んだ画像の間を8px開ける */
+  gap: 8px !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
 }
+
 main .project-container .project-images .vertical-image-list li {
   margin: 0 !important;
   padding: 0 !important;
@@ -380,6 +302,7 @@ main .project-container .project-images .vertical-image-list li {
   background: transparent !important;
   box-shadow: none !important;
 }
+
 main .project-container .project-images .vertical-image-list img {
   margin: 0 !important;
   padding: 0 !important;
@@ -396,21 +319,25 @@ main .project-container .project-images .vertical-image-list img {
   object-fit: fill;
 }
 
-/* 1.html 等サブページのフッター：上余白20px、下余白2px */
+
+/* ===== SUBPAGE — フッター・back-to-top ===== */
+
+/* サブページのフッター余白（stylesheet.css の base を上書き） */
 .footer {
   margin-top: 20px;
   margin-bottom: 2px;
 }
 
-/* 一番上に戻る（円形＋白矢印）・著作権より上に配置・右揃え */
+/* 「一番上に戻る」ボタン：円形・右揃え */
 .back-to-top-wrap {
   text-align: right;
   margin: 0;
-  margin-top: 64px; /* 24px + 40px */
+  margin-top: 64px;
   margin-right: 22px;
   margin-bottom: 0;
   padding: 0;
 }
+
 .back-to-top {
   display: inline-flex;
   align-items: center;
@@ -418,22 +345,23 @@ main .project-container .project-images .vertical-image-list img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #e8e8e8; /* さらに薄いグレー */
+  background: var(--color-surface-ui);
   text-decoration: none;
   transition: background 0.2s ease;
   line-height: 0;
 }
+
 .back-to-top:hover {
-  background: #d0d0d0;
+  background: var(--color-surface-ui-hover);
 }
-/* 矢印（白） */
+
+/* 矢印（背景色で抜く） */
 .back-to-top-arrow {
   display: block;
   width: 0;
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 12px solid #ffffff;
-  margin-bottom: 2px; /* 視覚的に中央に */
+  border-bottom: 12px solid var(--color-bg);
+  margin-bottom: 2px;
 }
-
