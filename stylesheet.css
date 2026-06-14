@@ -284,6 +284,7 @@ main {
 /* ===== INDEX — 画像グリッド ===== */
 
 .image-grid {
+  
   display: grid;
   grid-template-columns: 1fr;
   gap: calc(8px * var(--scroll-scale, 1));
