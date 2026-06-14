@@ -319,6 +319,35 @@ main .project-container .project-images .vertical-image-list img {
   object-fit: fill;
 }
 
+/* ネイティブ video（<ul> 内は必ず <li> で包む。未ラップだと li と同幅にならず横はみ出しやすい） */
+.project-images .vertical-image-list li.project-native-video {
+  width: 100%;
+}
+
+.project-images .vertical-image-list li.project-native-video video {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: top;
+  box-sizing: border-box;
+}
+
+main .project-container .project-images .vertical-image-list li video {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  vertical-align: top !important;
+  box-sizing: border-box !important;
+}
+
 
 /* ===== SUBPAGE — フッター・back-to-top ===== */
 
