@@ -232,8 +232,7 @@ main {
   padding-left: 22px;
   padding-right: 22px;
   margin-bottom: 200px;
-  /* index: script.js が --scroll-scale / --scroll-rotate を更新 */
-  --scroll-rotate: 0deg;
+  /* index: script.js が --scroll-scale を更新 */
 }
 
 /* 左4/12テキスト、中3/12空白、右5/12画像 */
@@ -247,9 +246,6 @@ main {
   padding-bottom: 120px;
   align-items: start;
   min-height: calc(100vh - 180px - 20px);
-  /* index: 右カラムの rotateY と組み合わせて奥行き感 */
-  perspective: 1500px;
-  perspective-origin: 78% 28%;
 }
 
 .content-works {
@@ -257,22 +253,6 @@ main {
   align-self: start;
   height: fit-content;
   min-height: 100vh;
-  transform: rotateY(var(--scroll-rotate, 0deg));
-  transform-origin: right center;
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .content-grid {
-    perspective: none;
-  }
-
-  .content-works {
-    transform: none !important;
-    will-change: auto;
-    backface-visibility: visible;
-  }
 }
 
 .content-text {
@@ -791,7 +771,6 @@ main {
   /* コンテンツを縦1列に：タイトルを上、画像を下 */
   .content-grid {
     grid-template-columns: 1fr;
-    perspective: none;
   }
 
   .content-text {
@@ -807,9 +786,6 @@ main {
     position: static;
     top: auto;
     order: 1;
-    transform: none;
-    will-change: auto;
-    backface-visibility: visible;
   }
 
   /* タイトル・西暦をスクロールに追従してスティッキー固定 */

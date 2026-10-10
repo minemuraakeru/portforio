@@ -277,6 +277,13 @@ class YearCounter {
   }
 }
 
+// モバイル判定：stylesheet.css の 1 カラム切替（@media (max-width: 768px), (max-device-width: 768px)）と必ず同じ条件にする
+// ※ここがズレると、CSS は縦 1 列なのに JS のタイトル固定が効かない幅が生まれ、タイトルが上に突き抜ける
+const MOBILE_LAYOUT_QUERY = "(max-width: 768px), (max-device-width: 768px)";
+function isMobileLayout() {
+  return window.matchMedia(MOBILE_LAYOUT_QUERY).matches;
+}
+
 // DOMContentLoaded時に初期化
 document.addEventListener("DOMContentLoaded", () => {
   const hoverText = document.querySelector(".image-hover-text");
@@ -335,12 +342,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 画面上の基準位置に一番近い画像、またはホバー中ならその画像のタイトル・西暦を表示
-    // 640px以下: 画面縦中央に一番近い画像 / それ以上: 上から34vhに一番近い画像
+    // モバイル(768px以下): 画面縦中央に一番近い画像 / それ以上: 上から34vhに一番近い画像
     function checkCenterImage() {
       let targetLink = hoveredImageLink;
 
       if (!targetLink) {
-        const isNarrow = window.innerWidth <= 640;
+        const isNarrow = isMobileLayout();
         const viewportReference = window.scrollY + window.innerHeight * (isNarrow ? 0.5 : 0.34);
         let minDistance = Infinity;
 
@@ -382,7 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
       scrollTimeout = setTimeout(checkCenterImage, 50);
     });
 
-    // リサイズ時（640px境界をまたぐときも反映）
+    // リサイズ時（768px境界をまたぐときも反映）
     window.addEventListener('resize', () => {
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(checkCenterImage, 50);
@@ -392,14 +399,14 @@ document.addEventListener("DOMContentLoaded", () => {
     checkCenterImage();
   }
 
-  // 640px以下：タイトルが上から10pxに来たら固定。スクロールを戻すと元の位置に戻る（タイトルは content-text 内）
+  // モバイル(768px以下)：タイトルが上から10pxに来たら固定。スクロールを戻すと元の位置に戻る（タイトルは content-text 内）
   const contentText = document.querySelector(".content-text");
   const contentGrid = document.querySelector(".content-grid");
   if (contentText && contentGrid) {
     const STICKY_TOP = 10;
     let stuckNaturalTop = 0; // 固定した瞬間の、タイトル上端のドキュメント座標
     function updateTitleSticky() {
-      if (window.innerWidth > 640) {
+      if (!isMobileLayout()) {
         contentText.classList.remove("is-stuck");
         contentGrid.style.paddingTop = "";
         return;
