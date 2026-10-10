@@ -130,24 +130,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // index: スクロール速度に応じて画像を14%縮小（最大速度時）。止まっている時は100%。滑らかに比例。
-  // 併せてスクロール位置に応じて --scroll-rotate（Y軸回転・度）を更新し、ギャラリーに奥行き感を付与。
   const contentSection = document.getElementById("content-section");
   const imageGrid = contentSection?.querySelector(".image-grid");
   if (contentSection && imageGrid) {
     const MAX_SPEED = 2500;   // px/s 以上を「最大速度」とする
     const SMOOTH = 0.15;      // 速度の平滑化（小さいほどなめらか）
     const EASE = 0.12;        // スケールの追従（小さいほどなめらか）
-    const ROT_EASE = 0.1;     // 回転の追従
-    const ROT_MIN = -8;     // ページ先頭付近（deg）
-    const ROT_MAX = 8;      // ページ末尾付近（deg）
-    const ROT_BREAKPOINT = 769; // これ未満の幅では回転なし（CSSと揃える）
-    const reduceMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     let lastScrollY = window.scrollY;
     let lastTime = performance.now();
     let smoothSpeed = 0;
     let currentScale = 1;
-    let currentRotate = 0;
 
     function updateScrollScale() {
       const now = performance.now();
@@ -160,24 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const targetScale = 1 - 0.14 * t;
       currentScale += (targetScale - currentScale) * EASE;
       contentSection.style.setProperty("--scroll-scale", currentScale.toString());
-
-      let targetRotate = 0;
-      if (
-        !reduceMotionMq.matches &&
-        window.innerWidth >= ROT_BREAKPOINT
-      ) {
-        const maxScroll = Math.max(
-          1,
-          document.documentElement.scrollHeight - window.innerHeight
-        );
-        const ratio = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-        targetRotate = ROT_MIN + ratio * (ROT_MAX - ROT_MIN);
-      }
-      currentRotate += (targetRotate - currentRotate) * ROT_EASE;
-      contentSection.style.setProperty(
-        "--scroll-rotate",
-        `${currentRotate.toFixed(2)}deg`
-      );
 
       requestAnimationFrame(updateScrollScale);
     }
