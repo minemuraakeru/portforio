@@ -106,13 +106,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 画像ホバー時のテキスト変更は text-animation.js で処理
 
-  // 640px以下：20pxスクロールで akeru.min（nav-links 先頭）を縦10%縮小・opacity 0
+  // モバイル(768px以下・CSS の 1 カラム切替と同条件)：20pxスクロールで akeru.min（nav-links 先頭）を縦10%縮小・opacity 0
   const navSiteTitle = document.querySelector('.nav-links > .nav-button:first-child');
   if (navSiteTitle) {
     const SCROLL_END = 20;
-    const BREAKPOINT = 640;
+    const MOBILE_QUERY = "(max-width: 768px), (max-device-width: 768px)";
     function updateNavBrandScroll() {
-      if (window.innerWidth > BREAKPOINT) {
+      if (!window.matchMedia(MOBILE_QUERY).matches) {
         navSiteTitle.style.opacity = '';
         navSiteTitle.style.transform = '';
         navSiteTitle.style.pointerEvents = '';
