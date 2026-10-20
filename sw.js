@@ -1,4 +1,4 @@
-const CACHE_NAME = 'akeru-min-portfolio-v6';
+const CACHE_NAME = 'akeru-min-portfolio-v7';
 
 function getBase() {
   const path = self.location.pathname.replace(/\/sw\.js$/, '');
